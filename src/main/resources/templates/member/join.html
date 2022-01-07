@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html {
+            height: 90%;
+        }
+        body {
+            background-color: #FFFFF0;
+            height: 100%;
+        }
+
+        #container{
+            height:100%;
+        }
+
+        .field-error {
+            border-color: #ffab8a;
+        }
+
+        .field-error-color {
+            color: #FF6666;
+        }
+
+        input::placeholder{
+            color: #cfcfcf;
+        }
+
+        input:focus {
+            outline-color: #ffab8a;
+        }
+
+        .join-input {
+            width: 220px;
+            height: 40px;
+            margin-top: 15px;
+            border: solid 1px #cfcfcf; border-radius : 5px;
+            padding-left: 10px;
+        }
+
+        .join-button {
+            width: 100%;
+            height: 40px;
+            margin-top: 18px;
+            border: none; border-radius : 5px;
+            color: #ffffff;
+            background-color: #ffcf93;
+        }
+
+        #title {
+            font-size: 70px;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+        }
+
+        #flex {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hvr-float {
+            display: inline-block;
+            vertical-align: middle;
+            -webkit-transform: perspective(1px) translateZ(0);
+            transform: perspective(1px) translateZ(0);
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+            -webkit-transition-duration: 0.3s;
+            transition-duration: 0.3s;
+            -webkit-transition-property: transform;
+            transition-property: transform;
+            -webkit-transition-timing-function: ease-out;
+            transition-timing-function: ease-out;
+        }
+        .hvr-float:hover {
+            -webkit-transform: translateY(-8px);
+            transform: translateY(-8px);
+        }
+
+        @keyframes hvr-wobble-top {
+            16.65% {
+                -webkit-transform: skew(-12deg);
+                transform: skew(-12deg);
+            }
+            33.3% {
+                -webkit-transform: skew(10deg);
+                transform: skew(10deg);
+            }
+            49.95% {
+                -webkit-transform: skew(-6deg);
+                transform: skew(-6deg);
+            }
+            66.6% {
+                -webkit-transform: skew(4deg);
+                transform: skew(4deg);
+            }
+            83.25% {
+                -webkit-transform: skew(-2deg);
+                transform: skew(-2deg);
+            }
+            100% {
+                -webkit-transform: skew(0);
+                transform: skew(0);
+            }
+        }
+
+        .hvr-wobble-top {
+            horiz-align: center;
+            -webkit-transform: perspective(1px) translateZ(0);
+            transform: perspective(1px) translateZ(0);
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+            -webkit-transform-origin: 0 100%;
+            transform-origin: 0 100%;
+        }
+
+        .hvr-wobble-top {
+            -webkit-animation-name: hvr-wobble-top;
+            animation-name: hvr-wobble-top;
+            -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+            -webkit-animation-timing-function: ease-in-out;
+            animation-timing-function: ease-in-out;
+            -webkit-animation-iteration-count: 1;
+            animation-iteration-count: 1;
+        }
+
+
+    </style>
+</head>
+<body class="bg-pan-left">
+    <div id="container">
+            <div id="flex">
+                <div id="title">JOIN</div>
+                <form th:action="@{/member/join}" method="post" th:object="${member}">
+                    <center>
+                    <span class="hvr-wobble-top field-error-color" th:if="${error}" th:text="${error}"></span>
+                    <span th:if="${#fields.hasGlobalErrors()}">
+                        <p class="field-error field-error-color hvr-wobble-top" th:each="err : ${#fields.globalErrors()}" th:text="${err}">
+                            전체 오류 메시지
+                        </p>
+                    </span>
+                    </center>
+                    <div>
+                        <label for="loginId"></label>
+                        <input placeholder="ID" type="text" id="loginId" th:name="loginId" th:errorclass="field-error"
+                        class="join-input" th:value="${errorMember} ? ${errorMember.loginId} : *{loginId}">
+                        <div class="field-error hvr-wobble-top field-error-color" th:errors="*{loginId}"></div>
+                    </div>
+                    <div>
+                        <label for="password"></label>
+                        <input placeholder="PASSWORD" type="password" id="password" th:value="${errorMember} ? ${errorMember.password} : *{password}"
+                               th:name="password" th:errorclass="field-error" class="join-input">
+                        <div class="field-error hvr-wobble-top field-error-color" th:errors="*{password}"></div>
+                    </div>
+                    <div>
+                        <label for="verifyPassword"></label>
+                        <input placeholder="VERIFY PASSWORD" type="password" id="verifyPassword" th:value="${errorMember} ? ${errorMember.verifyPassword} : *{verifyPassword}"
+                               th:name="verifyPassword" th:errorclass="field-error"
+                        class="join-input">
+                        <div class="field-error hvr-wobble-top field-error-color" th:errors="*{verifyPassword}"></div>
+                    </div>
+                    <div>
+                        <label for="mail"></label>
+                        <input placeholder="EMAIL" type="email" id="mail" th:value="${errorMember} ? ${errorMember.mail} : *{mail}"
+                               th:name="mail" th:errorclass="field-error" class="join-input">
+                        <div class="field-error hvr-wobble-top field-error-color" th:errors="*{mail}"></div>
+                    </div>
+                    <div>
+                        <button type="submit" class="join-button hvr-float" >CONFIRM</button>
+                    </div>
+                </form>
+            </div>
+    </div>
+</body>
+</html>

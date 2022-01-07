@@ -4,9 +4,11 @@ import kong.tues.achievement.domain.Achievement;
 import kong.tues.goal.dailyGoal.domain.DailyGoal;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -15,6 +17,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Getter
 @Entity
 @Table(name = "member")
@@ -30,7 +35,7 @@ public class Member {
     String loginId;
 
     @NotNull @NotEmpty
-    @Length(max = 15)
+    @Column(columnDefinition = "TINYTEXT")
     String password;
 
     @NotNull @NotEmpty
@@ -45,4 +50,8 @@ public class Member {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
     private List<DailyGoal> dailyGoal;
+
+    public void passwordEncode(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(password);
+    }
 }
