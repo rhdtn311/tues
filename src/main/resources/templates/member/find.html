@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>아이디/비밀번호 찾기 페이지</title>
+</head>
+<body>
+    <div class="container">
+        <h1>FIND</h1>
+        <div>아이디 찾기</div>
+        <div th:if="${loginId}" th:text="${loginId}"></div>
+        <form th:action="@{/member/find/id}" method="get">
+            <label for="mail"></label>
+                <input type="email" th:id="mail" name="mail" placeholder="EMAIL">
+                <button type="submit" th:text="OK"></button>
+        </form>
+        <div>비밀번호 찾기</div>
+        <div>
+            <div th:if="${mail}" th:text="${mail} + '로 임시 비밀번호가 전송되었습니다.'"></div>
+            <div th:if="${error}" th:text="${error}"></div>
+        </div>
+        <form th:action="@{/member/find/password}" method="get">
+            <label for="loginId"></label>
+            <input type="text" id="loginId" name="loginId" placeholder="ID">
+            <label for="mail"></label>
+            <input type="text" id="mail" name="mail" placeholder="EMAIL">
+            <button type="submit" th:text="OK"></button>
+        </form>
+
+    </div>
+</body>
+</html>

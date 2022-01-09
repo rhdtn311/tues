@@ -3,16 +3,18 @@ package kong.tues.member.domain;
 import kong.tues.achievement.domain.Achievement;
 import kong.tues.goal.dailyGoal.domain.DailyGoal;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import kong.tues.member.domain.repository.MemberRepository;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -53,5 +55,9 @@ public class Member {
 
     public void passwordEncode(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(password);
+    }
+
+    public void changePassword(String password) {
+        this.password = password;
     }
 }

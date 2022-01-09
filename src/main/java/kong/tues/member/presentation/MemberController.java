@@ -1,6 +1,8 @@
 package kong.tues.member.presentation;
 
 import kong.tues.member.SessionConst;
+import kong.tues.member.application.FindIdService;
+import kong.tues.member.application.FindPasswordService;
 import kong.tues.member.application.JoinService;
 import kong.tues.member.application.LoginService;
 import kong.tues.member.application.dto.MemberJoinReqDto;
@@ -28,6 +30,8 @@ public class MemberController {
 
     private final JoinService joinService;
     private final LoginService loginService;
+    private final FindIdService findIdService;
+    private final FindPasswordService findPasswordService;
 
     private final MemberJoinReqDtoValidator memberJoinReqDtoValidator;
 
@@ -95,5 +99,34 @@ public class MemberController {
         }
 
         return "redirect:/member/home";
+    }
+
+    @GetMapping("/find")
+    public String find(Model model) {
+        model.addAttribute("loginId", null);
+        model.addAttribute("mail", null);
+        model.addAttribute("error", null);
+        return "member/find";
+    }
+
+    @GetMapping("/find/id")
+    public String findId(@RequestParam("mail") String mail, Model model) {
+        String loginId = findIdService.findLoginId(mail);
+
+        model.addAttribute("loginId",loginId);
+
+        return "/member/find";
+    }
+
+    @GetMapping("/find/password")
+    public String findPassword(@RequestParam("loginId") String loginId,
+                               @RequestParam("mail") String mail,
+                               Model model) {
+
+        findPasswordService.findPassword(loginId, mail);
+
+        model.addAttribute("mail", mail);
+
+        return "/member/find";
     }
 }

@@ -44,4 +44,11 @@ public class MemberExControllerAdvice {
 
         return "member/login";
     }
+
+    @ExceptionHandler(MemberNotFoundException.class)
+    public String memberNotFound(MemberNotFoundException error, Model model) {
+        model.addAttribute("error", error.getMessage());
+
+        return "member/find";
+    }
 }
