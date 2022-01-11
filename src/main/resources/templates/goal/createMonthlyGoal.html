@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>월간 목표 생성</title>
+    <style>
+        ul li {
+            list-style-type: none;
+            float: left;
+            margin-left: 10px;
+        }
+
+    </style>
+
+    <script>
+        function OnChange(value)
+        {
+            var gubun =
+                document.getElementById("AchieveType").options[document.getElementById("AchieveType").selectedIndex].value;
+            var input = "";
+            if ( gubun != "X" ){
+                if (gubun == "WAKE") {
+                    input += "<input type='number' id='wakeUpHours' name='wakeUpHours' placeholder='hours'> " +
+                        "<input type='number' id='wakeUpMinutes' name='wakeUpMinutes' placeholder='minutes'>";
+                } else if (gubun == "COUNT"){
+                    input += "<input type= 'number' id='goalCountQuota' name='goalCountQuota' placeholder='개수'>";
+                } else {
+                    input += "<input type= 'number' id='goalTimeQuota' name='goalTimeQuota' placeholder='시간'>";
+                }
+                document.getElementById("input_out").innerHTML = input;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>월간 목표 생성</h1>
+        <form th:action="@{/goal/create/monthly}" method="post">
+            <div class="buttons">
+                <ul>
+                    <li><input type="radio" name="goalType" id="goalTypeA" value="A"><label for="goalTypeA"></label>A</li>
+                    <li><input type="radio" name="goalType" id="goalTypeB" value="B"><label for="goalTypeB"></label>B</li>
+                    <li><input type="radio" name="goalType" id="goalTypeC" value="C"><label for="goalTypeC"></label>C</li>
+                    <li><input type="radio" name="goalType" id="goalTypeD" value="D"><label for="goalTypeD"></label>D</li>
+                    <li><input type="radio" name="goalType" id="goalTypeE" value="E"><label for="goalTypeE"></label>E</li>
+                    <li><input type="radio" name="goalType" id="goalTypeF" value="F"><label for="goalTypeF"></label>F</li>
+                    <li><input type="radio" name="goalType" id="goalTypeG" value="G"><label for="goalTypeG"></label>G</li>
+                    <li><input type="radio" name="goalType" id="goalTypeH" value="H"><label for="goalTypeH"></label>H</li>
+                    <li><input type="radio" name="goalType" id="goalTypeI" value="I"><label for="goalTypeI"></label>I</li>
+                    <li><input type="radio" name="goalType" id="goalTypeJ" value="J"><label for="goalTypeJ"></label>J</li>
+                    <li><input type="radio" name="goalType" id="goalTypeOther" value="OTHER"><label for="goalTypeOther">OTHER</label></li>
+                </ul>
+            </div>
+            <br>
+            <div class="date">
+                <label for="year"></label>
+                <input type="text" id="year" name="year" placeholder="년">
+                <label for="month"></label>
+                <input type="text" id="month" name="month" placeholder="월">
+            </div>
+            <div class="input-name">
+                <div>이름</div>
+                <label for="name"></label>
+                <input type="text" id="name" name="name">
+            </div>
+            <div class="input-content">
+                <div>내용</div>
+                <label for="content"></label>
+                <input type="text" id="content" name="content">
+            </div>
+            <div class="input-type">
+                <div>시간/횟수</div>
+                <select name="AchieveType" id="AchieveType" onchange="OnChange(this.value);">
+                    <option value="X">Choose</option>
+                    <option value="WAKE">WAKE</option>
+                    <option value="COUNT">COUNT</option>
+                    <option value="TIME">TIME</option>
+                </select>
+                <p id="input_out"></p>
+            </div>
+            <button type="submit"> 화긴 </button>
+        </form>
+    </div>
+</body>
+</html>
