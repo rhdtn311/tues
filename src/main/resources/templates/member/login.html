@@ -129,7 +129,7 @@
                 <input placeholder="ID" class="login-input" type="text" id="loginId" name="loginId">
                 <br>
                 <label for="password"></label>
-                <input placeholder="PASSWORD" class="login-input" type="text" id="password" name="password">
+                <input placeholder="PASSWORD" class="login-input" type="password" id="password" name="password">
             <span>
                 <button id="loginButton" type="submit">login</button>
             </span>
@@ -137,8 +137,8 @@
         </div>
 
         <div class="bottom-buttons">
-            <button class="join-find-button" th:onclick="|location.href='@{/member/find}'|"> join </button>
-            <button class="join-find-button" th:onclick="|location.href='@{/member/join}'|"> find </button>
+            <button class="join-find-button" th:onclick="|location.href='@{/member/join}'|"> join </button>
+            <button class="join-find-button" th:onclick="|location.href='@{/member/find}'|"> find </button>
         </div>
     </div>
 
