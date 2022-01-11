@@ -4,11 +4,13 @@ import kong.tues.goal.AchieveType;
 import kong.tues.goal.GoalType;
 import kong.tues.member.domain.Member;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "daily_goal")
@@ -32,6 +34,9 @@ public class DailyGoal {
     @NotNull @NotEmpty
     @Column(name = "achieveType")
     private AchieveType achieveType;
+
+    @Column(name = "wakeUpTime")
+    private LocalTime wakeUpTime;
 
     @Column(name = "goalCountQuota")
     private int goalCountQuota;

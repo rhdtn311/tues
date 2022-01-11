@@ -1,5 +1,6 @@
 package kong.tues.member.domain;
 
+import kong.tues.accessTime.domain.AccessTime;
 import kong.tues.achievement.domain.Achievement;
 import kong.tues.goal.dailyGoal.domain.DailyGoal;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
@@ -19,6 +20,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -52,6 +54,9 @@ public class Member {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
     private List<DailyGoal> dailyGoal;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    private List<AccessTime> accessTime;
 
     public void passwordEncode(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(password);
