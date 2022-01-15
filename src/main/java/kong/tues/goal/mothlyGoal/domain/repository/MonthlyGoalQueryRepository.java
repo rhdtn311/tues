@@ -2,10 +2,13 @@ package kong.tues.goal.mothlyGoal.domain.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kong.tues.goal.GoalType;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 import static kong.tues.goal.mothlyGoal.domain.QMonthlyGoal.monthlyGoal;
 import static kong.tues.member.domain.QMember.member;
@@ -20,24 +23,35 @@ public class MonthlyGoalQueryRepository {
     public boolean existsMonthlyGoalByTypeAtMonth(MonthlyGoal monthlyGoalEntity) {
         return !queryFactory.selectFrom(monthlyGoal)
                 .leftJoin(member).on(member.id.eq(monthlyGoalEntity.getMember().getId()))
-                .where(eqMonth(monthlyGoalEntity).and(eqGoalType(monthlyGoalEntity)).and(eqYear(monthlyGoalEntity).and(eqMemberId(monthlyGoalEntity))))
+                .where(eqMonth(monthlyGoalEntity.getDate().getMonthValue())
+                        .and(eqGoalType(monthlyGoalEntity))
+                        .and(eqYear(monthlyGoalEntity.getDate().getYear()))
+                        .and(eqMemberId(monthlyGoalEntity.getMember().getId())))
                 .fetch()
                 .isEmpty();
     }
 
-    public BooleanExpression eqYear(MonthlyGoal monthlyGoalEntity) {
-        return monthlyGoal.date.year().eq(monthlyGoalEntity.getDate().getYear());
+    public List<GoalType> findCreatedGoalTypes(Long memberId, int year, int month) {
+        return queryFactory.select(monthlyGoal.goalType)
+                .from(monthlyGoal)
+                .leftJoin(member).on(member.id.eq(memberId))
+                .where(eqYear(year).and(eqMonth(month)).and(eqMemberId(memberId)))
+                .fetch();
     }
 
-    public BooleanExpression eqMonth(MonthlyGoal monthlyGoalEntity) {
-        return monthlyGoal.date.month().eq(monthlyGoalEntity.getDate().getMonthValue());
+    public BooleanExpression eqYear(int year) {
+        return monthlyGoal.date.year().eq(year);
+    }
+
+    public BooleanExpression eqMonth(int month) {
+        return monthlyGoal.date.month().eq(month);
     }
 
     public BooleanExpression eqGoalType(MonthlyGoal monthlyGoalEntity) {
         return monthlyGoal.goalType.eq(monthlyGoalEntity.getGoalType());
     }
 
-    public BooleanExpression eqMemberId(MonthlyGoal monthlyGoalEntity) {
-        return monthlyGoal.member.id.eq(monthlyGoalEntity.getMember().getId());
+    public BooleanExpression eqMemberId(Long memberId) {
+        return monthlyGoal.member.id.eq(memberId);
     }
 }
