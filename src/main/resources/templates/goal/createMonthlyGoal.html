@@ -38,17 +38,16 @@
         <form th:action="@{/goal/create/monthly}" method="post">
             <div class="buttons">
                 <ul>
-                    <li><input type="radio" name="goalType" id="goalTypeA" value="A"><label for="goalTypeA"></label>A</li>
-                    <li><input type="radio" name="goalType" id="goalTypeB" value="B"><label for="goalTypeB"></label>B</li>
-                    <li><input type="radio" name="goalType" id="goalTypeC" value="C"><label for="goalTypeC"></label>C</li>
-                    <li><input type="radio" name="goalType" id="goalTypeD" value="D"><label for="goalTypeD"></label>D</li>
-                    <li><input type="radio" name="goalType" id="goalTypeE" value="E"><label for="goalTypeE"></label>E</li>
-                    <li><input type="radio" name="goalType" id="goalTypeF" value="F"><label for="goalTypeF"></label>F</li>
-                    <li><input type="radio" name="goalType" id="goalTypeG" value="G"><label for="goalTypeG"></label>G</li>
-                    <li><input type="radio" name="goalType" id="goalTypeH" value="H"><label for="goalTypeH"></label>H</li>
-                    <li><input type="radio" name="goalType" id="goalTypeI" value="I"><label for="goalTypeI"></label>I</li>
-                    <li><input type="radio" name="goalType" id="goalTypeJ" value="J"><label for="goalTypeJ"></label>J</li>
-                    <li><input type="radio" name="goalType" id="goalTypeOther" value="OTHER"><label for="goalTypeOther">OTHER</label></li>
+                    <li><input type="radio" name="goalType" id="goalTypeA" value="A" th:disabled="${createdGoalTypes.get(0).equals('A')}"><label for="goalTypeA"></label>A</li>
+                    <li><input type="radio" name="goalType" id="goalTypeB" value="B" th:disabled="${createdGoalTypes.get(1).equals('B')}"><label for="goalTypeB"></label>B</li>
+                    <li><input type="radio" name="goalType" id="goalTypeC" value="C" th:disabled="${createdGoalTypes.get(2).equals('C')}"><label for="goalTypeC"></label>C</li>
+                    <li><input type="radio" name="goalType" id="goalTypeD" value="D" th:disabled="${createdGoalTypes.get(3).equals('D')}"><label for="goalTypeD"></label>D</li>
+                    <li><input type="radio" name="goalType" id="goalTypeE" value="E" th:disabled="${createdGoalTypes.get(4).equals('E')}"><label for="goalTypeE"></label>E</li>
+                    <li><input type="radio" name="goalType" id="goalTypeF" value="F" th:disabled="${createdGoalTypes.get(5).equals('F')}"><label for="goalTypeF"></label>F</li>
+                    <li><input type="radio" name="goalType" id="goalTypeG" value="G" th:disabled="${createdGoalTypes.get(6).equals('G')}"><label for="goalTypeG"></label>G</li>
+                    <li><input type="radio" name="goalType" id="goalTypeH" value="H" th:disabled="${createdGoalTypes.get(7).equals('H')}"><label for="goalTypeH"></label>H</li>
+                    <li><input type="radio" name="goalType" id="goalTypeI" value="I" th:disabled="${createdGoalTypes.get(8).equals('I')}"><label for="goalTypeI"></label>I</li>
+                    <li><input type="radio" name="goalType" id="goalTypeJ" value="J" th:disabled="${createdGoalTypes.get(9).equals('J')}"><label for="goalTypeI"></label>J</li>
                 </ul>
             </div>
             <br>
