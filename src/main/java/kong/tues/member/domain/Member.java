@@ -4,15 +4,9 @@ import kong.tues.accessTime.domain.AccessTime;
 import kong.tues.achievement.domain.Achievement;
 import kong.tues.goal.dailyGoal.domain.DailyGoal;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
-import kong.tues.member.domain.repository.MemberRepository;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -20,7 +14,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
