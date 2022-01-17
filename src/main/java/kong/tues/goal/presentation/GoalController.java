@@ -6,6 +6,7 @@ import kong.tues.goal.dailyGoal.application.DailyGoalCreateService;
 import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalReqDto;
 import kong.tues.goal.mothlyGoal.application.MonthlyGoalCreateService;
 import kong.tues.goal.mothlyGoal.dto.MonthlyGoalReqDto;
+import kong.tues.goal.mothlyGoal.presentation.validator.MonthlyGoalReqDtoValidator;
 import kong.tues.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

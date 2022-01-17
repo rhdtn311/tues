@@ -1,4 +1,4 @@
-package kong.tues.goal.presentation;
+package kong.tues.goal.mothlyGoal.presentation.validator;
 
 import kong.tues.goal.AchieveType;
 import kong.tues.goal.mothlyGoal.dto.MonthlyGoalReqDto;
