@@ -3,10 +3,7 @@ package kong.tues.goal.mothlyGoal.domain;
 import kong.tues.goal.AchieveType;
 import kong.tues.goal.GoalType;
 import kong.tues.member.domain.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.Nullable;
 
@@ -19,6 +16,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @Builder
 @Entity
 @Table(name = "monthly_goal")
