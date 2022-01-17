@@ -54,7 +54,7 @@ public class MemberController {
         }
 
         model.addAttribute("member", loginMember);
-        return "/goal/main";
+        return "redirect:/goal/main";
     }
 
     @GetMapping("/join")

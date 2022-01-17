@@ -13,10 +13,9 @@
     </style>
 
     <script>
-        function OnChange(value)
-        {
+        function OnChange(value) {
             var gubun =
-                document.getElementById("AchieveType").options[document.getElementById("AchieveType").selectedIndex].value;
+                document.getElementById("achieveType").options[document.getElementById("achieveType").selectedIndex].value;
             var input = "";
             if ( gubun != "X" ){
                 if (gubun == "WAKE") {
@@ -47,15 +46,16 @@
                     <li><input type="radio" name="goalType" id="goalTypeG" value="G" th:disabled="${createdGoalTypes.get(6).equals('G')}"><label for="goalTypeG"></label>G</li>
                     <li><input type="radio" name="goalType" id="goalTypeH" value="H" th:disabled="${createdGoalTypes.get(7).equals('H')}"><label for="goalTypeH"></label>H</li>
                     <li><input type="radio" name="goalType" id="goalTypeI" value="I" th:disabled="${createdGoalTypes.get(8).equals('I')}"><label for="goalTypeI"></label>I</li>
-                    <li><input type="radio" name="goalType" id="goalTypeJ" value="J" th:disabled="${createdGoalTypes.get(9).equals('J')}"><label for="goalTypeI"></label>J</li>
+                    <li><input type="radio" name="goalType" id="goalTypeJ" value="J" th:disabled="${createdGoalTypes.get(9).equals('J')}"><label for="goalTypeJ"></label>J</li>
                 </ul>
             </div>
             <br>
             <div class="date">
+                <div>날짜</div>
                 <label for="year"></label>
-                <input type="text" id="year" name="year" placeholder="년">
+                <input type="number" id="year" name="year" th:value="${year}" readonly placeholder="년">
                 <label for="month"></label>
-                <input type="text" id="month" name="month" placeholder="월">
+                <input type="number" min="1" max="12" id="month" name="month" readonly th:value="${month}" placeholder="월">
             </div>
             <div class="input-name">
                 <div>이름</div>
@@ -69,7 +69,7 @@
             </div>
             <div class="input-type">
                 <div>시간/횟수</div>
-                <select name="AchieveType" id="AchieveType" onchange="OnChange(this.value);">
+                <select name="achieveType" id="achieveType" onchange="OnChange(this.value);">
                     <option value="X">Choose</option>
                     <option value="WAKE">WAKE</option>
                     <option value="COUNT">COUNT</option>
