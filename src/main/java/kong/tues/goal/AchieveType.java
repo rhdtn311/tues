@@ -1,5 +1,5 @@
 package kong.tues.goal;
 
 public enum AchieveType {
-    WAKE, TIME, COUNT;
+    WAKE, TIME, COUNT, BASIC;
 }
