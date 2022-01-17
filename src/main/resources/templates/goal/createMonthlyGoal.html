@@ -23,7 +23,7 @@
                         "<input type='number' id='wakeUpMinutes' name='wakeUpMinutes' placeholder='minutes'>";
                 } else if (gubun == "COUNT"){
                     input += "<input type= 'number' id='goalCountQuota' name='goalCountQuota' placeholder='개수'>";
-                } else {
+                } else if (gubun == "TIME") {
                     input += "<input type= 'number' id='goalTimeQuota' name='goalTimeQuota' placeholder='시간'>";
                 }
                 document.getElementById("input_out").innerHTML = input;
@@ -34,19 +34,19 @@
 <body>
     <div class="container">
         <h1>월간 목표 생성</h1>
-        <form th:action="@{/goal/create/monthly}" method="post">
+        <form th:action="@{/goal/create/monthly}" method="post"  th:object="${monthlyGoalReqDto}">
             <div class="buttons">
                 <ul>
-                    <li><input type="radio" name="goalType" id="goalTypeA" value="A" th:disabled="${createdGoalTypes.get(0).equals('A')}"><label for="goalTypeA"></label>A</li>
-                    <li><input type="radio" name="goalType" id="goalTypeB" value="B" th:disabled="${createdGoalTypes.get(1).equals('B')}"><label for="goalTypeB"></label>B</li>
-                    <li><input type="radio" name="goalType" id="goalTypeC" value="C" th:disabled="${createdGoalTypes.get(2).equals('C')}"><label for="goalTypeC"></label>C</li>
-                    <li><input type="radio" name="goalType" id="goalTypeD" value="D" th:disabled="${createdGoalTypes.get(3).equals('D')}"><label for="goalTypeD"></label>D</li>
-                    <li><input type="radio" name="goalType" id="goalTypeE" value="E" th:disabled="${createdGoalTypes.get(4).equals('E')}"><label for="goalTypeE"></label>E</li>
-                    <li><input type="radio" name="goalType" id="goalTypeF" value="F" th:disabled="${createdGoalTypes.get(5).equals('F')}"><label for="goalTypeF"></label>F</li>
-                    <li><input type="radio" name="goalType" id="goalTypeG" value="G" th:disabled="${createdGoalTypes.get(6).equals('G')}"><label for="goalTypeG"></label>G</li>
-                    <li><input type="radio" name="goalType" id="goalTypeH" value="H" th:disabled="${createdGoalTypes.get(7).equals('H')}"><label for="goalTypeH"></label>H</li>
-                    <li><input type="radio" name="goalType" id="goalTypeI" value="I" th:disabled="${createdGoalTypes.get(8).equals('I')}"><label for="goalTypeI"></label>I</li>
-                    <li><input type="radio" name="goalType" id="goalTypeJ" value="J" th:disabled="${createdGoalTypes.get(9).equals('J')}"><label for="goalTypeJ"></label>J</li>
+                    <li><input th:checked="${#strings.equals(monthlyGoalReqDto.goalType,'A')}" type="radio" name="goalType" id="goalTypeA" value="A" th:disabled="${createdGoalTypes.get(0).equals('A')}"><label for="goalTypeA"></label>A</li>
+                    <li><input th:checked="${#strings.equals(monthlyGoalReqDto.goalType,'B')}" type="radio" name="goalType" id="goalTypeB" value="B" th:disabled="${createdGoalTypes.get(1).equals('B')}"><label for="goalTypeB"></label>B</li>
+                    <li><input th:checked="${#strings.equals(monthlyGoalReqDto.goalType,'C')}" type="radio" name="goalType" id="goalTypeC" value="C" th:disabled="${createdGoalTypes.get(2).equals('C')}"><label for="goalTypeC"></label>C</li>
+                    <li><input th:checked="${#strings.equals(monthlyGoalReqDto.goalType,'D')}" type="radio" name="goalType" id="goalTypeD" value="D" th:disabled="${createdGoalTypes.get(3).equals('D')}"><label for="goalTypeD"></label>D</li>
+                    <li><input th:checked="${#strings.equals(monthlyGoalReqDto.goalType,'E')}" type="radio" name="goalType" id="goalTypeE" value="E" th:disabled="${createdGoalTypes.get(4).equals('E')}"><label for="goalTypeE"></label>E</li>
+                    <li><input th:checked="${#strings.equals(monthlyGoalReqDto.goalType,'F')}" type="radio" name="goalType" id="goalTypeF" value="F" th:disabled="${createdGoalTypes.get(5).equals('F')}"><label for="goalTypeF"></label>F</li>
+                    <li><input th:checked="${#strings.equals(monthlyGoalReqDto.goalType,'G')}" type="radio" name="goalType" id="goalTypeG" value="G" th:disabled="${createdGoalTypes.get(6).equals('G')}"><label for="goalTypeG"></label>G</li>
+                    <li><input th:checked="${#strings.equals(monthlyGoalReqDto.goalType,'H')}" type="radio" name="goalType" id="goalTypeH" value="H" th:disabled="${createdGoalTypes.get(7).equals('H')}"><label for="goalTypeH"></label>H</li>
+                    <li><input th:checked="${#strings.equals(monthlyGoalReqDto.goalType,'I')}" type="radio" name="goalType" id="goalTypeI" value="I" th:disabled="${createdGoalTypes.get(8).equals('I')}"><label for="goalTypeI"></label>I</li>
+                    <li><input th:checked="${#strings.equals(monthlyGoalReqDto.goalType,'J')}" type="radio" name="goalType" id="goalTypeJ" value="J" th:disabled="${createdGoalTypes.get(9).equals('J')}"><label for="goalTypeJ"></label>J</li>
                 </ul>
             </div>
             <br>
@@ -59,21 +59,30 @@
             </div>
             <div class="input-name">
                 <div>이름</div>
+                <div th:errors="*{name}"></div>
                 <label for="name"></label>
-                <input type="text" id="name" name="name">
+                <input type="text" id="name" name="name" th:field="*{name}">
             </div>
             <div class="input-content">
                 <div>내용</div>
                 <label for="content"></label>
-                <input type="text" id="content" name="content">
+                <input type="text" id="content" name="content" th:field="*{content}">
             </div>
             <div class="input-type">
                 <div>시간/횟수</div>
+                <div th:errors="*{goalCountQuota}"></div>
+                <div th:errors="*{goalTimeQuota}"></div>
+                <div th:errors="*{wakeUpHours}"></div>
+                <div th:errors="*{wakeUpMinutes}"></div>
+                <div th:if="${#fields.hasGlobalErrors()}">
+                    <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
+                </div>
                 <select name="achieveType" id="achieveType" onchange="OnChange(this.value);">
                     <option value="X">Choose</option>
                     <option value="WAKE">WAKE</option>
                     <option value="COUNT">COUNT</option>
                     <option value="TIME">TIME</option>
+                    <option value="BASIC">BASIC</option>
                 </select>
                 <p id="input_out"></p>
             </div>

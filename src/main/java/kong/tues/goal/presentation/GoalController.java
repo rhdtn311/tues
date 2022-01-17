@@ -11,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -26,6 +28,12 @@ public class GoalController {
 
     private final MonthlyGoalCreateService monthlyGoalCreateService;
     private final DailyGoalCreateService dailyGoalCreateService;
+    private final MonthlyGoalReqDtoValidator memberJoinReqDtoValidator;
+
+    @InitBinder
+    public void init(WebDataBinder dataBinder) {
+        dataBinder.addValidators(memberJoinReqDtoValidator);
+    }
 
     @GetMapping("/main")
     public String main(@Login Member member, Model model) {
@@ -47,23 +55,37 @@ public class GoalController {
         model.addAttribute("achieveTypes", AchieveType.values());
 
         if (member == null) {
-            return "member/login";
+            return "redirect:/member/home";
         }
 
         List<String> createdGoalTypes
                 = monthlyGoalCreateService.findCreatedGoalTypes(member.getId(), year, month);
 
+        model.addAttribute("monthlyGoalReqDto", new MonthlyGoalReqDto());
         model.addAttribute("createdGoalTypes", createdGoalTypes);
         model.addAttribute("year", year);
         model.addAttribute("month", month);
+
 
         return "/goal/createMonthlyGoal";
     }
 
     @PostMapping("/create/monthly")
     public String createMonthlyGoal(@ModelAttribute @Validated MonthlyGoalReqDto monthlyGoalReqDto,
-                                    @Login Member member) {
-        log.info("monthlyDTO = {}", monthlyGoalReqDto);
+                                    BindingResult bindingResult,
+                                    @Login Member member,
+                                    Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("year", monthlyGoalReqDto.getYear());
+            model.addAttribute("month", monthlyGoalReqDto.getMonth());
+            List<String> createdGoalTypes
+                    = monthlyGoalCreateService.findCreatedGoalTypes(member.getId(), monthlyGoalReqDto.getYear(), monthlyGoalReqDto.getMonth());
+
+            model.addAttribute("createdGoalTypes", createdGoalTypes);
+
+            return "/goal/createMonthlyGoal";
+        }
 
         if (member == null) {
             return "member/login";
