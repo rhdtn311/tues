@@ -83,20 +83,21 @@
 <body>
 <div class="container">
     <h1>일간 목표 생성</h1>
-    <form th:action="@{/goal/create/daily}" method="post">
+    <form th:action="@{/goal/create/daily}" method="post" th:object="${dailyGoalReqDto}">
         <div class="buttons">
+            <div th:errors="*{goalType}"></div>
             <ul>
-                <li><input onclick="createdGoalChecked('A', 'goalTypeA')" class="goals" type="radio" name="goalType" id="goalTypeA" value="A"><label for="goalTypeA"></label>A</li>
-                <li><input onclick="createdGoalChecked('B', 'goalTypeB')" class="goals" type="radio" name="goalType" id="goalTypeB" value="B"><label for="goalTypeB"></label>B</li>
-                <li><input onclick="createdGoalChecked('C', 'goalTypeC')" class="goals" type="radio" name="goalType" id="goalTypeC" value="C"><label for="goalTypeC"></label>C</li>
-                <li><input onclick="createdGoalChecked('D', 'goalTypeD')" class="goals" type="radio" name="goalType" id="goalTypeD" value="D"><label for="goalTypeD"></label>D</li>
-                <li><input onclick="createdGoalChecked('E', 'goalTypeE')" class="goals" type="radio" name="goalType" id="goalTypeE" value="E"><label for="goalTypeE"></label>E</li>
-                <li><input onclick="createdGoalChecked('F', 'goalTypeF')" class="goals" type="radio" name="goalType" id="goalTypeF" value="F"><label for="goalTypeF"></label>F</li>
-                <li><input onclick="createdGoalChecked('G', 'goalTypeG')" class="goals" type="radio" name="goalType" id="goalTypeG" value="G"><label for="goalTypeG"></label>G</li>
-                <li><input onclick="createdGoalChecked('H', 'goalTypeH')" class="goals" type="radio" name="goalType" id="goalTypeH" value="H"><label for="goalTypeH"></label>H</li>
-                <li><input onclick="createdGoalChecked('I', 'goalTypeI')" class="goals" type="radio" name="goalType" id="goalTypeI" value="I"><label for="goalTypeI"></label>I</li>
-                <li><input onclick="createdGoalChecked('J', 'goalTypeJ')" class="goals" type="radio" name="goalType" id="goalTypeJ" value="J"><label for="goalTypeJ"></label>J</li>
-                <li><input type="radio" name="goalType" id="goalTypeOTHER" value="OTHER"><label for="goalTypeOTHER"></label>OTHER</li>
+                <li><input onclick="createdGoalChecked('A', 'goalTypeA')" th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'A')}" class="goals" type="radio" name="goalType" id="goalTypeA" value="A"><label for="goalTypeA"></label>A</li>
+                <li><input onclick="createdGoalChecked('B', 'goalTypeB')" th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'B')}" class="goals" type="radio" name="goalType" id="goalTypeB" value="B"><label for="goalTypeB"></label>B</li>
+                <li><input onclick="createdGoalChecked('C', 'goalTypeC')" th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'C')}" class="goals" type="radio" name="goalType" id="goalTypeC" value="C"><label for="goalTypeC"></label>C</li>
+                <li><input onclick="createdGoalChecked('D', 'goalTypeD')" th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'D')}" class="goals" type="radio" name="goalType" id="goalTypeD" value="D"><label for="goalTypeD"></label>D</li>
+                <li><input onclick="createdGoalChecked('E', 'goalTypeE')" th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'E')}" class="goals" type="radio" name="goalType" id="goalTypeE" value="E"><label for="goalTypeE"></label>E</li>
+                <li><input onclick="createdGoalChecked('F', 'goalTypeF')" th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'F')}" class="goals" type="radio" name="goalType" id="goalTypeF" value="F"><label for="goalTypeF"></label>F</li>
+                <li><input onclick="createdGoalChecked('G', 'goalTypeG')" th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'G')}" class="goals" type="radio" name="goalType" id="goalTypeG" value="G"><label for="goalTypeG"></label>G</li>
+                <li><input onclick="createdGoalChecked('H', 'goalTypeH')" th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'H')}" class="goals" type="radio" name="goalType" id="goalTypeH" value="H"><label for="goalTypeH"></label>H</li>
+                <li><input onclick="createdGoalChecked('I', 'goalTypeI')" th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'I')}" class="goals" type="radio" name="goalType" id="goalTypeI" value="I"><label for="goalTypeI"></label>I</li>
+                <li><input onclick="createdGoalChecked('J', 'goalTypeJ')" th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'J')}" class="goals" type="radio" name="goalType" id="goalTypeJ" value="J"><label for="goalTypeJ"></label>J</li>
+                <li><input th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'OTHER')}" type="radio" name="goalType" id="goalTypeOTHER" value="OTHER"><label for="goalTypeOTHER"></label>OTHER</li>
             </ul>
         </div>
         <br>
@@ -113,21 +114,31 @@
         </div>
         <div class="input-name">
             <div>이름</div>
+            <div th:errors="*{name}"></div>
             <label for="name"></label>
-            <input type="text" id="name" name="name">
+            <input type="text" id="name" name="name" th:field="*{name}">
         </div>
         <div class="input-content">
             <div>내용</div>
+            <div th:errors="*{content}"></div>
             <label for="content"></label>
-            <input type="text" id="content" name="content">
+            <input type="text" id="content" name="content" th:field="*{content}">
         </div>
         <div class="input-type">
             <div>시간/횟수</div>
+            <div th:errors="*{goalTimeQuota}"></div>
+            <div th:errors="*{goalCountQuota}"></div>
+            <div th:errors="*{wakeUpHours}"></div>
+            <div th:errors="*{wakeUpMinutes}"></div>
+            <div th:if="${#fields.hasGlobalErrors()}">
+                <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
+            </div>
             <select name="achieveType" id="achieveType" onchange="OnChange(this.value);">
                 <option value="X">Choose</option>
                 <option value="WAKE">WAKE</option>
                 <option value="COUNT">COUNT</option>
                 <option value="TIME">TIME</option>
+                <option value="BASIC">BASIC</option>
             </select>
             <p id="input_out"></p>
         </div>

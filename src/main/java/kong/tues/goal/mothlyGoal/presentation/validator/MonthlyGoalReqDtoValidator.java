@@ -17,6 +17,11 @@ public class MonthlyGoalReqDtoValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
+
+        if (!target.getClass().equals(MonthlyGoalReqDto.class)) {
+            return;
+        }
+
         MonthlyGoalReqDto monthlyGoalReqDto = (MonthlyGoalReqDto) target;
 
         if (monthlyGoalReqDto.getAchieveType() == AchieveType.WAKE) {

@@ -4,6 +4,7 @@ import kong.tues.commons.argumentresolver.Login;
 import kong.tues.goal.AchieveType;
 import kong.tues.goal.dailyGoal.application.DailyGoalCreateService;
 import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalReqDto;
+import kong.tues.goal.dailyGoal.presentation.validator.DailyGoalReqDtoValidator;
 import kong.tues.goal.mothlyGoal.application.MonthlyGoalCreateService;
 import kong.tues.goal.mothlyGoal.dto.MonthlyGoalReqDto;
 import kong.tues.goal.mothlyGoal.presentation.validator.MonthlyGoalReqDtoValidator;
@@ -29,11 +30,14 @@ public class GoalController {
 
     private final MonthlyGoalCreateService monthlyGoalCreateService;
     private final DailyGoalCreateService dailyGoalCreateService;
+
     private final MonthlyGoalReqDtoValidator memberJoinReqDtoValidator;
+    private final DailyGoalReqDtoValidator dailyGoalReqDtoValidator;
 
     @InitBinder
     public void init(WebDataBinder dataBinder) {
         dataBinder.addValidators(memberJoinReqDtoValidator);
+        dataBinder.addValidators(dailyGoalReqDtoValidator);
     }
 
     @GetMapping("/main")
@@ -99,6 +103,7 @@ public class GoalController {
 
     @GetMapping("/create/daily")
     public String createDailyGoal(@Login Member member, Model model, Integer year, Integer month, Integer day) {
+
         if (member == null) {
             return "member/login";
         }
@@ -110,15 +115,30 @@ public class GoalController {
         model.addAttribute("month", month);
         model.addAttribute("day", day);
 
-        return "goal/createDailyGoal";
+        model.addAttribute("dailyGoalReqDto", new DailyGoalReqDto());
+
+        return "/goal/createDailyGoal";
     }
 
     @PostMapping("/create/daily")
     public String createDailyGoal(@ModelAttribute @Validated DailyGoalReqDto dailyGoalReqDto,
-                                  @Login Member member) {
-        log.info("dto = {} ", dailyGoalReqDto);
+                                  BindingResult bindingResult,
+                                  @Login Member member,
+                                  Model model) {
+
         if (member == null) {
             return "member/login";
+        }
+
+        if (bindingResult.hasErrors()) {
+            Map<String, String> createdGoalsMap = dailyGoalCreateService.findCreatedGoal(member.getId(), dailyGoalReqDto.getYear(), dailyGoalReqDto.getMonth());
+            model.addAttribute("createdGoalsMap", createdGoalsMap);
+
+            model.addAttribute("year", dailyGoalReqDto.getYear());
+            model.addAttribute("month", dailyGoalReqDto.getMonth());
+            model.addAttribute("day", dailyGoalReqDto.getDay());
+
+            return "/goal/createDailyGoal";
         }
 
         dailyGoalCreateService.save(dailyGoalReqDto, member.getId());

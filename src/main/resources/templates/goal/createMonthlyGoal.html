@@ -34,8 +34,9 @@
 <body>
     <div class="container">
         <h1>월간 목표 생성</h1>
-        <form th:action="@{/goal/create/monthly}" method="post"  th:object="${monthlyGoalReqDto}">
+        <form th:action="@{/goal/create/monthly}" method="post" th:object="${monthlyGoalReqDto}">
             <div class="buttons">
+                <div th:errors="*{goalType}"></div>
                 <ul>
                     <li><input th:checked="${#strings.equals(monthlyGoalReqDto.goalType,'A')}" type="radio" name="goalType" id="goalTypeA" value="A" th:disabled="${createdGoalTypes.get(0).equals('A')}"><label for="goalTypeA"></label>A</li>
                     <li><input th:checked="${#strings.equals(monthlyGoalReqDto.goalType,'B')}" type="radio" name="goalType" id="goalTypeB" value="B" th:disabled="${createdGoalTypes.get(1).equals('B')}"><label for="goalTypeB"></label>B</li>
