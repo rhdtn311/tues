@@ -1,8 +1,10 @@
 package kong.tues.goal.mothlyGoal.domain.repository;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kong.tues.goal.GoalType;
+import kong.tues.goal.dailyGoal.application.dto.CreatedMonthlyGoalResDto;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +35,15 @@ public class MonthlyGoalQueryRepository {
 
     public List<GoalType> findCreatedGoalTypes(Long memberId, int year, int month) {
         return queryFactory.select(monthlyGoal.goalType)
+                .from(monthlyGoal)
+                .leftJoin(member).on(member.id.eq(memberId))
+                .where(eqYear(year).and(eqMonth(month)).and(eqMemberId(memberId)))
+                .fetch();
+    }
+
+    public List<CreatedMonthlyGoalResDto> findCreatedMonthlyGoals(Long memberId, int year, int month) {
+        return queryFactory.select(Projections.constructor(CreatedMonthlyGoalResDto.class,
+                monthlyGoal.goalType, monthlyGoal.name))
                 .from(monthlyGoal)
                 .leftJoin(member).on(member.id.eq(memberId))
                 .where(eqYear(year).and(eqMonth(month)).and(eqMemberId(memberId)))

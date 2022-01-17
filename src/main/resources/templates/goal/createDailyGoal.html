@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>일간 목표 생성</title>
+    <style>
+        ul li {
+            list-style-type: none;
+            float: left;
+            margin-left: 10px;
+        }
+
+    </style>
+    <script  th:inline="javascript">
+        function createdGoalChecked(value,id) {
+
+            let goalName;
+            let condition;
+            let div = "";
+            if (value === 'A') {
+                goalName = [[${createdGoalsMap.get('A')}]];
+                condition = [[${createdGoalsMap.containsKey('A')}]];
+            } else if (value === 'B') {
+                goalName = [[${createdGoalsMap.get('B')}]];
+                condition = [[${createdGoalsMap.containsKey('B')}]];
+            } else if (value === 'C') {
+                goalName = [[${createdGoalsMap.get('C')}]];
+                condition = [[${createdGoalsMap.containsKey('C')}]];
+            } else if (value === 'D') {
+                goalName = [[${createdGoalsMap.get('D')}]];
+                condition = [[${createdGoalsMap.containsKey('D')}]];
+            } else if (value === 'E') {
+                goalName = [[${createdGoalsMap.get('E')}]];
+                condition = [[${createdGoalsMap.containsKey('E')}]];
+            } else if (value === 'F') {
+                goalName = [[${createdGoalsMap.get('F')}]];
+                condition = [[${createdGoalsMap.containsKey('F')}]];
+            } else if (value === 'G') {
+                goalName = [[${createdGoalsMap.get('G')}]];
+                condition = [[${createdGoalsMap.containsKey('G')}]];
+            } else if (value === 'H') {
+                goalName = [[${createdGoalsMap.get('H')}]];
+                condition = [[${createdGoalsMap.containsKey('H')}]];
+            } else if (value === 'I') {
+                goalName = [[${createdGoalsMap.get('I')}]];
+                condition = [[${createdGoalsMap.containsKey('I')}]];
+            } else if (value === 'J') {
+                goalName = [[${createdGoalsMap.get('J')}]];
+                condition = [[${createdGoalsMap.containsKey('J')}]];
+            } else {
+                goalName = "";
+            }
+            if (document.querySelector('input[id="' + id +'"]').checked) {
+                if (condition) {
+                    div += "<div>" + goalName + "</div>";
+                }
+            }
+            document.getElementById("addDiv").innerHTML = div;
+        }
+
+    </script>
+    <script>
+        function OnChange()
+        {
+            var gubun =
+                document.getElementById("achieveType").options[document.getElementById("achieveType").selectedIndex].value;
+            var input = "";
+            if ( gubun != "X" ){
+                if (gubun == "WAKE") {
+                    input += "<input type='number' id='wakeUpHours' name='wakeUpHours' placeholder='hours'> " +
+                        "<input type='number' id='wakeUpMinutes' name='wakeUpMinutes' placeholder='minutes'>";
+                } else if (gubun == "COUNT"){
+                    input += "<input type= 'number' id='goalCountQuota' name='goalCountQuota' placeholder='개수'>";
+                } else {
+                    input += "<input type= 'number' id='goalTimeQuota' name='goalTimeQuota' placeholder='시간'>";
+                }
+                document.getElementById("input_out").innerHTML = input;
+            }
+        }
+    </script>
+
+</head>
+<body>
+<div class="container">
+    <h1>일간 목표 생성</h1>
+    <form th:action="@{/goal/create/daily}" method="post">
+        <div class="buttons">
+            <ul>
+                <li><input onclick="createdGoalChecked('A', 'goalTypeA')" class="goals" type="radio" name="goalType" id="goalTypeA" value="A"><label for="goalTypeA"></label>A</li>
+                <li><input onclick="createdGoalChecked('B', 'goalTypeB')" class="goals" type="radio" name="goalType" id="goalTypeB" value="B"><label for="goalTypeB"></label>B</li>
+                <li><input onclick="createdGoalChecked('C', 'goalTypeC')" class="goals" type="radio" name="goalType" id="goalTypeC" value="C"><label for="goalTypeC"></label>C</li>
+                <li><input onclick="createdGoalChecked('D', 'goalTypeD')" class="goals" type="radio" name="goalType" id="goalTypeD" value="D"><label for="goalTypeD"></label>D</li>
+                <li><input onclick="createdGoalChecked('E', 'goalTypeE')" class="goals" type="radio" name="goalType" id="goalTypeE" value="E"><label for="goalTypeE"></label>E</li>
+                <li><input onclick="createdGoalChecked('F', 'goalTypeF')" class="goals" type="radio" name="goalType" id="goalTypeF" value="F"><label for="goalTypeF"></label>F</li>
+                <li><input onclick="createdGoalChecked('G', 'goalTypeG')" class="goals" type="radio" name="goalType" id="goalTypeG" value="G"><label for="goalTypeG"></label>G</li>
+                <li><input onclick="createdGoalChecked('H', 'goalTypeH')" class="goals" type="radio" name="goalType" id="goalTypeH" value="H"><label for="goalTypeH"></label>H</li>
+                <li><input onclick="createdGoalChecked('I', 'goalTypeI')" class="goals" type="radio" name="goalType" id="goalTypeI" value="I"><label for="goalTypeI"></label>I</li>
+                <li><input onclick="createdGoalChecked('J', 'goalTypeJ')" class="goals" type="radio" name="goalType" id="goalTypeJ" value="J"><label for="goalTypeJ"></label>J</li>
+                <li><input type="radio" name="goalType" id="goalTypeOTHER" value="OTHER"><label for="goalTypeOTHER"></label>OTHER</li>
+            </ul>
+        </div>
+        <br>
+        <div id="addDiv"></div>
+        <br>
+        <div class="date">
+            <div>날짜</div>
+            <label for="year"></label>
+            <input type="text" id="year" name="year" placeholder="YEAR" readonly th:value="${year}">
+            <label for="month"></label>
+            <input type="text" id="month" name="month" placeholder="MONTH" readonly th:value="${month}">
+            <label for="day"></label>
+            <input type="text" id="day" name="day" placeholder="DAY" readonly th:value="${day}">
+        </div>
+        <div class="input-name">
+            <div>이름</div>
+            <label for="name"></label>
+            <input type="text" id="name" name="name">
+        </div>
+        <div class="input-content">
+            <div>내용</div>
+            <label for="content"></label>
+            <input type="text" id="content" name="content">
+        </div>
+        <div class="input-type">
+            <div>시간/횟수</div>
+            <select name="achieveType" id="achieveType" onchange="OnChange(this.value);">
+                <option value="X">Choose</option>
+                <option value="WAKE">WAKE</option>
+                <option value="COUNT">COUNT</option>
+                <option value="TIME">TIME</option>
+            </select>
+            <p id="input_out"></p>
+        </div>
+        <button type="submit"> 화긴 </button>
+    </form>`
+</div>
+</body>
+</html>

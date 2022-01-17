@@ -3,9 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        #monthly-modal.modal-overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(1.5px);
+            -webkit-backdrop-filter: blur(1.5px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        #monthly-modal .modal-window {
+            background: rgba( 69, 139, 197, 0.70 );
+            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+            backdrop-filter: blur( 13.5px );
+            -webkit-backdrop-filter: blur( 13.5px );
+            border-radius: 10px;
+            border: 1px solid rgba( 255, 255, 255, 0.18 );
+            width: 220px;
+            height: 200px;
+            position: relative;
+            top: -100px;
+            padding: 10px;
+        }
+        #monthly-modal .title {
+            padding-left: 10px;
+            display: inline;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+
+        }
+        #monthly-modal .title h2 {
+            display: inline;
+        }
+        #monthly-modal .close-area {
+            display: inline;
+            float: right;
+            padding-right: 10px;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+        }
+
+        #monthly-modal .content {
+            margin-top: 20px;
+            padding: 0px 10px;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+        }
+
+    /*    -----------------------------------------      */
+        #daily-modal.modal-overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(1.5px);
+            -webkit-backdrop-filter: blur(1.5px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        #daily-modal .modal-window {
+            background: rgba( 69, 139, 197, 0.70 );
+            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+            backdrop-filter: blur( 13.5px );
+            -webkit-backdrop-filter: blur( 13.5px );
+            border-radius: 10px;
+            border: 1px solid rgba( 255, 255, 255, 0.18 );
+            width: 220px;
+            height: 250px;
+            position: relative;
+            top: -100px;
+            padding: 10px;
+        }
+        #daily-modal .title {
+            padding-left: 10px;
+            display: inline;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+
+        }
+        #daily-modal .title h2 {
+            display: inline;
+        }
+        #daily-modal .close-area {
+            display: inline;
+            float: right;
+            padding-right: 10px;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+        }
+
+        #daily-modal .content {
+            margin-top: 20px;
+            padding: 0px 10px;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+        }
+
+    </style>
 </head>
 <body>
 <h1> 목표 메인 화면 </h1>
-    <button th:onclick="|location.href='@{/goal/create/monthly}'|"> 월간 목표 생성 </button>
+
+    <button id="btn-monthly-modal">월간 목표 생성</button>
+    <button id="btn-daily-modal"> 일간 목표 생성 </button>
+
+<div id="monthly-modal" class="modal-overlay">
+    <div class="modal-window">
+        <div class="title">
+            <h2>날짜</h2>
+        </div>
+        <div class="close-area">X</div>
+            <div class="content">
+                <form method="get" th:action="@{/goal/create/monthly}">
+                    <div>YEAR</div>
+                    <label for="year"></label>
+                    <input style="width: 194px" type="number" th:min="${year}" th:value="${year}" max="3000" th:id="year" name="year"
+                           placeholder="년">
+                    <div>MONTH</div>
+                    <label for="month"></label>
+                    <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" th:id="month" name="month" placeholder="월">
+                    <br>
+                    <div style="padding-top: 10px">
+                        <button type="submit">월간 목표 생성</button>
+                    </div>
+                </form>
+            </div>
+    </div>
+</div>
+
+<div id="daily-modal" class="modal-overlay">
+    <div class="modal-window">
+        <div class="title">
+            <h2>날짜</h2>
+        </div>
+        <div class="close-area">X</div>
+        <div class="content">
+            <form method="get" th:action="@{/goal/create/daily}">
+                <div>YEAR</div>
+                <label for="year"></label>
+                <input style="width: 194px" type="number" th:min="${year}" th:value="${year}" max="3000" id="year" name="year"
+                       placeholder="년">
+                <div>MONTH</div>
+                <label for="month"></label>
+                <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" id="month" name="month" placeholder="월">
+                <div>DAY</div>
+                <label for="day"></label>
+                <input style="width: 194px" type="number" min="1" max="31" th:value="${day}" id="day" name="day" placeholder="일">
+                <br>
+                <div style="padding-top: 10px">
+                    <button type="submit">일간 목표 생성</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
+
+
+<script>
+    const monthlyModal = document.getElementById("monthly-modal")
+    function monthlyModalOn() {
+        monthlyModal.style.display = "flex"
+    }
+    function isModalOn() {
+        return monthlyModal.style.display === "flex"
+    }
+    function monthlyModalOff() {
+        monthlyModal.style.display = "none"
+    }
+    const btnMonthlyModal = document.getElementById("btn-monthly-modal")
+    btnMonthlyModal.addEventListener("click", e => {
+        monthlyModalOn()
+    })
+    const closeBtn = monthlyModal.querySelector(".close-area")
+    closeBtn.addEventListener("click", e => {
+        monthlyModalOff()
+    })
+    monthlyModal.addEventListener("click", e => {
+        const evTarget = e.target
+        if(evTarget.classList.contains("modal-overlay")) {
+            monthlyModalOff()
+        }
+    })
+    window.addEventListener("keyup", e => {
+        if(isModalOn() && e.key === "Escape") {
+            monthlyModalOff()
+        }
+    })
+
+    const dailyModal = document.getElementById("daily-modal")
+    function dailyModalOn() {
+        dailyModal.style.display = "flex"
+    }
+    function isDailyModalOn() {
+        return dailyModal.style.display === "flex"
+    }
+    function dailyModalOff() {
+        dailyModal.style.display = "none"
+    }
+    const btnDailyModal = document.getElementById("btn-daily-modal")
+    btnDailyModal.addEventListener("click", e => {
+        dailyModalOn()
+    })
+    const closeDailyBtn = dailyModal.querySelector(".close-area")
+    closeDailyBtn.addEventListener("click", e => {
+        dailyModalOff()
+    })
+    monthlyModal.addEventListener("click", e => {
+        const evTarget = e.target
+        if(evTarget.classList.contains("modal-overlay")) {
+            dailyModalOff()
+        }
+    })
+    window.addEventListener("keyup", e => {
+        if(isDailyModalOn() && e.key === "Escape") {
+            dailyModalOff()
+        }
+    })
+</script>
 </html>
