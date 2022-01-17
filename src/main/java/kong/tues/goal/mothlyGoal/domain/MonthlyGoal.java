@@ -8,6 +8,8 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -46,15 +48,19 @@ public class MonthlyGoal {
     @Column(name = "wakeUpTime")
     private LocalTime wakeUpTime;
 
+    @Min(0) @Max(100000000)
     @Column(name = "goalCountQuota")
     private Integer goalCountQuota;
 
+    @Min(0) @Max(100000000)
     @Column(name = "goalCount")
     private Integer goalCount;
 
+    @Min(0) @Max(24)
     @Column(name = "goalTimeQuota")
     private Integer goalTimeQuota;
 
+    @Min(0) @Max(24)
     @Column(name = "goalTime")
     private Integer goalTime;
 

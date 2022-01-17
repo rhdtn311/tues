@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -36,26 +37,28 @@ public class MonthlyGoalReqDto {
     @NotNull
     private AchieveType achieveType;
 
+    @Min(0) @Max(23)
     @Nullable
     private Integer wakeUpHours;
 
+    @Min(0) @Max(59)
     @Nullable
     private Integer wakeUpMinutes;
 
     @Nullable
-    @Max(100000000)
+    @Min(0) @Max(value = 100000000)
     private Integer goalCountQuota;
 
     @Nullable
-    @Max(value = 100000000)
+    @Min(0) @Max(100000000)
     private Integer goalCount;
 
     @Nullable
-    @Max(1000)
+    @Min(0) @Max(1000)
     private Integer goalTimeQuota;
 
     @Nullable
-    @Max(1000)
+    @Min(0) @Max(1000)
     private Integer goalTime;
 
     private Integer year;
