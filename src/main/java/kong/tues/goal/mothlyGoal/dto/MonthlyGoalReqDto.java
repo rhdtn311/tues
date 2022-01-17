@@ -12,6 +12,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @ToString
 @NoArgsConstructor
@@ -26,13 +27,20 @@ public class MonthlyGoalReqDto {
     @Length(max = 50)
     private String name;
 
+    @Nullable
     private String content;
 
-    @Nullable
+    @NotNull
     private GoalType goalType;
 
-    @Nullable
+    @NotNull
     private AchieveType achieveType;
+
+    @Nullable
+    private Integer wakeUpHours;
+
+    @Nullable
+    private Integer wakeUpMinutes;
 
     @Nullable
     @Max(100000000)
@@ -57,7 +65,7 @@ public class MonthlyGoalReqDto {
     private Boolean success;
 
     public MonthlyGoal toMonthlyGoal(Member member) {
-        return MonthlyGoal.builder()
+        MonthlyGoal monthlyGoal = MonthlyGoal.builder()
                 .member(member)
                 .name(name)
                 .content(content)
@@ -70,5 +78,11 @@ public class MonthlyGoalReqDto {
                 .date(LocalDate.of(year, month, 1))
                 .success(false)
                 .build();
+
+        if (this.getAchieveType() == AchieveType.WAKE) {
+            monthlyGoal.setWakeUpTime(LocalTime.of(wakeUpHours, wakeUpMinutes));
+        }
+
+        return monthlyGoal;
     }
 }
