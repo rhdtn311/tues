@@ -117,13 +117,69 @@
             color: white;
         }
 
+        .daily-goals-container {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .day-of-week-container {
+            display: flex;
+            flex-direction: column;
+        }
+
     </style>
 </head>
 <body>
 <h1> 목표 메인 화면 </h1>
+<div>
+    <div id="monthly-goal-title" th:text="|${year}월의 목표|"></div>
+    <ul th:each=" monthlyGoal : ${monthlyGoals}">
+        <li style="display: inline-block" th:text="${monthlyGoal.name}"></li>
+        <span th:text="${monthlyGoal.goalType}"></span>
+        <span th:switch="${monthlyGoal.achieveType}">
+            <span th:case="${T(kong.tues.goal.AchieveType).COUNT}" th:text="|${monthlyGoal.goalCount} / ${monthlyGoal.goalCountQuota}|"></span>
+            <span th:case="${T(kong.tues.goal.AchieveType).TIME}" th:text="|${monthlyGoal.goalTime} / ${monthlyGoal.goalTimeQuota}|"></span>
+            <span th:case="${T(kong.tues.goal.AchieveType).WAKE}" th:text="|${monthlyGoal.wakeUpTime}|"></span>
+        </span>
+    </ul>
+</div>
 
     <button id="btn-monthly-modal">월간 목표 생성</button>
     <button id="btn-daily-modal"> 일간 목표 생성 </button>
+
+<div>
+    <div id="daily-goal-title">주간 목표</div>
+    <div class="daily-goals-container">
+        <div id="monday">
+            <div>MON</div>
+            <div th:if="${dailyGoals.get('MON')}" th:each="goal : ${dailyGoals.get('MON')}">
+                <span th:text="${goal.name}"></span>
+                <span th:text="${goal.achieveType}"></span>
+                <span th:switch="${goal.achieveType}">
+                    <span th:case="${T(kong.tues.goal.AchieveType).COUNT}" th:text="  |${goal.goalCount} '/' ${goal.goalCountQuota}|"></span>
+                    <span th:case="${T(kong.tues.goal.AchieveType).TIME}" th:text="  |${goal.goalTime} '/' ${goal.goalTimeQuota}|"></span>
+                    <span th:case="${T(kong.tues.goal.AchieveType).WAKE}" th:text="  ${goal.wakeUpTime}"></span>
+                </span>
+            </div>
+        </div>
+        <div>TUE</div>
+        <div class="day-of-week-container">WED
+            <div th:if="${dailyGoals.get('WED')}" th:each="goal : ${dailyGoals.get('WED')}">
+                <span th:text="${goal.name}"></span>
+                <span th:text="${goal.goalType}"></span>
+                <span th:switch="${goal.achieveType}">
+                        <span th:case="${T(kong.tues.goal.AchieveType).COUNT}" th:text="  |${goal.goalCount} / ${goal.goalCountQuota}|"></span>
+                        <span th:case="${T(kong.tues.goal.AchieveType).TIME}" th:text="  |${goal.goalTime} / ${goal.goalTimeQuota}|"></span>
+                        <span th:case="${T(kong.tues.goal.AchieveType).WAKE}" th:text="  ${goal.wakeUpTime}"></span>
+                    </span>
+            </div>
+        </div>
+        <div>THU</div>
+        <div>FRI</div>
+        <div>SAT</div>
+        <div>SUN</div>
+    </div>
+</div>
 
 <div id="monthly-modal" class="modal-overlay">
     <div class="modal-window">

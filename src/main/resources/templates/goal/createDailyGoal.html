@@ -71,7 +71,7 @@
                         "<input type='number' id='wakeUpMinutes' name='wakeUpMinutes' placeholder='minutes'>";
                 } else if (gubun == "COUNT"){
                     input += "<input type= 'number' id='goalCountQuota' name='goalCountQuota' placeholder='개수'>";
-                } else {
+                } else if (gubun == "TIME") {
                     input += "<input type= 'number' id='goalTimeQuota' name='goalTimeQuota' placeholder='시간'>";
                 }
                 document.getElementById("input_out").innerHTML = input;
@@ -143,7 +143,7 @@
             <p id="input_out"></p>
         </div>
         <button type="submit"> 화긴 </button>
-    </form>`
+    </form>
 </div>
 </body>
 </html>

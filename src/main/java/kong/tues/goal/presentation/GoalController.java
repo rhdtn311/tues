@@ -3,14 +3,19 @@ package kong.tues.goal.presentation;
 import kong.tues.commons.argumentresolver.Login;
 import kong.tues.goal.AchieveType;
 import kong.tues.goal.dailyGoal.application.DailyGoalCreateService;
+import kong.tues.goal.dailyGoal.application.DailyGoalFindService;
+import kong.tues.goal.dailyGoal.application.dto.DailyGoalMainResDto;
 import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalReqDto;
 import kong.tues.goal.dailyGoal.presentation.validator.DailyGoalReqDtoValidator;
 import kong.tues.goal.mothlyGoal.application.MonthlyGoalCreateService;
+import kong.tues.goal.mothlyGoal.application.MonthlyGoalFindService;
+import kong.tues.goal.mothlyGoal.dto.MonthlyGoalMainResDto;
 import kong.tues.goal.mothlyGoal.dto.MonthlyGoalReqDto;
 import kong.tues.goal.mothlyGoal.presentation.validator.MonthlyGoalReqDtoValidator;
 import kong.tues.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +36,8 @@ public class GoalController {
 
     private final MonthlyGoalCreateService monthlyGoalCreateService;
     private final DailyGoalCreateService dailyGoalCreateService;
+    private final MonthlyGoalFindService monthlyGoalFindService;
+    private final DailyGoalFindService dailyGoalFindService;
 
     private final MonthlyGoalReqDtoValidator memberJoinReqDtoValidator;
     private final DailyGoalReqDtoValidator dailyGoalReqDtoValidator;
@@ -47,9 +55,23 @@ public class GoalController {
             return "member/login";
         }
 
+        // 월간 목표 생성, 일간 목표 생성을 위한 데이터 (모달 창)
         model.addAttribute("year", LocalDate.now().getYear());
         model.addAttribute("month", LocalDate.now().getMonthValue());
         model.addAttribute("day", LocalDate.now().getDayOfMonth());
+
+        // 월간목표를 위한 데이터
+        List<MonthlyGoalMainResDto> monthlyGoals
+                = monthlyGoalFindService.findMonthlyGoals(member.getId(), LocalDate.now().getYear(), LocalDate.now().getMonthValue());
+
+        model.addAttribute("monthlyGoals", monthlyGoals);
+
+        // 주간 목표를 위한 데이터
+        Map<String, List<DailyGoalMainResDto>> dailyGoals = dailyGoalFindService.findWeeklyGoals(member.getId(), LocalDate.now().getYear(), LocalDate.now().getMonthValue(),
+                LocalDate.now().getDayOfMonth());
+        log.info("dailyGoals = {}" , dailyGoals);
+
+        model.addAttribute("dailyGoals", dailyGoals);
 
         return "goal/main";
     }
