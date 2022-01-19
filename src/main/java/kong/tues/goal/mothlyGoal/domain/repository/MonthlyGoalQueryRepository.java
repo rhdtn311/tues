@@ -6,6 +6,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import kong.tues.goal.GoalType;
 import kong.tues.goal.dailyGoal.application.dto.CreatedMonthlyGoalResDto;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
+import kong.tues.goal.mothlyGoal.dto.MonthlyGoalMainResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -49,6 +50,17 @@ public class MonthlyGoalQueryRepository {
                 .where(eqYear(year).and(eqMonth(month)).and(eqMemberId(memberId)))
                 .fetch();
     }
+
+    public List<MonthlyGoalMainResDto> findAllMonthlyGoals(Long memberId, int year, int month) {
+        return queryFactory.select(Projections.constructor(MonthlyGoalMainResDto.class,
+                monthlyGoal.name, monthlyGoal.goalType, monthlyGoal.achieveType,monthlyGoal.goalCountQuota, monthlyGoal.goalCount,
+                monthlyGoal.goalTimeQuota, monthlyGoal.goalTime, monthlyGoal.wakeUpTime, monthlyGoal.success))
+                .from(monthlyGoal)
+                .leftJoin(member).on(member.id.eq(memberId))
+                .where(eqYear(year).and(eqMonth(month)).and(eqMemberId(memberId)))
+                .fetch();
+    }
+
 
     public BooleanExpression eqYear(int year) {
         return monthlyGoal.date.year().eq(year);
