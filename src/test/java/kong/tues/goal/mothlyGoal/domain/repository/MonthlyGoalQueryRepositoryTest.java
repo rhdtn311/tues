@@ -2,6 +2,7 @@ package kong.tues.goal.mothlyGoal.domain.repository;
 
 import kong.tues.goal.AchieveType;
 import kong.tues.goal.GoalType;
+import kong.tues.goal.dailyGoal.application.dto.CreatedMonthlyGoalResDto;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
 import kong.tues.goal.mothlyGoal.dto.MonthlyGoalReqDto;
 import kong.tues.member.domain.Member;
@@ -67,7 +68,7 @@ class MonthlyGoalQueryRepositoryTest {
                 .goalCount(0)
                 .goalTimeQuota(null)
                 .goalTime(0)
-                .date(LocalDate.of(2022,1,14))
+                .date(LocalDate.of(2022, 1, 14))
                 .success(false)
                 .build();
 
@@ -81,7 +82,7 @@ class MonthlyGoalQueryRepositoryTest {
                 .goalCount(0)
                 .goalTimeQuota(100)
                 .goalTime(0)
-                .date(LocalDate.of(2022,2,14))
+                .date(LocalDate.of(2022, 2, 14))
                 .success(false)
                 .build();
 
@@ -95,7 +96,7 @@ class MonthlyGoalQueryRepositoryTest {
                 .goalCount(0)
                 .goalTimeQuota(100)
                 .goalTime(0)
-                .date(LocalDate.of(2022,2,14))
+                .date(LocalDate.of(2022, 2, 14))
                 .success(false)
                 .build();
 
@@ -109,7 +110,7 @@ class MonthlyGoalQueryRepositoryTest {
                 .goalCount(0)
                 .goalTimeQuota(100)
                 .goalTime(0)
-                .date(LocalDate.of(2022,1,14))
+                .date(LocalDate.of(2022, 1, 14))
                 .success(false)
                 .build();
 
@@ -182,5 +183,20 @@ class MonthlyGoalQueryRepositoryTest {
         // then
         assertThat(createdGoalTypes.size()).isEqualTo(1);
         assertThat(createdGoalTypes.get(0)).isEqualTo(GoalType.A);
+    }
+
+    @Test
+    @DisplayName("이미 생성된 MonthlyGoals를 조회")
+    void findCreatedMonthlyGoals() {
+
+        // given
+        int year = 2022;
+        int month = 2;
+
+        // when
+        List<CreatedMonthlyGoalResDto> createdMonthlyGoals = monthlyGoalQueryRepository.findCreatedMonthlyGoals(member1.getId(), year, month);
+
+        // then
+        assertThat(createdMonthlyGoals.size()).isEqualTo(2);
     }
 }

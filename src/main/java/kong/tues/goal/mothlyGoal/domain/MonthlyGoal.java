@@ -56,11 +56,11 @@ public class MonthlyGoal {
     @Column(name = "goalCount")
     private Integer goalCount;
 
-    @Min(0) @Max(24)
+    @Min(0) @Max(1000)
     @Column(name = "goalTimeQuota")
     private Integer goalTimeQuota;
 
-    @Min(0) @Max(24)
+    @Min(0) @Max(1000)
     @Column(name = "goalTime")
     private Integer goalTime;
 
