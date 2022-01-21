@@ -13,8 +13,6 @@ import java.util.List;
 @Service
 public class MonthlyGoalFindService {
 
-    private final MonthlyGoalRepository monthlyGoalRepository;
-
     private final MonthlyGoalQueryRepository monthlyGoalQueryRepository;
 
     @Transactional
