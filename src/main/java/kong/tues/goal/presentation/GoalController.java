@@ -2,11 +2,13 @@ package kong.tues.goal.presentation;
 
 import kong.tues.commons.argumentresolver.Login;
 import kong.tues.goal.AchieveType;
+import kong.tues.goal.dailyGoal.application.DailyGoalAchieveService;
 import kong.tues.goal.dailyGoal.application.DailyGoalCreateService;
 import kong.tues.goal.dailyGoal.application.DailyGoalFindService;
 import kong.tues.goal.dailyGoal.application.dto.DailyGoalMainResDto;
 import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalReqDto;
 import kong.tues.goal.dailyGoal.presentation.validator.DailyGoalReqDtoValidator;
+import kong.tues.goal.mothlyGoal.application.MonthlyGoalAchieveService;
 import kong.tues.goal.mothlyGoal.application.MonthlyGoalCreateService;
 import kong.tues.goal.mothlyGoal.application.MonthlyGoalFindService;
 import kong.tues.goal.mothlyGoal.dto.MonthlyGoalMainResDto;
@@ -24,7 +26,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,8 @@ public class GoalController {
     private final DailyGoalCreateService dailyGoalCreateService;
     private final MonthlyGoalFindService monthlyGoalFindService;
     private final DailyGoalFindService dailyGoalFindService;
+    private final DailyGoalAchieveService dailyGoalAchieveService;
+    private final MonthlyGoalAchieveService monthlyGoalAchieveService;
 
     private final MonthlyGoalReqDtoValidator memberJoinReqDtoValidator;
     private final DailyGoalReqDtoValidator dailyGoalReqDtoValidator;
@@ -49,7 +52,8 @@ public class GoalController {
     }
 
     @GetMapping("/main")
-    public String main(@Login Member member, Model model) {
+    public String main(@Login Member member, Model model,
+                       @RequestParam(value = "error") @Nullable String error) {
 
         if (member == null) {
             return "member/login";
@@ -69,9 +73,12 @@ public class GoalController {
         // 주간 목표를 위한 데이터
         Map<String, List<DailyGoalMainResDto>> dailyGoals = dailyGoalFindService.findWeeklyGoals(member.getId(), LocalDate.now().getYear(), LocalDate.now().getMonthValue(),
                 LocalDate.now().getDayOfMonth());
-        log.info("dailyGoals = {}" , dailyGoals);
+        log.info("dailyGoals = {}", dailyGoals);
 
         model.addAttribute("dailyGoals", dailyGoals);
+
+        //에러가 있을 경우
+        model.addAttribute("error", error);
 
         return "goal/main";
     }
@@ -164,6 +171,32 @@ public class GoalController {
         }
 
         dailyGoalCreateService.save(dailyGoalReqDto, member.getId());
+
+        return "redirect:/goal/main";
+    }
+
+    // 일간 목표 개수 추가
+    @PostMapping("/plus/daily")
+    public String successDailyGoal(@Login Member member, @RequestParam("dailyGoalId") Long dailyGoalId) {
+
+        if (member == null) {
+            return "member/login";
+        }
+
+        dailyGoalAchieveService.achieveDailyGoal(member.getId(), dailyGoalId);
+
+        return "redirect:/goal/main";
+    }
+
+    // 월간 목표 개수 추가
+    @PostMapping("/plus/monthly")
+    public String successMonthlyGoal(@Login Member member, @RequestParam("monthlyGoalId") Long monthlyGoalId) {
+
+        if (member == null) {
+            return "member/login";
+        }
+
+        monthlyGoalAchieveService.achieveMonthlyGoal(member.getId(), monthlyGoalId);
 
         return "redirect:/goal/main";
     }
