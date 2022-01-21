@@ -1,5 +1,8 @@
 package kong.tues.commons.exception;
 
+import kong.tues.goal.exception.GoalCountOverException;
+import kong.tues.goal.exception.GoalNotFoundException;
+import kong.tues.goal.exception.GoalTimeOverException;
 import kong.tues.goal.exception.GoalTypeDupException;
 import kong.tues.member.exception.LoginFailException;
 import kong.tues.member.exception.LoginIdExistException;
@@ -21,7 +24,10 @@ public enum ExceptionDetails {
     LOGIN_FAIL("0003", "아이디 또는 비밀번호를 확인해주세요.", LoginFailException.class),
     MEMBER_NOT_FOUND("0004", "존재하지 않는 회원입니다.", MemberNotFoundException.class),
 
-    GOAL_TYPE_DUPLICATION("0005", "같은 종류의 목표가 이미 존재합니다.", GoalTypeDupException.class);
+    GOAL_TYPE_DUPLICATION("0005", "같은 종류의 목표가 이미 존재합니다.", GoalTypeDupException.class),
+    GOAL_NOT_FOUND("0006", "목표를 찾을 수 없습니다.", GoalNotFoundException.class),
+    GOAL_TIME_OVER("0007", "지정된 시간을 넘길 수 없습니다. (일간 : 24시간, 월간 1000시간)", GoalTimeOverException.class),
+    GOAL_COUNT_OVER("0008", "지정된 개수를 넘길 수 없습니다. (일간, 월간 : 100000000개", GoalCountOverException.class);
 
     private final String code;
     private final String message;
