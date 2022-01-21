@@ -2,6 +2,8 @@ package kong.tues.goal.dailyGoal.domain;
 
 import kong.tues.goal.AchieveType;
 import kong.tues.goal.GoalType;
+import kong.tues.goal.exception.GoalCountOverException;
+import kong.tues.goal.exception.GoalTimeOverException;
 import kong.tues.member.domain.Member;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -77,5 +79,31 @@ public class DailyGoal {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_eid")
     private Member member;
+
+    public void plusGoalCount() {
+        if (this.goalCount >= 100000000) {
+            throw new GoalCountOverException();
+        }
+
+        this.goalCount++;
+        checkSuccess();
+    }
+
+    public void plusGoalTime() {
+        if (this.goalTime >= 24) {
+            throw new GoalTimeOverException();
+        }
+        this.goalTime++;
+        checkSuccess();
+    }
+
+    public void checkSuccess() {
+        switch (achieveType) {
+            case COUNT : success = goalCountQuota <= goalCount; break;
+            case TIME : success = goalTimeQuota <= goalTime; break;
+            case WAKE : success = wakeUpTime.isAfter(LocalTime.now()); break;
+            case BASIC : success = true;
+        }
+    }
 
 }

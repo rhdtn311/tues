@@ -14,6 +14,7 @@ import java.time.LocalTime;
 @Builder
 public class DailyGoalMainResDto {
 
+    private Long id;
     private String name;
     private GoalType goalType;
     private AchieveType achieveType;
@@ -22,4 +23,5 @@ public class DailyGoalMainResDto {
     private Integer goalTimeQuota;
     private Integer goalTime;
     private LocalTime wakeUpTime;
+    private Boolean success;
 }
