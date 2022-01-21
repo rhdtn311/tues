@@ -13,6 +13,7 @@ import java.time.LocalTime;
 @Builder
 public class MonthlyGoalMainResDto {
 
+    private Long id;
     private String name;
     private GoalType goalType;
     private AchieveType achieveType;

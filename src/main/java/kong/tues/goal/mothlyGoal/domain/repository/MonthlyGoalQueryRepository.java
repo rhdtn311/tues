@@ -27,7 +27,7 @@ public class MonthlyGoalQueryRepository {
         return !queryFactory.selectFrom(monthlyGoal)
                 .leftJoin(member).on(member.id.eq(monthlyGoalEntity.getMember().getId()))
                 .where(eqMonth(monthlyGoalEntity.getDate().getMonthValue())
-                        .and(eqGoalType(monthlyGoalEntity))
+                        .and(eqGoalType(monthlyGoalEntity.getGoalType()))
                         .and(eqYear(monthlyGoalEntity.getDate().getYear()))
                         .and(eqMemberId(monthlyGoalEntity.getMember().getId())))
                 .fetch()
@@ -53,7 +53,7 @@ public class MonthlyGoalQueryRepository {
 
     public List<MonthlyGoalMainResDto> findAllMonthlyGoals(Long memberId, int year, int month) {
         return queryFactory.select(Projections.constructor(MonthlyGoalMainResDto.class,
-                monthlyGoal.name, monthlyGoal.goalType, monthlyGoal.achieveType,monthlyGoal.goalCountQuota, monthlyGoal.goalCount,
+                monthlyGoal.id, monthlyGoal.name, monthlyGoal.goalType, monthlyGoal.achieveType,monthlyGoal.goalCountQuota, monthlyGoal.goalCount,
                 monthlyGoal.goalTimeQuota, monthlyGoal.goalTime, monthlyGoal.wakeUpTime, monthlyGoal.success))
                 .from(monthlyGoal)
                 .leftJoin(member).on(member.id.eq(memberId))
@@ -61,6 +61,12 @@ public class MonthlyGoalQueryRepository {
                 .fetch();
     }
 
+    public MonthlyGoal findMonthlyGoalByGoalType(Long memberId, int year, int month, GoalType goalType) {
+        return queryFactory.selectFrom(monthlyGoal)
+                .leftJoin(member).on(member.id.eq(memberId))
+                .where(eqYear(year).and(eqMonth(month)).and(eqGoalType(goalType)).and(eqMemberId(memberId)))
+                .fetchOne();
+    }
 
     public BooleanExpression eqYear(int year) {
         return monthlyGoal.date.year().eq(year);
@@ -70,11 +76,12 @@ public class MonthlyGoalQueryRepository {
         return monthlyGoal.date.month().eq(month);
     }
 
-    public BooleanExpression eqGoalType(MonthlyGoal monthlyGoalEntity) {
-        return monthlyGoal.goalType.eq(monthlyGoalEntity.getGoalType());
+    public BooleanExpression eqGoalType(GoalType goalType) {
+        return monthlyGoal.goalType.eq(goalType);
     }
 
     public BooleanExpression eqMemberId(Long memberId) {
         return monthlyGoal.member.id.eq(memberId);
     }
+
 }

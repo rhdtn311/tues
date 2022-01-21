@@ -2,6 +2,8 @@ package kong.tues.goal.mothlyGoal.domain;
 
 import kong.tues.goal.AchieveType;
 import kong.tues.goal.GoalType;
+import kong.tues.goal.exception.GoalCountOverException;
+import kong.tues.goal.exception.GoalTimeOverException;
 import kong.tues.member.domain.Member;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -75,4 +77,28 @@ public class MonthlyGoal {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public void plusGoalCount() {
+        if (goalCount >= 100000000) {
+            throw new GoalCountOverException();
+        }
+        this.goalCount++;
+        checkSuccess();
+    }
+
+    public void plusGoalTime() {
+        if (goalTime >= 1000) {
+            throw new GoalTimeOverException();
+        }
+        this.goalTime++;
+        checkSuccess();
+    }
+
+    public void checkSuccess() {
+        switch (achieveType) {
+            case COUNT : success = goalCountQuota <= goalCount; break;
+            case TIME : success = goalTimeQuota <= goalTime; break;
+            case BASIC : success = true;
+        }
+    }
 }
