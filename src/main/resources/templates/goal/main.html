@@ -127,6 +127,10 @@
             flex-direction: column;
         }
 
+        .goal-success {
+            color: cornflowerblue;
+        }
+
     </style>
 </head>
 <body>
@@ -134,6 +138,7 @@
 <div>
     <div id="monthly-goal-title" th:text="|${year}월의 목표|"></div>
     <ul th:each=" monthlyGoal : ${monthlyGoals}">
+        <button th:onclick="|plusMonthlyGoal('${monthlyGoal.id}')|">check</button>
         <li style="display: inline-block" th:text="${monthlyGoal.name}"></li>
         <span th:text="${monthlyGoal.goalType}"></span>
         <span th:switch="${monthlyGoal.achieveType}">
@@ -149,35 +154,109 @@
 
 <div>
     <div id="daily-goal-title">주간 목표</div>
+    <div>
+        <span th:if="${error}" th:text="${error}"></span>
+    </div>
     <div class="daily-goals-container">
         <div id="monday">
-            <div>MON</div>
+        <div>MON</div>
             <div th:if="${dailyGoals.get('MON')}" th:each="goal : ${dailyGoals.get('MON')}">
-                <span th:text="${goal.name}"></span>
-                <span th:text="${goal.achieveType}"></span>
-                <span th:switch="${goal.achieveType}">
-                    <span th:case="${T(kong.tues.goal.AchieveType).COUNT}" th:text="  |${goal.goalCount} '/' ${goal.goalCountQuota}|"></span>
-                    <span th:case="${T(kong.tues.goal.AchieveType).TIME}" th:text="  |${goal.goalTime} '/' ${goal.goalTimeQuota}|"></span>
-                    <span th:case="${T(kong.tues.goal.AchieveType).WAKE}" th:text="  ${goal.wakeUpTime}"></span>
-                </span>
-            </div>
-        </div>
-        <div>TUE</div>
-        <div class="day-of-week-container">WED
-            <div th:if="${dailyGoals.get('WED')}" th:each="goal : ${dailyGoals.get('WED')}">
-                <span th:text="${goal.name}"></span>
+                <button th:onclick="|plusDailyGoal('${goal.id}')|">check</button>
+                <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:text="${goal.name}"></span>
                 <span th:text="${goal.goalType}"></span>
                 <span th:switch="${goal.achieveType}">
-                        <span th:case="${T(kong.tues.goal.AchieveType).COUNT}" th:text="  |${goal.goalCount} / ${goal.goalCountQuota}|"></span>
-                        <span th:case="${T(kong.tues.goal.AchieveType).TIME}" th:text="  |${goal.goalTime} / ${goal.goalTimeQuota}|"></span>
-                        <span th:case="${T(kong.tues.goal.AchieveType).WAKE}" th:text="  ${goal.wakeUpTime}"></span>
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).COUNT}"
+                              th:text="  |${goal.goalCount} / ${goal.goalCountQuota}|"></span>
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).TIME}"
+                              th:text="  |${goal.goalTime} / ${goal.goalTimeQuota}|"></span>
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).WAKE}" th:text="  ${goal.wakeUpTime}"></span>
                     </span>
             </div>
         </div>
-        <div>THU</div>
-        <div>FRI</div>
-        <div>SAT</div>
-        <div>SUN</div>
+        <div>TUE
+            <div th:if="${dailyGoals.get('TUE')}" th:each="goal : ${dailyGoals.get('TUE')}">
+                <button th:onclick="|plusDailyGoal('${goal.id}')|">check</button>
+                <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:text="${goal.name}"></span>
+                <span th:text="${goal.goalType}"></span>
+                <span th:switch="${goal.achieveType}">
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).COUNT}"
+                              th:text="  |${goal.goalCount} / ${goal.goalCountQuota}|"></span>
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).TIME}"
+                              th:text="  |${goal.goalTime} / ${goal.goalTimeQuota}|"></span>
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).WAKE}" th:text="  ${goal.wakeUpTime}"></span>
+                    </span>
+            </div>
+        </div>
+        <div class="day-of-week-container">WED
+            <div th:if="${dailyGoals.get('WED')}" th:each="goal : ${dailyGoals.get('WED')}">
+                <button th:onclick="|plusDailyGoal('${goal.id}')|">check</button>
+                <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:text="${goal.name}"></span>
+                <span th:text="${goal.goalType}"></span>
+                <span th:switch="${goal.achieveType}">
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).COUNT}"
+                              th:text="  |${goal.goalCount} / ${goal.goalCountQuota}|"></span>
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).TIME}"
+                              th:text="  |${goal.goalTime} / ${goal.goalTimeQuota}|"></span>
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).WAKE}" th:text="  ${goal.wakeUpTime}"></span>
+                    </span>
+            </div>
+        </div>
+        <div>THU
+            <div th:if="${dailyGoals.get('THU')}" th:each="goal : ${dailyGoals.get('THU')}">
+                <button th:onclick="|plusDailyGoal('${goal.id}', '${year}', '${month}')|">check</button>
+                    <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:text="${goal.name}"></span>
+                    <span th:text="${goal.goalType}"></span>
+                    <span th:switch="${goal.achieveType}">
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).COUNT}"
+                          th:text="  |${goal.goalCount} / ${goal.goalCountQuota}|"></span>
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).TIME}"
+                          th:text="  |${goal.goalTime} / ${goal.goalTimeQuota}|"></span>
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).WAKE}" th:text="  ${goal.wakeUpTime}"></span>
+                    </span>
+            </div>
+        </div>
+        <div>FRI
+            <div th:if="${dailyGoals.get('FRI')}" th:each="goal : ${dailyGoals.get('FRI')}">
+                <button th:onclick="|plusDailyGoal('${goal.id}')|">check</button>
+                <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:text="${goal.name}"></span>
+                <span th:text="${goal.goalType}"></span>
+                <span th:switch="${goal.achieveType}">
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).COUNT}"
+                              th:text="  |${goal.goalCount} / ${goal.goalCountQuota}|"></span>
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).TIME}"
+                              th:text="  |${goal.goalTime} / ${goal.goalTimeQuota}|"></span>
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).WAKE}" th:text="  ${goal.wakeUpTime}"></span>
+                    </span>
+            </div>
+        </div>
+        <div>SAT
+            <div th:if="${dailyGoals.get('SAT')}" th:each="goal : ${dailyGoals.get('SAT')}">
+                <button th:onclick="|plusDailyGoal('${goal.id}')|">check</button>
+                <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:text="${goal.name}"></span>
+                <span th:text="${goal.goalType}"></span>
+                <span th:switch="${goal.achieveType}">
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).COUNT}"
+                              th:text="  |${goal.goalCount} / ${goal.goalCountQuota}|"></span>
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).TIME}"
+                              th:text="  |${goal.goalTime} / ${goal.goalTimeQuota}|"></span>
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).WAKE}" th:text="  ${goal.wakeUpTime}"></span>
+                    </span>
+            </div>
+        </div>
+        <div>SUN
+            <div th:if="${dailyGoals.get('SUN')}" th:each="goal : ${dailyGoals.get('SUN')}">
+                <button th:onclick="|plusDailyGoal('${goal.id}')|">check</button>
+                <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:text="${goal.name}"></span>
+                <span th:text="${goal.goalType}"></span>
+                <span th:switch="${goal.achieveType}">
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).COUNT}"
+                              th:text="  |${goal.goalCount} / ${goal.goalCountQuota}|"></span>
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).TIME}"
+                              th:text="  |${goal.goalTime} / ${goal.goalTimeQuota}|"></span>
+                        <span th:classappend="${goal.success ? 'goal-success' : 'goal-not-success'}" th:case="${T(kong.tues.goal.AchieveType).WAKE}" th:text="  ${goal.wakeUpTime}"></span>
+                    </span>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -294,5 +373,54 @@
             dailyModalOff()
         }
     })
+</script>
+<script th:inline="javascript">
+
+    function plusDailyGoal(id, year, month) {
+
+        var form = document.createElement("form");
+        form.setAttribute("method", "Post");
+        form.setAttribute("action", "/goal/plus/daily");
+
+        var plusButton = document.createElement("input");
+        plusButton.setAttribute("type", "hidden");
+        plusButton.setAttribute("name", "dailyGoalId");
+        plusButton.setAttribute("value", id);
+
+        var plusButton2 = document.createElement("input");
+        plusButton2.setAttribute("type", "hidden");
+        plusButton2.setAttribute("name", "year");
+        plusButton2.setAttribute("value", year);
+
+
+        var plusButton3 = document.createElement("input");
+        plusButton3.setAttribute("type", "hidden");
+        plusButton3.setAttribute("name", "month");
+        plusButton3.setAttribute("value", month);
+
+        form.appendChild(plusButton);
+        form.appendChild(plusButton2);
+        form.appendChild(plusButton3)
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function plusMonthlyGoal(id) {
+
+        var form = document.createElement("form");
+        form.setAttribute("method", "Post");
+        form.setAttribute("action", "/goal/plus/monthly");
+
+        var plusButton = document.createElement("input");
+        plusButton.setAttribute("type", "hidden");
+        plusButton.setAttribute("name", "monthlyGoalId");
+        plusButton.setAttribute("value", id);
+
+        form.appendChild(plusButton);
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+
 </script>
 </html>
