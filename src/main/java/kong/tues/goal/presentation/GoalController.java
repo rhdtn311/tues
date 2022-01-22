@@ -24,7 +24,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -53,11 +55,15 @@ public class GoalController {
 
     @GetMapping("/main")
     public String main(@Login Member member, Model model,
-                       @RequestParam(value = "error") @Nullable String error) {
+                       @RequestParam(value = "error") @Nullable String error,
+                       @RequestParam(value = "isDaily", defaultValue = "false") Boolean isDaily) {
 
         if (member == null) {
             return "member/login";
         }
+
+        //에러가 있을 경우
+        model.addAttribute("error", error);
 
         // 월간 목표 생성, 일간 목표 생성을 위한 데이터 (모달 창)
         model.addAttribute("year", LocalDate.now().getYear());
@@ -77,8 +83,12 @@ public class GoalController {
 
         model.addAttribute("dailyGoals", dailyGoals);
 
-        //에러가 있을 경우
-        model.addAttribute("error", error);
+        // isDaily
+        if (isDaily) {
+            model.addAttribute("dailyGoal", dailyGoals.get(LocalDate.now().getDayOfWeek().name().substring(0, 3)));
+            log.info("dailyGoal = {}" , dailyGoals.get(LocalDate.now().getDayOfWeek().name().substring(0, 3)));
+            return "/goal/main-daily";
+        }
 
         return "goal/main";
     }
@@ -177,26 +187,36 @@ public class GoalController {
 
     // 일간 목표 개수 추가
     @PostMapping("/plus/daily")
-    public String successDailyGoal(@Login Member member, @RequestParam("dailyGoalId") Long dailyGoalId) {
+    public String successDailyGoal(@Login Member member, @RequestParam("dailyGoalId") Long dailyGoalId,
+                                   @RequestParam(value = "isDaily", defaultValue = "false") Boolean isDaily,
+                                   RedirectAttributes redirectAttributes) {
 
         if (member == null) {
             return "member/login";
         }
 
         dailyGoalAchieveService.achieveDailyGoal(member.getId(), dailyGoalId);
+        if (isDaily) {
+            redirectAttributes.addAttribute("isDaily", true);
+        }
 
         return "redirect:/goal/main";
     }
 
     // 월간 목표 개수 추가
     @PostMapping("/plus/monthly")
-    public String successMonthlyGoal(@Login Member member, @RequestParam("monthlyGoalId") Long monthlyGoalId) {
+    public String successMonthlyGoal(@Login Member member, @RequestParam("monthlyGoalId") Long monthlyGoalId,
+                                     @RequestParam(value = "isDaily", defaultValue = "false") Boolean isDaily,
+                                     RedirectAttributes redirectAttributes) {
 
         if (member == null) {
             return "member/login";
         }
 
         monthlyGoalAchieveService.achieveMonthlyGoal(member.getId(), monthlyGoalId);
+        if (isDaily) {
+            redirectAttributes.addAttribute("isDaily", true);
+        }
 
         return "redirect:/goal/main";
     }
