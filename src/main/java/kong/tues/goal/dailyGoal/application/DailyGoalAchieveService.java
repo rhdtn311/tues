@@ -16,4 +16,10 @@ public class DailyGoalAchieveService {
 
         dailyGoalManager.successGoal(memberId, dailyGoalId);
     }
+
+    @Transactional
+    public void failDailyGoal(Long memberId, Long dailyGoalId) {
+
+        dailyGoalManager.failGoal(memberId, dailyGoalId);
+    }
 }

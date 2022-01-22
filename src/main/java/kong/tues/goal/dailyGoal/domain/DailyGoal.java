@@ -2,8 +2,8 @@ package kong.tues.goal.dailyGoal.domain;
 
 import kong.tues.goal.AchieveType;
 import kong.tues.goal.GoalType;
-import kong.tues.goal.exception.GoalCountOverException;
-import kong.tues.goal.exception.GoalTimeOverException;
+import kong.tues.goal.exception.GoalCountOutOfRangeException;
+import kong.tues.goal.exception.GoalTimeOutOfRangeException;
 import kong.tues.member.domain.Member;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -82,18 +82,36 @@ public class DailyGoal {
 
     public void plusGoalCount() {
         if (this.goalCount >= 100000000) {
-            throw new GoalCountOverException();
+            throw new GoalCountOutOfRangeException();
         }
 
-        this.goalCount++;
+        goalCount++;
         checkSuccess();
     }
 
     public void plusGoalTime() {
-        if (this.goalTime >= 24) {
-            throw new GoalTimeOverException();
+        if (goalTime >= 24) {
+            throw new GoalTimeOutOfRangeException();
         }
-        this.goalTime++;
+        goalTime++;
+        checkSuccess();
+    }
+
+    public void minusGoalCount() {
+        if (goalCount <= 0) {
+            throw new GoalCountOutOfRangeException();
+        }
+
+        goalCount--;
+        checkSuccess();
+    }
+
+    public void minusGoalTime() {
+        if (goalTime <= 0) {
+            throw new GoalTimeOutOfRangeException();
+        }
+
+        goalTime--;
         checkSuccess();
     }
 
@@ -102,7 +120,7 @@ public class DailyGoal {
             case COUNT : success = goalCountQuota <= goalCount; break;
             case TIME : success = goalTimeQuota <= goalTime; break;
             case WAKE : success = wakeUpTime.isAfter(LocalTime.now()); break;
-            case BASIC : success = true;
+            case BASIC : success = !success;
         }
     }
 

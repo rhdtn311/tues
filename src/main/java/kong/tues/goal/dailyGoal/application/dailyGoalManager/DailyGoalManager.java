@@ -48,4 +48,30 @@ public class DailyGoalManager implements GoalManager {
             }
         }
     }
+
+    @Override
+    public void failGoal(Long memberId, Long goalId) {
+        DailyGoal dailyGoal = dailyGoalRepository.findById(goalId).orElseThrow(GoalNotFoundException::new);
+        MonthlyGoal monthlyGoal = monthlyGoalQueryRepository
+                .findMonthlyGoalByGoalType(memberId, LocalDate.now().getYear(), LocalDate.now().getMonthValue(), dailyGoal.getGoalType());
+
+        if (dailyGoal.getAchieveType() == AchieveType.COUNT) {
+            dailyGoal.minusGoalCount();
+            if (monthlyGoal != null && dailyGoal.getAchieveType() == monthlyGoal.getAchieveType()) {
+                monthlyGoal.minusGoalCount();
+            }
+        } else if (dailyGoal.getAchieveType() == AchieveType.TIME) {
+            dailyGoal.minusGoalTime();
+            if (monthlyGoal != null && dailyGoal.getAchieveType() == monthlyGoal.getAchieveType()) {
+                monthlyGoal.minusGoalTime();
+            }
+        } else if (dailyGoal.getAchieveType() == AchieveType.WAKE) {
+            dailyGoal.checkSuccess();
+        } else if (dailyGoal.getAchieveType() == AchieveType.BASIC) {
+            dailyGoal.checkSuccess();
+            if (monthlyGoal != null && dailyGoal.getAchieveType() == monthlyGoal.getAchieveType()) {
+                monthlyGoal.checkSuccess();
+            }
+        }
+    }
 }

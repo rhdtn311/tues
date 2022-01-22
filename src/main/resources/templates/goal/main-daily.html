@@ -222,14 +222,27 @@
 <div>
     <div id="monthly-goal-title" th:text="|${year}월의 목표|"></div>
     <ul th:each=" monthlyGoal : ${monthlyGoals}">
-        <button th:onclick="|plusMonthlyGoal('${monthlyGoal.id}')|">check</button>
-        <li style="display: inline-block" th:text="${monthlyGoal.name}"></li>
+        <li th:classappend="${monthlyGoal.success} ? 'goal-success' : 'goal-not-success'" style="display: inline-block" th:text="${monthlyGoal.name}"></li>
         <span th:text="${monthlyGoal.goalType}"></span>
         <span th:switch="${monthlyGoal.achieveType}">
-            <span th:case="${T(kong.tues.goal.AchieveType).COUNT}" th:text="|${monthlyGoal.goalCount} / ${monthlyGoal.goalCountQuota}|"></span>
-            <span th:case="${T(kong.tues.goal.AchieveType).TIME}" th:text="|${monthlyGoal.goalTime} / ${monthlyGoal.goalTimeQuota}|"></span>
-            <span th:case="${T(kong.tues.goal.AchieveType).WAKE}" th:text="|${monthlyGoal.wakeUpTime}|"></span>
-        </span>
+            <div style="display: inline-block" th:case="${T(kong.tues.goal.AchieveType).COUNT}">
+                <span th:text="|${monthlyGoal.goalCount} / ${monthlyGoal.goalCountQuota}|"> </span>
+                <button th:onclick="|plusMonthlyGoal('${monthlyGoal.id}')|">plus</button>
+                <button th:onclick="|minusMonthlyGoal('${monthlyGoal.id}')|">minus</button>
+            </div>
+            <div style="display:inline-block;" th:case="${T(kong.tues.goal.AchieveType).TIME}">
+                <span th:text="|${monthlyGoal.goalTime} / ${monthlyGoal.goalTimeQuota}|"></span>
+                <button th:onclick="|plusMonthlyGoal('${monthlyGoal.id}')|">plus</button>
+                <button th:onclick="|minusMonthlyGoal('${monthlyGoal.id}')|">minus</button>
+            </div>
+            <div style="display:inline-block;" th:case="${T(kong.tues.goal.AchieveType).WAKE}">
+            <span th:text="|${monthlyGoal.wakeUpTime}|"></span>
+                <button th:onclick="|plusMonthlyGoal('${monthlyGoal.id}')|">check</button>
+            </div>
+            <div style="display:inline-block;" th:case="${T(kong.tues.goal.AchieveType).BASIC}">
+                <button th:if="${monthlyGoal.success == true}" th:onclick="|plusMonthlyGoal('${monthlyGoal.id}')|">check</button>
+                <button th:if="${monthlyGoal.success == false}" th:onclick="|minusMonthlyGoal('${monthlyGoal.id}')|">check</button>
+            </div>
     </ul>
 </div>
 
@@ -249,18 +262,36 @@
         </div>
     </div>
     <!-- 토글 버튼 끝 -->
+    <!--                <div style="display: inline-block" th:case="${T(kong.tues.goal.AchieveType).COUNT}">
+            <span th:text="|${monthlyGoal.goalCount} / ${monthlyGoal.goalCountQuota}|"> </span>
+            <button th:onclick="|plusMonthlyGoal('${monthlyGoal.id}')|">plus</button>
+            <button th:onclick="|minusMonthlyGoal('${monthlyGoal.id}')|">minus</button>
+        </div>-->
     <div>
         <span th:if="${error}" th:text="${error}"></span>
     </div>
     <div class="daily-goal-container" style="margin-top: 30px">
         <div th:each="goal : ${dailyGoal}">
-            <button th:onclick="|plusDailyGoal('${goal.id}')|">check</button>
             <span th:text="${goal.name}  "></span>
             <span th:switch="${goal.achieveType}">
-                <span th:case="${T(kong.tues.goal.AchieveType).COUNT}" th:utext="|(${goal.goalCount} / ${goal.goalCountQuota}) ${goal.achieveType}|"></span>
-                <span th:case="${T(kong.tues.goal.AchieveType).TIME}" th:utext="|    (${goal.goalTime} / ${goal.goalTimeQuota})|"></span>
-                <span th:case="${T(kong.tues.goal.AchieveType).WAKE}" th:text="|  ${goal.goalType}|"></span>
-                <span th:case="${T(kong.tues.goal.AchieveType).BASIC}" th:text="|  ${goal.goalType}|"></span>
+                <span th:case="${T(kong.tues.goal.AchieveType).COUNT}">
+                    <span th:utext="|(${goal.goalCount} / ${goal.goalCountQuota}) ${goal.achieveType}|"></span>
+                    <button th:onclick="|plusDailyGoal('${goal.id}')|">plus</button>
+                    <button th:onclick="|minusDailyGoal('${goal.id}')|">minus</button>
+                </span>
+                <span th:case="${T(kong.tues.goal.AchieveType).TIME}">
+                    <span th:utext="|(${goal.goalTime} / ${goal.goalTimeQuota})|"></span>
+                    <button th:onclick="|plusDailyGoal('${goal.id}')|">plus</button>
+                    <button th:onclick="|minusDailyGoal('${goal.id}')|">minus</button>
+                </span>
+                <span th:case="${T(kong.tues.goal.AchieveType).WAKE}">
+                    <span th:text="|${goal.goalType}|"></span>
+                    <button th:onclick="|plusDailyGoal('${goal.id}')|">plus</button>
+                </span>
+                <span th:case="${T(kong.tues.goal.AchieveType).BASIC}">
+                    <span th:text="|${goal.goalType}|"></span>
+                    <button th:onclick="|plusDailyGoal('${goal.id}')|">check</button>
+                </span>
             </span>
         </div>
     </div>
@@ -423,6 +454,50 @@
         plusButton.setAttribute("value", id);
 
         form.appendChild(plusButton);
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function minusDailyGoal(id, year, month) {
+
+        var form = document.createElement("form");
+        form.setAttribute("method", "Post");
+        form.setAttribute("action", "/goal/minus/daily?isDaily=true");
+
+        var minusInput1 = document.createElement("input");
+        minusInput1.setAttribute("type", "hidden");
+        minusInput1.setAttribute("name", "dailyGoalId");
+        minusInput1.setAttribute("value", id);
+
+        var minusInput2 = document.createElement("input");
+        minusInput2.setAttribute("type", "hidden");
+        minusInput2.setAttribute("name", "year");
+        minusInput2.setAttribute("value", year);
+
+        var minusInput3 = document.createElement("input");
+        minusInput3.setAttribute("type", "hidden");
+        minusInput3.setAttribute("name", "month");
+        minusInput3.setAttribute("value", month);
+
+        form.appendChild(minusInput1);
+        form.appendChild(minusInput2);
+        form.appendChild(minusInput3)
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function minusMonthlyGoal(id) {
+
+        var form = document.createElement("form");
+        form.setAttribute("method", "Post");
+        form.setAttribute("action", "/goal/minus/monthly?isDaily=true");
+
+        var minusInput = document.createElement("input");
+        minusInput.setAttribute("type", "hidden");
+        minusInput.setAttribute("name", "monthlyGoalId");
+        minusInput.setAttribute("value", id);
+
+        form.appendChild(minusInput);
         document.body.appendChild(form);
         form.submit();
     }

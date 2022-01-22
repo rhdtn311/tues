@@ -185,6 +185,24 @@ public class GoalController {
         return "redirect:/goal/main";
     }
 
+    // 월간 목표 개수 추가
+    @PostMapping("/plus/monthly")
+    public String successMonthlyGoal(@Login Member member, @RequestParam("monthlyGoalId") Long monthlyGoalId,
+                                     @RequestParam(value = "isDaily", defaultValue = "false") Boolean isDaily,
+                                     RedirectAttributes redirectAttributes) {
+
+        if (member == null) {
+            return "member/login";
+        }
+
+        monthlyGoalAchieveService.achieveMonthlyGoal(member.getId(), monthlyGoalId);
+        if (isDaily) {
+            redirectAttributes.addAttribute("isDaily", true);
+        }
+
+        return "redirect:/goal/main";
+    }
+
     // 일간 목표 개수 추가
     @PostMapping("/plus/daily")
     public String successDailyGoal(@Login Member member, @RequestParam("dailyGoalId") Long dailyGoalId,
@@ -203,17 +221,36 @@ public class GoalController {
         return "redirect:/goal/main";
     }
 
-    // 월간 목표 개수 추가
-    @PostMapping("/plus/monthly")
-    public String successMonthlyGoal(@Login Member member, @RequestParam("monthlyGoalId") Long monthlyGoalId,
-                                     @RequestParam(value = "isDaily", defaultValue = "false") Boolean isDaily,
-                                     RedirectAttributes redirectAttributes) {
 
+    // 월간 목표 개수 감소
+    @PostMapping("minus/monthly")
+    public String failMonthlyGoal(@Login Member member,
+                                @RequestParam("monthlyGoalId") Long monthlyGoalId,
+                                @RequestParam(value = "isDaily", defaultValue = "false") Boolean isDaily,
+                                RedirectAttributes redirectAttributes) {
         if (member == null) {
             return "member/login";
         }
 
-        monthlyGoalAchieveService.achieveMonthlyGoal(member.getId(), monthlyGoalId);
+        monthlyGoalAchieveService.failDailyGoal(member.getId(), monthlyGoalId);
+        if (isDaily) {
+            redirectAttributes.addAttribute("isDaily", true);
+        }
+
+        return "redirect:/goal/main";
+    }
+
+    // 일간 목표 개수 감소
+    @PostMapping("minus/daily")
+    public String failDailyGoal(@Login Member member,
+                                @RequestParam("dailyGoalId") Long dailyGoalId,
+                                @RequestParam(value = "isDaily", defaultValue = "false") Boolean isDaily,
+                                RedirectAttributes redirectAttributes) {
+        if (member == null) {
+            return "member/login";
+        }
+
+        dailyGoalAchieveService.failDailyGoal(member.getId(), dailyGoalId);
         if (isDaily) {
             redirectAttributes.addAttribute("isDaily", true);
         }

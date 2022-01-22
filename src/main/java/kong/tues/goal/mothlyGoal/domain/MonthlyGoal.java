@@ -2,8 +2,8 @@ package kong.tues.goal.mothlyGoal.domain;
 
 import kong.tues.goal.AchieveType;
 import kong.tues.goal.GoalType;
-import kong.tues.goal.exception.GoalCountOverException;
-import kong.tues.goal.exception.GoalTimeOverException;
+import kong.tues.goal.exception.GoalCountOutOfRangeException;
+import kong.tues.goal.exception.GoalTimeOutOfRangeException;
 import kong.tues.member.domain.Member;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -80,7 +80,7 @@ public class MonthlyGoal {
 
     public void plusGoalCount() {
         if (goalCount >= 100000000) {
-            throw new GoalCountOverException();
+            throw new GoalCountOutOfRangeException();
         }
         this.goalCount++;
         checkSuccess();
@@ -88,9 +88,25 @@ public class MonthlyGoal {
 
     public void plusGoalTime() {
         if (goalTime >= 1000) {
-            throw new GoalTimeOverException();
+            throw new GoalTimeOutOfRangeException();
         }
         this.goalTime++;
+        checkSuccess();
+    }
+
+    public void minusGoalCount() {
+        if (goalCount <= 0) {
+            throw new GoalCountOutOfRangeException();
+        }
+        this.goalCount--;
+        checkSuccess();
+    }
+
+    public void minusGoalTime() {
+        if (goalTime <= 0) {
+            throw new GoalTimeOutOfRangeException();
+        }
+        this.goalTime--;
         checkSuccess();
     }
 
@@ -98,7 +114,7 @@ public class MonthlyGoal {
         switch (achieveType) {
             case COUNT : success = goalCountQuota <= goalCount; break;
             case TIME : success = goalTimeQuota <= goalTime; break;
-            case BASIC : success = true;
+            case BASIC : success = !success;
         }
     }
 }
