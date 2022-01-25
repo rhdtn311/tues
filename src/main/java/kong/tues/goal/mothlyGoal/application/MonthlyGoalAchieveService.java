@@ -1,6 +1,7 @@
 package kong.tues.goal.mothlyGoal.application;
 
 import kong.tues.goal.mothlyGoal.application.monthlyGoalManager.MonthlyGoalManager;
+import kong.tues.goal.mothlyGoal.dto.MonthlyGoalAchieveResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,14 +13,14 @@ public class MonthlyGoalAchieveService {
     private final MonthlyGoalManager monthlyGoalManager;
 
     @Transactional
-    public void achieveMonthlyGoal(Long memberId, Long monthlyGoalId) {
+    public MonthlyGoalAchieveResDto achieveMonthlyGoal(Long memberId, Long monthlyGoalId) {
 
-        monthlyGoalManager.successGoal(memberId, monthlyGoalId);
+        return monthlyGoalManager.successGoal(memberId, monthlyGoalId);
     }
 
     @Transactional
-    public void failDailyGoal(Long memberId, Long dailyGoalId) {
+    public MonthlyGoalAchieveResDto failMonthlyGoal(Long memberId, Long monthlyGoalId) {
 
-        monthlyGoalManager.failGoal(memberId, dailyGoalId);
+        return monthlyGoalManager.failGoal(memberId, monthlyGoalId);
     }
 }

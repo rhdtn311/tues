@@ -6,13 +6,20 @@ import kong.tues.goal.dailyGoal.application.DailyGoalAchieveService;
 import kong.tues.goal.dailyGoal.application.DailyGoalCreateService;
 import kong.tues.goal.dailyGoal.application.DailyGoalFindService;
 import kong.tues.goal.dailyGoal.application.dto.DailyGoalMainResDto;
+import kong.tues.goal.dailyGoal.domain.DailyGoal;
+import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalAchieveReqDto;
+import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalAchieveResDto;
 import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalReqDto;
 import kong.tues.goal.dailyGoal.presentation.validator.DailyGoalReqDtoValidator;
 import kong.tues.goal.mothlyGoal.application.MonthlyGoalAchieveService;
 import kong.tues.goal.mothlyGoal.application.MonthlyGoalCreateService;
 import kong.tues.goal.mothlyGoal.application.MonthlyGoalFindService;
+import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
+import kong.tues.goal.mothlyGoal.domain.repository.MonthlyGoalRepository;
+import kong.tues.goal.mothlyGoal.dto.MonthlyGoalAchieveResDto;
 import kong.tues.goal.mothlyGoal.dto.MonthlyGoalMainResDto;
 import kong.tues.goal.mothlyGoal.dto.MonthlyGoalReqDto;
+import kong.tues.goal.mothlyGoal.dto.MonthlyGoalAchieveReqDto;
 import kong.tues.goal.mothlyGoal.presentation.validator.MonthlyGoalReqDtoValidator;
 import kong.tues.member.domain.Member;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +33,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -79,9 +85,11 @@ public class GoalController {
         // 주간 목표를 위한 데이터
         Map<String, List<DailyGoalMainResDto>> dailyGoals = dailyGoalFindService.findWeeklyGoals(member.getId(), LocalDate.now().getYear(), LocalDate.now().getMonthValue(),
                 LocalDate.now().getDayOfMonth());
-        log.info("dailyGoals = {}", dailyGoals);
 
         model.addAttribute("dailyGoals", dailyGoals);
+
+        // ajax
+        model.addAttribute("monthlyGoal", new MonthlyGoal());
 
         // isDaily
         if (isDaily) {
@@ -186,75 +194,152 @@ public class GoalController {
     }
 
     // 월간 목표 개수 추가
-    @PostMapping("/plus/monthly")
-    public String successMonthlyGoal(@Login Member member, @RequestParam("monthlyGoalId") Long monthlyGoalId,
-                                     @RequestParam(value = "isDaily", defaultValue = "false") Boolean isDaily,
-                                     RedirectAttributes redirectAttributes) {
+    @PostMapping("/ajax/plus/monthly")
+    public String successMonthlyGoal2(@Login Member member,
+                                      @ModelAttribute @Validated MonthlyGoalAchieveReqDto monthlyGoalAchieveReqDto,
+                                      Model model) {
+
+        log.info("monthlyGoalId = {}" , monthlyGoalAchieveReqDto.getMonthlyGoalId());
+        if (member == null) {
+            return "member/login";
+        }
+
+        MonthlyGoal monthlyGoal = dailyGoalAchieveService.findMonthlyGoalIdByGoalType(member.getId(), monthlyGoalAchieveReqDto.getGoalType());
+        if (monthlyGoal == null || monthlyGoal.getAchieveType() != monthlyGoalAchieveReqDto.getAchieveType()) {
+            return "/goal/main :: #hidden";
+        }
+
+        MonthlyGoalAchieveResDto monthlyGoalAchieveResDto;
+        if (monthlyGoalAchieveReqDto.getMonthlyGoalId() == 0L) {
+            monthlyGoalAchieveResDto = monthlyGoalAchieveService.achieveMonthlyGoal(member.getId(), monthlyGoal.getId());
+        } else {
+            monthlyGoalAchieveResDto
+                    = monthlyGoalAchieveService.achieveMonthlyGoal(member.getId(), monthlyGoalAchieveReqDto.getMonthlyGoalId());
+        }
+
+        model.addAttribute("monthlyGoal", monthlyGoalAchieveResDto);
+
+        if (monthlyGoalAchieveReqDto.getAchieveType() == AchieveType.COUNT) {
+            log.info("monthly->count");
+            return "/goal/main :: .monthly-count";
+        } else if (monthlyGoalAchieveReqDto.getAchieveType() == AchieveType.TIME) {
+            return "/goal/main :: .monthly-time";
+        } else if (monthlyGoalAchieveReqDto.getAchieveType() == AchieveType.WAKE) {
+            return "/goal/main :: .monthly-wake";
+        } else if (monthlyGoalAchieveReqDto.getAchieveType() == AchieveType.BASIC) {
+            return "/goal/main :: .monthly-basic";
+        }
+
+        return "/goal/main";
+    }
+
+    // 월간 목표 개수 감소
+    @PostMapping("/ajax/minus/monthly")
+    public String failMonthlyGoal2(@Login Member member,
+                                   @ModelAttribute @Validated MonthlyGoalAchieveReqDto monthlyGoalAchieveReqDto,
+                                   Model model) {
 
         if (member == null) {
             return "member/login";
         }
 
-        monthlyGoalAchieveService.achieveMonthlyGoal(member.getId(), monthlyGoalId);
-        if (isDaily) {
-            redirectAttributes.addAttribute("isDaily", true);
+        MonthlyGoal monthlyGoal = dailyGoalAchieveService.findMonthlyGoalIdByGoalType(member.getId(), monthlyGoalAchieveReqDto.getGoalType());
+        if (monthlyGoal == null || monthlyGoal.getAchieveType() != monthlyGoalAchieveReqDto.getAchieveType()) {
+            return "/goal/main :: #hidden";
         }
 
-        return "redirect:/goal/main";
+        MonthlyGoalAchieveResDto monthlyGoalAchieveResDto;
+        if (monthlyGoalAchieveReqDto.getMonthlyGoalId() == 0L) {
+            monthlyGoalAchieveResDto = monthlyGoalAchieveService.failMonthlyGoal(member.getId(), monthlyGoal.getId());
+        } else {
+            monthlyGoalAchieveResDto
+                    = monthlyGoalAchieveService.failMonthlyGoal(member.getId(), monthlyGoalAchieveReqDto.getMonthlyGoalId());
+        }
+
+        model.addAttribute("monthlyGoal", monthlyGoalAchieveResDto);
+
+        if (monthlyGoalAchieveReqDto.getAchieveType() == AchieveType.COUNT) {
+            return "/goal/main :: .monthly-count";
+        } else if (monthlyGoalAchieveReqDto.getAchieveType() == AchieveType.TIME) {
+            return "/goal/main :: .monthly-time";
+        } else if (monthlyGoalAchieveReqDto.getAchieveType() == AchieveType.WAKE) {
+            return "/goal/main :: .monthly-wake";
+        } else if (monthlyGoalAchieveReqDto.getAchieveType() == AchieveType.BASIC) {
+            return "/goal/main :: .monthly-basic";
+        }
+
+        return "/goal/main";
     }
 
     // 일간 목표 개수 추가
-    @PostMapping("/plus/daily")
-    public String successDailyGoal(@Login Member member, @RequestParam("dailyGoalId") Long dailyGoalId,
-                                   @RequestParam(value = "isDaily", defaultValue = "false") Boolean isDaily,
-                                   RedirectAttributes redirectAttributes) {
+    @PostMapping("/ajax/plus/daily")
+    public String successDailyGoal2(@Login Member member,
+                                    @ModelAttribute DailyGoalAchieveReqDto dailyGoalAchieveReqDto,
+                                    Model model) {
 
         if (member == null) {
             return "member/login";
         }
 
-        dailyGoalAchieveService.achieveDailyGoal(member.getId(), dailyGoalId);
-        if (isDaily) {
-            redirectAttributes.addAttribute("isDaily", true);
+        Map<String, Object> dailyGoalAndMonthlyGoalMap
+                = dailyGoalAchieveService.achieveDailyGoal(member.getId(), dailyGoalAchieveReqDto.getDailyGoalId());
+
+        DailyGoalAchieveResDto dailyGoalAchieveResDto = (DailyGoalAchieveResDto) dailyGoalAndMonthlyGoalMap.get("dailyGoal");
+        model.addAttribute("goal", dailyGoalAchieveResDto);
+
+        if (dailyGoalAndMonthlyGoalMap.containsKey("monthlyGoal")) {
+            MonthlyGoalAchieveResDto monthlyGoalAchieveResDto = (MonthlyGoalAchieveResDto) dailyGoalAndMonthlyGoalMap.get("monthlyGoal");
+            model.addAttribute("monthlyGoal", monthlyGoalAchieveResDto);
+        } else {
+            model.addAttribute("monthlyGoal", new MonthlyGoal());
         }
 
-        return "redirect:/goal/main";
-    }
-
-
-    // 월간 목표 개수 감소
-    @PostMapping("minus/monthly")
-    public String failMonthlyGoal(@Login Member member,
-                                @RequestParam("monthlyGoalId") Long monthlyGoalId,
-                                @RequestParam(value = "isDaily", defaultValue = "false") Boolean isDaily,
-                                RedirectAttributes redirectAttributes) {
-        if (member == null) {
-            return "member/login";
+        if (dailyGoalAchieveReqDto.getAchieveType() == AchieveType.COUNT) {
+            return "/goal/main :: .daily-count-" + dailyGoalAchieveReqDto.getWeek();
+        } else if (dailyGoalAchieveReqDto.getAchieveType() == AchieveType.TIME) {
+            return "/goal/main :: .daily-time-" + dailyGoalAchieveReqDto.getWeek();
+        } else if (dailyGoalAchieveReqDto.getAchieveType() == AchieveType.WAKE) {
+            return "/goal/main :: .daily-wake-" + dailyGoalAchieveReqDto.getWeek();
+        } else if (dailyGoalAchieveReqDto.getAchieveType() == AchieveType.BASIC) {
+            return "/goal/main :: .daily-basic-" + dailyGoalAchieveReqDto.getWeek();
         }
 
-        monthlyGoalAchieveService.failDailyGoal(member.getId(), monthlyGoalId);
-        if (isDaily) {
-            redirectAttributes.addAttribute("isDaily", true);
-        }
-
-        return "redirect:/goal/main";
+        return "/goal/main";
     }
 
     // 일간 목표 개수 감소
-    @PostMapping("minus/daily")
-    public String failDailyGoal(@Login Member member,
-                                @RequestParam("dailyGoalId") Long dailyGoalId,
-                                @RequestParam(value = "isDaily", defaultValue = "false") Boolean isDaily,
-                                RedirectAttributes redirectAttributes) {
+    @PostMapping("/ajax/minus/daily")
+    public String failDailyGoal2(@Login Member member,
+                                    @ModelAttribute DailyGoalAchieveReqDto dailyGoalAchieveReqDto,
+                                    Model model) {
+
         if (member == null) {
             return "member/login";
         }
 
-        dailyGoalAchieveService.failDailyGoal(member.getId(), dailyGoalId);
-        if (isDaily) {
-            redirectAttributes.addAttribute("isDaily", true);
+        Map<String, Object> dailyGoalAndMonthlyGoalMap
+                = dailyGoalAchieveService.failDailyGoal(member.getId(), dailyGoalAchieveReqDto.getDailyGoalId());
+
+        DailyGoalAchieveResDto dailyGoalAchieveResDto = (DailyGoalAchieveResDto) dailyGoalAndMonthlyGoalMap.get("dailyGoal");
+        model.addAttribute("goal", dailyGoalAchieveResDto);
+
+        if (dailyGoalAndMonthlyGoalMap.containsKey("monthlyGoal")) {
+            MonthlyGoalAchieveResDto monthlyGoalAchieveResDto = (MonthlyGoalAchieveResDto) dailyGoalAndMonthlyGoalMap.get("monthlyGoal");
+            model.addAttribute("monthlyGoal", monthlyGoalAchieveResDto);
+        } else {
+            model.addAttribute("monthlyGoal", new MonthlyGoal());
         }
 
-        return "redirect:/goal/main";
+        if (dailyGoalAchieveReqDto.getAchieveType() == AchieveType.COUNT) {
+            return "/goal/main :: .daily-count-" + dailyGoalAchieveReqDto.getWeek();
+        } else if (dailyGoalAchieveReqDto.getAchieveType() == AchieveType.TIME) {
+            return "/goal/main :: .daily-time-" + dailyGoalAchieveReqDto.getWeek();
+        } else if (dailyGoalAchieveReqDto.getAchieveType() == AchieveType.WAKE) {
+            return "/goal/main :: .daily-wake-" + dailyGoalAchieveReqDto.getWeek();
+        } else if (dailyGoalAchieveReqDto.getAchieveType() == AchieveType.BASIC) {
+            return "/goal/main :: .daily-basic-" + dailyGoalAchieveReqDto.getWeek();
+        }
+
+        return "/goal/main";
     }
 }

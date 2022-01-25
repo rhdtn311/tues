@@ -19,7 +19,7 @@ public class GoalExControllerAdvice {
     public String goalTimeOverExHandler(RedirectAttributes redirectAttributes) {
 
         redirectAttributes.addAttribute("error", ExceptionDetails.GOAL_TIME_OUT_OF_RANGE.getMessage());
-        log.info("ERROR : GOAL_TIME_OVER_EXCEPTION = {}", ExceptionDetails.GOAL_TIME_OUT_OF_RANGE.getMessage());
+        log.info("ERROR : GOAL_TIME_OUT_OF_RANGE_EXCEPTION = {}", ExceptionDetails.GOAL_TIME_OUT_OF_RANGE.getMessage());
 
         return "redirect:/goal/main";
     }

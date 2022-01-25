@@ -5,6 +5,7 @@ import kong.tues.goal.GoalManager;
 import kong.tues.goal.exception.GoalNotFoundException;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
 import kong.tues.goal.mothlyGoal.domain.repository.MonthlyGoalRepository;
+import kong.tues.goal.mothlyGoal.dto.MonthlyGoalAchieveResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ public class MonthlyGoalManager implements GoalManager {
     private final MonthlyGoalRepository monthlyGoalRepository;
 
     @Override
-    public void successGoal(Long memberId, Long goalId) {
+    public MonthlyGoalAchieveResDto successGoal(Long memberId, Long goalId) {
         MonthlyGoal monthlyGoal = monthlyGoalRepository.findById(goalId).orElseThrow(GoalNotFoundException::new);
 
         if (monthlyGoal.getAchieveType() == AchieveType.COUNT) {
@@ -25,10 +26,12 @@ public class MonthlyGoalManager implements GoalManager {
         } else if (monthlyGoal.getAchieveType() == AchieveType.BASIC) {
             monthlyGoal.checkSuccess();
         }
+
+        return MonthlyGoalAchieveResDto.entityToDto(monthlyGoal);
     }
 
     @Override
-    public void failGoal(Long memberId, Long goalId) {
+    public MonthlyGoalAchieveResDto failGoal(Long memberId, Long goalId) {
         MonthlyGoal monthlyGoal = monthlyGoalRepository.findById(goalId).orElseThrow(GoalNotFoundException::new);
 
         if (monthlyGoal.getAchieveType() == AchieveType.COUNT) {
@@ -38,5 +41,7 @@ public class MonthlyGoalManager implements GoalManager {
         } else if (monthlyGoal.getAchieveType() == AchieveType.BASIC) {
             monthlyGoal.checkSuccess();
         }
+
+        return MonthlyGoalAchieveResDto.entityToDto(monthlyGoal);
     }
 }

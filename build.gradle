@@ -37,6 +37,11 @@ dependencies {
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+
+	// jquery
+	// https://mvnrepository.com/artifact/org.webjars.bower/jquery
+	implementation group: 'org.webjars.bower', name: 'jquery', version: '3.6.0'
+
 }
 
 test {

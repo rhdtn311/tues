@@ -5,15 +5,19 @@ import kong.tues.goal.GoalManager;
 import kong.tues.goal.dailyGoal.domain.DailyGoal;
 import kong.tues.goal.dailyGoal.domain.repository.DailyGoalQueryRepository;
 import kong.tues.goal.dailyGoal.domain.repository.DailyGoalRepository;
+import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalAchieveResDto;
 import kong.tues.goal.exception.GoalNotFoundException;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
 import kong.tues.goal.mothlyGoal.domain.repository.MonthlyGoalQueryRepository;
+import kong.tues.goal.mothlyGoal.dto.MonthlyGoalAchieveResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -24,54 +28,52 @@ public class DailyGoalManager implements GoalManager {
     private final MonthlyGoalQueryRepository monthlyGoalQueryRepository;
 
     @Override
-    public void successGoal(Long memberId, Long goalId) {
+    public Map<String, Object> successGoal(Long memberId, Long goalId) {
         DailyGoal dailyGoal = dailyGoalRepository.findById(goalId).orElseThrow(GoalNotFoundException::new);
         MonthlyGoal monthlyGoal = monthlyGoalQueryRepository
                 .findMonthlyGoalByGoalType(memberId, LocalDate.now().getYear(), LocalDate.now().getMonthValue(), dailyGoal.getGoalType());
 
         if (dailyGoal.getAchieveType() == AchieveType.COUNT) {
             dailyGoal.plusGoalCount();
-            if (monthlyGoal != null && dailyGoal.getAchieveType() == monthlyGoal.getAchieveType()) {
-                monthlyGoal.plusGoalCount();
-            }
         } else if (dailyGoal.getAchieveType() == AchieveType.TIME) {
             dailyGoal.plusGoalTime();
-            if (monthlyGoal != null && dailyGoal.getAchieveType() == monthlyGoal.getAchieveType()) {
-                monthlyGoal.plusGoalTime();
-            }
         } else if (dailyGoal.getAchieveType() == AchieveType.WAKE) {
             dailyGoal.checkSuccess();
         } else if (dailyGoal.getAchieveType() == AchieveType.BASIC) {
             dailyGoal.checkSuccess();
-            if (monthlyGoal != null && dailyGoal.getAchieveType() == monthlyGoal.getAchieveType()) {
-                monthlyGoal.checkSuccess();
-            }
         }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("dailyGoal", DailyGoalAchieveResDto.entityToDto(dailyGoal));
+        if (monthlyGoal != null) {
+            map.put("monthlyGoal", MonthlyGoalAchieveResDto.entityToDto(monthlyGoal));
+        }
+
+        return map;
     }
 
     @Override
-    public void failGoal(Long memberId, Long goalId) {
+    public Map<String, Object> failGoal(Long memberId, Long goalId) {
         DailyGoal dailyGoal = dailyGoalRepository.findById(goalId).orElseThrow(GoalNotFoundException::new);
         MonthlyGoal monthlyGoal = monthlyGoalQueryRepository
                 .findMonthlyGoalByGoalType(memberId, LocalDate.now().getYear(), LocalDate.now().getMonthValue(), dailyGoal.getGoalType());
 
         if (dailyGoal.getAchieveType() == AchieveType.COUNT) {
             dailyGoal.minusGoalCount();
-            if (monthlyGoal != null && dailyGoal.getAchieveType() == monthlyGoal.getAchieveType()) {
-                monthlyGoal.minusGoalCount();
-            }
         } else if (dailyGoal.getAchieveType() == AchieveType.TIME) {
             dailyGoal.minusGoalTime();
-            if (monthlyGoal != null && dailyGoal.getAchieveType() == monthlyGoal.getAchieveType()) {
-                monthlyGoal.minusGoalTime();
-            }
         } else if (dailyGoal.getAchieveType() == AchieveType.WAKE) {
             dailyGoal.checkSuccess();
         } else if (dailyGoal.getAchieveType() == AchieveType.BASIC) {
             dailyGoal.checkSuccess();
-            if (monthlyGoal != null && dailyGoal.getAchieveType() == monthlyGoal.getAchieveType()) {
-                monthlyGoal.checkSuccess();
-            }
         }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("dailyGoal", DailyGoalAchieveResDto.entityToDto(dailyGoal));
+        if (monthlyGoal != null) {
+            map.put("monthlyGoal", MonthlyGoalAchieveResDto.entityToDto(monthlyGoal));
+        }
+
+        return map;
     }
 }
