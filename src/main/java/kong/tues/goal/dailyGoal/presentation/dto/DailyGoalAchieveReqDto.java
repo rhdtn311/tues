@@ -9,4 +9,5 @@ public class DailyGoalAchieveReqDto {
     private Long dailyGoalId;
     private AchieveType achieveType;
     private String week;
+    private Integer value;
 }
