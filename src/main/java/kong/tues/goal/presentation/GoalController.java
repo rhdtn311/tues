@@ -12,20 +12,16 @@ import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalReqDto;
 import kong.tues.goal.dailyGoal.presentation.validator.DailyGoalFailValidator;
 import kong.tues.goal.dailyGoal.presentation.validator.DailyGoalReqDtoValidator;
 import kong.tues.goal.dailyGoal.presentation.validator.DailyGoalSuccessValidator;
-import kong.tues.goal.mothlyGoal.application.MonthlyGoalAchieveService;
-import kong.tues.goal.mothlyGoal.application.MonthlyGoalCreateService;
-import kong.tues.goal.mothlyGoal.application.MonthlyGoalFindService;
+import kong.tues.goal.mothlyGoal.application.*;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
-import kong.tues.goal.mothlyGoal.dto.MonthlyGoalAchieveResDto;
-import kong.tues.goal.mothlyGoal.dto.MonthlyGoalMainResDto;
-import kong.tues.goal.mothlyGoal.dto.MonthlyGoalReqDto;
-import kong.tues.goal.mothlyGoal.dto.MonthlyGoalAchieveReqDto;
+import kong.tues.goal.mothlyGoal.dto.*;
 import kong.tues.goal.mothlyGoal.presentation.validator.MonthlyGoalFailValidator;
 import kong.tues.goal.mothlyGoal.presentation.validator.MonthlyGoalReqDtoValidator;
 import kong.tues.goal.mothlyGoal.presentation.validator.MonthlyGoalSuccessValidator;
 import kong.tues.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,8 +29,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.constraints.Null;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +49,9 @@ public class GoalController {
     private final DailyGoalFindService dailyGoalFindService;
     private final DailyGoalAchieveService dailyGoalAchieveService;
     private final MonthlyGoalAchieveService monthlyGoalAchieveService;
+    private final MonthlyGoalUpdateService monthlyGoalUpdateService;
+    private final MonthlyGoalDetailService monthlyGoalDetailService;
+    private final MonthlyGoalDeleteService monthlyGoalDeleteService;
 
     private final MonthlyGoalReqDtoValidator memberJoinReqDtoValidator;
     private final DailyGoalReqDtoValidator dailyGoalReqDtoValidator;
@@ -103,6 +105,9 @@ public class GoalController {
             return "/goal/main-daily";
         }
 
+        // dailymodal
+        model.addAttribute("createdGoalsMap", new HashMap<>());
+
         return "goal/main";
     }
 
@@ -110,6 +115,7 @@ public class GoalController {
     public String createMonthlyGoal(@Login Member member, Model model, Integer year, Integer month) {
 
         model.addAttribute("achieveTypes", AchieveType.values());
+        log.info("되냐 .. ? 1");
 
         if (member == null) {
             return "redirect:/member/home";
@@ -123,8 +129,7 @@ public class GoalController {
         model.addAttribute("year", year);
         model.addAttribute("month", month);
 
-
-        return "/goal/createMonthlyGoal";
+        return "/goal/createMonthlyGoal :: #create-monthly-goal";
     }
 
     @PostMapping("/create/monthly")
@@ -132,16 +137,15 @@ public class GoalController {
                                     BindingResult bindingResult,
                                     @Login Member member,
                                     Model model) {
+        log.info("monthlyGoal 생성!");
 
         if (bindingResult.hasErrors()) {
+            log.info("[POST] /create/monthly ERROR : {}", bindingResult.getAllErrors());
+
             model.addAttribute("year", monthlyGoalReqDto.getYear());
             model.addAttribute("month", monthlyGoalReqDto.getMonth());
-            List<String> createdGoalTypes
-                    = monthlyGoalCreateService.findCreatedGoalTypes(member.getId(), monthlyGoalReqDto.getYear(), monthlyGoalReqDto.getMonth());
 
-            model.addAttribute("createdGoalTypes", createdGoalTypes);
-
-            return "/goal/createMonthlyGoal";
+            return "redirect:/goal/main";
         }
 
         if (member == null) {
@@ -169,7 +173,7 @@ public class GoalController {
 
         model.addAttribute("dailyGoalReqDto", new DailyGoalReqDto());
 
-        return "/goal/createDailyGoal";
+        return "/goal/createDailyGoal :: #create-daily-goal";
     }
 
     @PostMapping("/create/daily")
@@ -183,14 +187,13 @@ public class GoalController {
         }
 
         if (bindingResult.hasErrors()) {
-            Map<String, String> createdGoalsMap = dailyGoalCreateService.findCreatedGoal(member.getId(), dailyGoalReqDto.getYear(), dailyGoalReqDto.getMonth());
-            model.addAttribute("createdGoalsMap", createdGoalsMap);
+            log.info("[POST] /create/daily ERROR : {}", bindingResult.getAllErrors());
 
             model.addAttribute("year", dailyGoalReqDto.getYear());
             model.addAttribute("month", dailyGoalReqDto.getMonth());
             model.addAttribute("day", dailyGoalReqDto.getDay());
 
-            return "/goal/createDailyGoal";
+            return "redirect:/goal/main";
         }
 
         dailyGoalCreateService.save(dailyGoalReqDto, member.getId());
@@ -200,11 +203,11 @@ public class GoalController {
 
     // 월간 목표 개수 추가
     @PostMapping("/ajax/plus/monthly")
-    public String successMonthlyGoal2(@Login Member member,
-                                      @ModelAttribute @Validated MonthlyGoalAchieveReqDto monthlyGoalAchieveReqDto,
-                                      Model model) {
+    public String successMonthlyGoal(@Login Member member,
+                                     @ModelAttribute @Validated MonthlyGoalAchieveReqDto monthlyGoalAchieveReqDto,
+                                     Model model) {
 
-        log.info("monthlyGoalId = {}" , monthlyGoalAchieveReqDto.getMonthlyGoalId());
+        log.info("monthlyGoalId = {}", monthlyGoalAchieveReqDto.getMonthlyGoalId());
         if (member == null) {
             return "member/login";
         }
@@ -254,6 +257,10 @@ public class GoalController {
             }
         } else if (monthlyGoalAchieveResDto.getAchieveType() == AchieveType.TIME) {
             if (monthlyGoalAchieveResDto.getGoalTime().equals(monthlyGoalAchieveResDto.getGoalTimeQuota())) {
+                return true;
+            }
+        } else if (monthlyGoalAchieveResDto.getAchieveType() == AchieveType.BASIC) {
+            if (monthlyGoalAchieveResDto.getSuccess()) {
                 return true;
             }
         }
@@ -310,11 +317,15 @@ public class GoalController {
 
     private boolean isMonthlyGoalNotSuccess(MonthlyGoalAchieveResDto monthlyGoalAchieveResDto) {
         if (monthlyGoalAchieveResDto.getAchieveType() == AchieveType.COUNT) {
-            if (monthlyGoalAchieveResDto.getGoalCount().equals(monthlyGoalAchieveResDto.getGoalCountQuota()-1)) {
+            if (monthlyGoalAchieveResDto.getGoalCount().equals(monthlyGoalAchieveResDto.getGoalCountQuota() - 1)) {
                 return true;
             }
         } else if (monthlyGoalAchieveResDto.getAchieveType() == AchieveType.TIME) {
-            if (monthlyGoalAchieveResDto.getGoalTime().equals(monthlyGoalAchieveResDto.getGoalTimeQuota()-1)) {
+            if (monthlyGoalAchieveResDto.getGoalTime().equals(monthlyGoalAchieveResDto.getGoalTimeQuota() - 1)) {
+                return true;
+            }
+        } else if (monthlyGoalAchieveResDto.getAchieveType() == AchieveType.BASIC) {
+            if (!monthlyGoalAchieveResDto.getSuccess()) {
                 return true;
             }
         }
@@ -373,8 +384,8 @@ public class GoalController {
     // 일간 목표 개수 감소
     @PostMapping("/ajax/minus/daily")
     public String failDailyGoal2(@Login Member member,
-                                    @ModelAttribute DailyGoalAchieveReqDto dailyGoalAchieveReqDto,
-                                    Model model) {
+                                 @ModelAttribute DailyGoalAchieveReqDto dailyGoalAchieveReqDto,
+                                 Model model) {
 
         if (member == null) {
             return "member/login";
@@ -415,4 +426,79 @@ public class GoalController {
         return "/goal/main";
     }
 
+    @GetMapping("/update/monthly")
+    public String getUpdateMonthlyGoal(@Login Member member,
+                                       MonthlyGoalUpdateReqDto monthlyGoalUpdateReqDto,
+                                       Model model) {
+
+        log.info("update Monthly = {}", monthlyGoalUpdateReqDto.getMonthlyGoalId());
+        if (member == null) {
+            return "member/login";
+        }
+        List<String> createdGoalTypes
+                = monthlyGoalCreateService.findCreatedGoalTypes(member.getId(), monthlyGoalUpdateReqDto.getYear(), monthlyGoalUpdateReqDto.getMonth());
+
+        model.addAttribute("monthlyGoalReqDto", new MonthlyGoalReqDto());
+        model.addAttribute("createdGoalTypes", createdGoalTypes);
+        model.addAttribute("year", monthlyGoalUpdateReqDto.getYear());
+        model.addAttribute("month", monthlyGoalUpdateReqDto.getMonth());
+
+        MonthlyGoalUpdateResDto updateMonthlyGoal
+                = monthlyGoalUpdateService.getMonthlyGoalUpdate(monthlyGoalUpdateReqDto.getMonthlyGoalId());
+
+        model.addAttribute("updateMonthlyGoal", updateMonthlyGoal);
+
+        return "/goal/updateMonthlyGoal :: #update-monthly-goal";
+    }
+
+    @PostMapping("/update/monthly")
+    public String updateMonthlyGoal(@Login Member member,
+                                    @ModelAttribute @Validated MonthlyGoalReqDto monthlyGoalReqDto,
+                                    BindingResult bindingResult) {
+        if (member == null) {
+            return "member/login";
+        }
+
+        if (bindingResult.hasErrors()) {
+            log.info("[POST] /update/monthly ERROR : {}", bindingResult.getAllErrors());
+
+            return "redirect:/goal/main";
+        }
+
+        monthlyGoalUpdateService.updateMonthlyGoal(monthlyGoalReqDto, member);
+
+        return "redirect:/goal/main";
+    }
+
+    @GetMapping("/detail/monthly")
+    public String detailMonthly(@Login Member member,
+                                Long monthlyGoalId,
+                                Model model) {
+        if (member == null) {
+            return "/member/login";
+        }
+
+        MonthlyGoalDetailResDto detailGoal
+                = monthlyGoalDetailService.getMonthlyGoalDetail(monthlyGoalId);
+
+
+        model.addAttribute("detailGoal", detailGoal);
+
+        model.addAttribute("year", LocalDate.now().getYear());
+        model.addAttribute("month", LocalDate.now().getMonthValue());
+
+        return "/goal/detailMonthlyGoal :: #monthly-goal-detail";
+    }
+
+    @PostMapping("/delete/monthly")
+    public String deleteMonthly(@Login Member member, Long monthlyGoalId) {
+
+        if (member == null) {
+            return "/member/login";
+        }
+
+        monthlyGoalDeleteService.deleteMonthlyGoal(monthlyGoalId);
+
+        return "redirect:/goal/main";
+    }
 }

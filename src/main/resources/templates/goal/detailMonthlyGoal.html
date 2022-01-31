@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="monthly-goal-detail">
+        <div class="monthly-goal-detail-title">이름</div>
+        <div id="detail-goal-name" th:text="${detailGoal.name}" class="monthly-goal-detail-content"> </div>
+        <div class="monthly-goal-detail-title">내용</div>
+        <div id="detail-goal-content" th:text="${detailGoal.content}" class="monthly-goal-detail-content"></div>
+        <div class="monthly-goal-detail-title">목표 종류</div>
+        <img id="detail-goal-type" class="monthly-goal-detail-content" th:src="@{/images/tues-goal-type-} + ${detailGoal.getGoalType()} + '.png'" style="width: 68px">
+        <div class="monthly-goal-detail-title">타입</div>
+        <div id="detail-achieve-type" th:text="${detailGoal.achieveType}" class="monthly-goal-detail-content"></div>
+        <div class="monthly-goal-detail-title" th:if="${#strings.equals(detailGoal.achieveType,'COUNT')} or ${#strings.equals(detailGoal.achieveType,'TIME')}">할달량</div>
+        <div id="detail-quota" th:switch="${detailGoal.achieveType}" th:if="${#strings.equals(detailGoal.achieveType,'COUNT')} or ${#strings.equals(detailGoal.achieveType,'TIME')}">
+            <div th:case="${T(kong.tues.goal.AchieveType).COUNT}" style="margin-bottom: 20px">
+                <span th:text="${detailGoal.goalCount} + '/' + ${detailGoal.goalCountQuota}"></span><span style="font-size: 13px">개</span>
+            </div>
+            <div th:case="${T(kong.tues.goal.AchieveType).TIME}" style="margin-bottom: 20px">
+                <span th:text="${detailGoal.goalTime} + '/' + ${detailGoal.goalTimeQuota}"></span><span style="font-size: 13px">시간</span>
+            </div>
+        </div>
+        <div class="monthly-goal-detail-title">성공 여부</div>
+        <div id="detail-success" th:text="${detailGoal.success} ? '성공' : '진행 중'" class="monthly-goal-detail-content"></div>
+        <div id="detail-goal-buttons" style="margin-bottom: 12px; text-align: center;">
+            <button id="monthly-goal-update-button" style="margin-right: 25px;" th:onclick="updateMonthlyGoal([[${detailGoal.monthlyGoalId}]], [[${year}]], [[${month}]])">수정</button>
+            <button id="monthly-goal-delete-button" th:onclick="deleteMonthlyGoal([[${detailGoal.monthlyGoalId}]])">삭제</button>
+        </div>
+    </div>
+
+</body>
+</html>
