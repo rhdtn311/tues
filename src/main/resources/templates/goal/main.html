@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
     <style>
         html {
             height: 90%;
@@ -14,6 +15,7 @@
             margin: 40px;
         }
 
+        /*월간 목표 생성창 년도, 월 보내기 모달창*/
         #monthly-modal.modal-overlay {
             width: 100%;
             height: 100%;
@@ -70,7 +72,7 @@
             color: white;
         }
 
-    /*    -----------------------------------------      */
+    /* 일간 목표 생성- 년도, 월, 일 보내기 모달창 */
         #daily-modal.modal-overlay {
             width: 100%;
             height: 100%;
@@ -121,6 +123,63 @@
         }
 
         #daily-modal .content {
+            margin-top: 20px;
+            padding: 0px 10px;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+        }
+
+        /* 월간 목표 생성 모달 창 */
+        #monthly-goal-create-modal.modal-overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(1.5px);
+            -webkit-backdrop-filter: blur(1.5px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        #monthly-goal-create-modal .modal-window {
+            background: rgba( 69, 139, 197, 0.70 );
+            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+            backdrop-filter: blur( 13.5px );
+            -webkit-backdrop-filter: blur( 13.5px );
+            border-radius: 10px;
+            border: 1px solid rgba( 255, 255, 255, 0.18 );
+            width: 220px;
+            height: 200px;
+            position: relative;
+            top: -100px;
+            padding: 10px;
+        }
+        #monthly-goal-create-modal .title {
+            padding-left: 10px;
+            display: inline;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+
+        }
+        #monthly-goal-create-modal .title h2 {
+            display: inline;
+        }
+        #monthly-goal-create-modal .close-area {
+            display: inline;
+            float: right;
+            padding-right: 10px;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+        }
+
+        #monthly-goal-create-modal .content {
             margin-top: 20px;
             padding: 0px 10px;
             text-shadow: 1px 1px 2px gray;
@@ -313,7 +372,7 @@
         .day-content {
             margin-left: 10px;
             overflow: auto;
-            height: 500px;
+            height: 470px;
         }
 
         .goal-plus-button, .goal-minus-button {
@@ -445,6 +504,279 @@
             animation-iteration-count: 1;
         }
 
+        /*월간 목표 생성 모달창*/
+        ul li {
+            list-style-type: none;
+            float: left;
+            margin-left: 10px;
+        }
+
+        #create-monthly-goal,#create-daily-goal, #update-monthly-goal {
+            display: none;
+            position:fixed;
+            top:50%;
+            left:50%;
+            transform: translate(-50%,-50%);
+            background-color: #F5F5F5;
+            height: 600px;
+            width: 650px;
+            border-radius: 20px;
+            border: solid 4px #325288;
+        }
+
+        #create-monthly-goal-title {
+            text-align: center;
+            display: inline-block;
+            position: relative;
+        }
+
+        /* 일간 목표 생성 모달창*/
+        #title {
+            text-align: center;
+            display: inline-block;
+            position: relative;
+            left: 50px;
+        }
+
+        #date, #input-name, #input-content, #input-type {
+            margin-left: 30px;
+            margin-top: 20px;
+        }
+
+        #all-monthly-goals {
+            left: 104%;
+            position: fixed;
+            top: 7%;
+            width: fit-content;
+            display: flex;
+            flex-direction: column;
+            background-color: #F5F5F5;
+            border-radius: 20px;
+            border: solid 4px #325288;
+        }
+
+        #check-monthly-goals-btn {
+            border: solid 3px #FEF9EF;
+            height: 27px;
+            background-color: #172774;
+            border-radius: 15px;
+            font-weight: bold;
+            font-style: oblique;
+            color: #FEF9EF;
+            display: inline;
+            position: relative;
+            left: 153px;
+        }
+
+        #head {
+            text-align: center;
+        }
+
+        #create-goal-year, #create-goal-month, #create-goal-day {
+            height: 30px;
+            background-color: #F5F5F5;
+            border: none;
+            border-bottom: solid 2px #DDDDDD;
+            width: 32px;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        #create-goal-month {
+            width: 15px;
+            text-align: center;
+        }
+
+        #create-goal-day {
+            width: 20px;
+            text-align: center;
+        }
+
+        #create-goal-year:focus {
+            color: #325288;
+        }
+
+        #create-goal-name, #create-goal-content {
+            height: 30px;
+            background-color: #F5F5F5;
+            border: none;
+            border-bottom: solid 2px #DDDDDD;
+            width: 570px;
+        }
+
+        #create-goal-name:focus {
+            border-bottom: solid 2px #325288;
+        }
+
+        #create-goal-content:focus {
+            border-bottom: solid 2px #325288;
+        }
+
+        #wakeUpHours {
+            height: 30px;
+            background-color: #F5F5F5;
+            border: none;
+            border-bottom: solid 2px #DDDDDD;
+            width: 50px;
+        }
+        #wakeUpHours:focus {
+            border-bottom: solid 2px #325288;
+        }
+
+        #wakeUpMinutes {
+            height: 30px;
+            background-color: #F5F5F5;
+            border: none;
+            border-bottom: solid 2px #DDDDDD;
+            width: 50px;
+        }
+        #wakeUpMinutes:focus {
+            border-bottom: solid 2px #325288;
+        }
+
+
+        #goalCountQuota {
+            height: 30px;
+            background-color: #F5F5F5;
+            border: none;
+            border-bottom: solid 2px #DDDDDD;
+            width: 50px;
+        }
+        #goalCountQuota:focus {
+            border-bottom: solid 2px #325288;
+        }
+
+
+        #goalTimeQuota {
+            height: 30px;
+            background-color: #F5F5F5;
+            border: none;
+            border-bottom: solid 2px #DDDDDD;
+            width: 50px;
+        }
+        #goalTimeQuota:focus {
+            border-bottom: solid 2px #325288;
+        }
+
+        #input_out {
+            margin-left: 50px;
+        }
+
+        #create-daily-goal-select {
+            -o-appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 150px;
+            height: 35px;
+            background-size: 20px;
+            padding: 5px 30px 5px 10px;
+            border-radius: 8px;
+            outline: 0 none;
+            margin-top: 14px;
+        }
+
+        #create-daily-goal-select:focus {
+            border: solid 2px #325288;
+        }
+
+        #create-daily-goal-select option {
+            background: #325288;
+            color: #FFF8F3;
+        }
+
+        #create-monthly-goal-select {
+            -o-appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 150px;
+            height: 35px;
+            background-size: 20px;
+            padding: 5px 30px 5px 10px;
+            border-radius: 8px;
+            outline: 0 none;
+            margin-top: 14px;
+        }
+
+        #create-monthly-goal-select:focus {
+            border: solid 2px #325288;
+        }
+
+        #create-monthly-goal-select option {
+            background: #325288;
+            color: #FFF8F3;
+        }
+
+        .create-button, #monthly-goal-update-button, #monthly-goal-delete-button {
+            border-radius: 5px;
+            border: solid 0px #292C6D;
+            background-color: #292C6D;
+            width: 62px;
+            height: 32px;
+            font-weight: bold;
+            color: #FFF8F3;
+        }
+
+        #create-buttons {
+            margin-top: 38px;
+            text-align: center;
+        }
+
+        .hvr-fade-create {
+            display: inline-block;
+            vertical-align: middle;
+            -webkit-transform: perspective(1px) translateZ(0);
+            transform: perspective(1px) translateZ(0);
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+            overflow: hidden;
+            -webkit-transition-duration: 0.3s;
+            transition-duration: 0.3s;
+            -webkit-transition-property: color, background-color;
+            transition-property: color, background-color;
+        }
+        .hvr-fade-create:hover {
+            border: solid 2px #292C6D;
+            background-color: #FFF8F3;
+            color: #292C6D;
+        }
+
+        /*    일간 목표 생성 css 끝*/
+
+        /*  월간 목표 hover*/
+        .monthly-goal-name:hover{
+            cursor:pointer;
+            border: 1px solid #516BEB;
+        }
+
+            /*    월간 목표 상세 */
+        #monthly-goal-detail {
+            position: fixed;
+            top: 5%;
+            left: 37%;
+            background-color: #F5F5F5;
+            height: fit-content;
+            width: 300px;
+            padding-top: 30px;
+            padding-left: 30px;
+            padding-right: 30px;
+            border: solid 5px #325288;
+            border-radius: 7px;
+            display: none;
+        }
+
+        .monthly-goal-detail-title {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .monthly-goal-detail-content {
+            word-break: break-all;
+            margin-bottom: 15px;
+        }
+
     </style>
 
     <!-- 주간 목표 <-> 일간 목표 전환 토글 버튼-->
@@ -459,10 +791,16 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
 
+    <script>
+        console.log(document.getElementById("create-monthly-goal-form"));
+
+    </script>
+
 </head>
 <body>
 <!--<h1 id="logo"> tu es </h1>-->
 <!--<img src="/images/tues-logo.png" alt="tues-logo">-->
+
 <div>
     <div id="monthly-goal-container">
         <img id="goal-main-title-img" src="/images/goal_main_title.png" alt="goal_main_image">
@@ -472,7 +810,7 @@
         <ul id="monthly-goals" th:each=" monthlyGoal : ${monthlyGoals}">
             <div id="one-monthly-goal">
             <img th:attr="id='check-monthly-goal-'+${monthlyGoal.id}" th:src="${monthlyGoal.success} ? @{/images/check-success.png} : @{/images/check-fail.png}" class="goal-check">
-                <span class="monthly-goal-name" th:text="${monthlyGoal.name}"></span>
+                <span class="monthly-goal-name" th:id="'monthly-goal-name' + ${monthlyGoal.id}" th:text="${monthlyGoal.name}" th:onclick="detailMonthlyGoal([[${monthlyGoal.id}]])"></span>
             <img class="goal-type-img" th:src="@{/images/tues-goal-type-} + ${monthlyGoal.getGoalType()} + '.png'">
             <span th:switch="${monthlyGoal.achieveType}">
             <div style="display: inline-block" th:case="${T(kong.tues.goal.AchieveType).COUNT}">
@@ -497,10 +835,10 @@
             </div>
             <div style="display:inline-block;" th:case="${T(kong.tues.goal.AchieveType).BASIC}">
                 <div class="monthly-basic" th:attr="class='monthly-goal-' + ${monthlyGoal.id}">
-                    <button th:if="${monthlyGoal.success == true}"
+                    <button th:if="${monthlyGoal.success == false}"
                             class="goal-check-button hvr-fade hvr-push"
                             th:onclick="monthlyGoalSuccess([[${monthlyGoal.id}]], 0, [[${monthlyGoal.achieveType}]], [[${monthlyGoal.goalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                    <button th:if="${monthlyGoal.success == false}"
+                    <button th:if="${monthlyGoal.success == true}"
                             class="goal-check-button hvr-fade hvr-push"
                             th:onclick="monthlyGoalFail([[${monthlyGoal.id}]],0, [[${monthlyGoal.achieveType}]], [[${monthlyGoal.goalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
                 </div>
@@ -574,10 +912,10 @@
                             </span>
                             <span th:case="${T(kong.tues.goal.AchieveType).BASIC}">
                                 <div class="daily-basic-mon" th:attr="class=${goal.id}">
-                                    <button th:if="${goal.success == true}"
+                                    <button th:if="${goal.success == false}"
                                             class="goal-check-button hvr-fade hvr-push"
                                             th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                                    <button th:if="${goal.success == false}"
+                                    <button th:if="${goal.success == true}"
                                             class="goal-check-button hvr-fade hvr-push"
                                             th:onclick="dailyGoalFail([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
                                 </div>
@@ -922,21 +1260,19 @@
             </div>
             <div class="close-area">X</div>
             <div class="content">
-                <form method="get" th:action="@{/goal/create/monthly}">
-                    <div>YEAR</div>
-                    <label for="year"></label>
-                    <input style="width: 194px" type="number" th:min="${year}" th:value="${year}" max="3000"
-                           th:id="year" name="year"
-                           placeholder="년">
-                    <div>MONTH</div>
-                    <label for="month"></label>
-                    <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" th:id="month"
-                           name="month" placeholder="월">
-                    <br>
-                    <div style="padding-top: 10px">
-                        <button type="submit">월간 목표 생성</button>
-                    </div>
-                </form>
+                <div>YEAR</div>
+                <label for="year"></label>
+                <input style="width: 194px" type="number" th:min="${year}" th:value="${year}" max="3000"
+                       th:id="year" name="year"
+                       placeholder="년">
+                <div>MONTH</div>
+                <label for="month"></label>
+                <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" th:id="month"
+                       name="month" placeholder="월">
+                <br>
+                <div style="padding-top: 10px">
+                    <button th:onclick="createMonthlyGoal([[${year}]], [[${month}]])">월간 목표 생성</button>
+                </div>
             </div>
         </div>
     </div>
@@ -948,36 +1284,48 @@
             </div>
             <div class="close-area">X</div>
             <div class="content">
-                <form method="get" th:action="@{/goal/create/daily}">
-                    <div>YEAR</div>
-                    <label for="year"></label>
-                    <input style="width: 194px" type="number" th:min="${year}" th:value="${year}" max="3000" id="year"
-                           name="year"
-                           placeholder="년">
-                    <div>MONTH</div>
-                    <label for="month"></label>
-                    <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" id="month"
-                           name="month" placeholder="월">
-                    <div>DAY</div>
-                    <label for="day"></label>
-                    <input style="width: 194px" type="number" min="1" max="31" th:value="${day}" id="day" name="day"
-                           placeholder="일">
-                    <br>
-                    <div style="padding-top: 10px">
-                        <button type="submit">일간 목표 생성</button>
-                    </div>
-                </form>
+                <div>YEAR</div>
+                <label for="year"></label>
+                <input style="width: 194px" type="number" th:min="${year}" th:value="${year}" max="3000" id="year"
+                       name="year"
+                       placeholder="년">
+                <div>MONTH</div>
+                <label for="month"></label>
+                <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" id="month"
+                       name="month" placeholder="월">
+                <div>DAY</div>
+                <label for="day"></label>
+                <input style="width: 194px" type="number" min="1" max="31" th:value="${day}" id="day" name="day"
+                       placeholder="일">
+                <br>
+                <div style="padding-top: 10px">
+                    <button th:onclick="createDailyGoal([[${year}]], [[${month}]], [[${day}]])">일간 목표 생성</button>
+                </div>
             </div>
         </div>
         <div id="hidden" hidden></div>
         <div id="error" hidden></div>
         <div id="monthly-goal-success" hidden></div>
     </div>
+
+    <!--    월간 목표 생성 모달-->
+    <div id="create-monthly-goal-modal" class="content"></div>
+
+    <!--    일간 목표 생성 모달-->
+    <div id="create-daily-goal-modal" class="content"></div>
+
+    <!--    월간 목표 수정 모달-->
+    <div id="update-monthly-goal-modal"> 아녕하세요 </div>
+
+    <!--    월간 목표 세부-->
+    <div id="monthly-goal-detail"></div>
+
 </div>
+
 </body>
-
-
 <script>
+
+    // 월간 목표 생성 - 년도, 월 보내기 모달창
     const monthlyModal = document.getElementById("monthly-modal")
     function monthlyModalOn() {
         monthlyModal.style.display = "flex"
@@ -1008,6 +1356,7 @@
         }
     })
 
+    // 일간 목표 생성 - 년도, 월, 일 보내기 모달창
     const dailyModal = document.getElementById("daily-modal")
     function dailyModalOn() {
         dailyModal.style.display = "flex"
@@ -1039,7 +1388,246 @@
     })
 
 </script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
 <script th:inline="javascript">
+
+
+    // 월간 목표 생성 모달 창
+    // $("#contents").load("testContents.html");
+
+    function OnChange(value) {
+        var gubun =
+            document.getElementById("create-monthly-goal-select").options[document.getElementById("create-monthly-goal-select").selectedIndex].value;
+        var input = "";
+        if ( gubun != "X" ){
+            if (gubun == "WAKE") {
+                input += "<input type='number'  id='wakeUpHours' name='wakeUpHours' placeholder='hours'> " +
+                    "<input type='number'  id='wakeUpMinutes' name='wakeUpMinutes' placeholder='minutes'>";
+            } else if (gubun == "COUNT"){
+                input += "<input type= 'number' id='goalCountQuota' name='goalCountQuota' placeholder='개수'>";
+            } else if (gubun == "TIME") {
+                input += "<input type= 'number' id='goalTimeQuota' name='goalTimeQuota' placeholder='시간'>";
+            }
+        } else {
+            input = "<input id='choose' hidden>";
+        }
+        document.getElementById("input_out").innerHTML = input;
+    }
+
+    function createMonthlyGoal(year, month) {
+
+        console.log("create monthly goal");
+
+        $.ajax({
+            url: "/goal/create/monthly",
+            data: {year, month},
+            type:"GET",
+            success: function (fragment) {
+                console.log(fragment);
+                monthlyModalOff();
+                $("#create-monthly-goal-modal").replaceWith(fragment);
+                let createMonthlyGoal = document.getElementById("create-monthly-goal");
+                createMonthlyGoal.style.display = "inline";
+            }
+        })
+    }
+
+    // 일간 목표 생성 화면
+    function createDailyGoal(year, month, day) {
+        $.ajax({
+            url: "/goal/create/daily",
+            data: {year, month, day},
+            type: "GET",
+            success : function (fragment) {
+                dailyModalOff();
+                $("#create-daily-goal-modal").replaceWith(fragment);
+                let createDailyGoal = document.getElementById("create-daily-goal");
+                createDailyGoal.style.display = "inline";
+            }
+        })
+    }
+
+    // 일간 목표 생성 셀렉트 박스
+    function OnChangeDaily()
+    {
+        var gubun =
+            document.getElementById("create-daily-goal-select").options[document.getElementById("create-daily-goal-select").selectedIndex].value;
+        var input = "";
+        if (gubun == "WAKE") {
+            input += "<input type='number' id='wakeUpHours' name='wakeUpHours' placeholder='hours'> " +
+                "<input type='number' id='wakeUpMinutes' name='wakeUpMinutes' placeholder='minutes'>";
+        } else if (gubun == "COUNT"){
+            input += "<input type= 'number' id='goalCountQuota' name='goalCountQuota' placeholder='개수'>";
+        } else if (gubun == "TIME") {
+            input += "<input type= 'number' id='goalTimeQuota' name='goalTimeQuota' placeholder='시간'>";
+        }
+        document.getElementById("input_out").innerHTML = input;
+    }
+
+    // 일간 목표 생성 -> 월간 목표 확인 버튼
+    function checkMonthlyGoals() {
+        document.getElementById("check-monthly-goals").style.display = "inline";
+    }
+
+    // 월간 목표 생성 시 검증
+    function validationMonthly() {
+        $(document).ready(function () {
+            console.log("방가햄토리")
+            $("#create-monthly-goal-form").validate({
+                rules: {
+                    name: {
+                        required: true,
+                    },
+                    goalType: {
+                        required: true
+                    },
+                    wakeUpHours: {
+                        required: true,
+                        range: [0, 23]
+                    },
+                    wakeUpMinutes: {
+                        required: true,
+                        range: [0,59]
+                    },
+                    goalCountQuota: {
+                        required:true,
+                        range:[1, 100000000]
+                    },
+                    goalTimeQuota: {
+                        required:true,
+                        range:[1,1000]
+                    }
+                },
+                messages: {
+                    name: {
+                        required: "이름은 필수 입력값 입니다.",
+                    },
+                    goalType: {
+                        required: "목표의 종류는 필수 입력값 입니다."
+                    },
+                    wakeUpHours: {
+                        required: "기상 시간을 입력해주세요.",
+                        range: "기상 시간은 0~23시까지 입력 가능합니다."
+                    },
+                    wakeUpMinutes: {
+                        required: "기상 시간을 입력해주세요.",
+                        range: "기상 시간은 0~59분까지 입력 가능합니다."
+                    },
+                    goalCountQuota: {
+                        required: "목표의 최대 값을 입력해주세요.",
+                        range:"목표의 최대 값은 1 ~ 100000000개까지 입력 가능합니다."
+                    },
+                    goalTimeQuota: {
+                        required:"목표의 최대 시간을 입력해주세요.",
+                        range:"목표의 최대 시간은 1 ~ 1000시간까지 입력 가능합니다."
+                    }
+                }
+            });
+        });
+    }
+
+    // 일간 목표 생성 시 검증
+    function validationDaily() {
+        $(document).ready(function () {
+            console.log("방가햄토리")
+            $("#create-daily-goal-form").validate({
+                rules: {
+                    name: {
+                        required: true,
+                    },
+                    goalType: {
+                        required: true
+                    },
+                    wakeUpHours: {
+                        required: true,
+                        range: [0, 23]
+                    },
+                    wakeUpMinutes: {
+                        required: true,
+                        range: [0,59]
+                    },
+                    goalCountQuota: {
+                        required:true,
+                        range:[1, 100000000]
+                    },
+                    goalTimeQuota: {
+                        required:true,
+                        range:[1,1000]
+                    }
+                },
+                messages: {
+                    name: {
+                        required: "이름은 필수 입력값 입니다.",
+                    },
+                    goalType: {
+                        required: "목표의 종류는 필수 입력값 입니다."
+                    },
+                    wakeUpHours: {
+                        required: "기상 시간을 입력해주세요.",
+                        range: "기상 시간은 0~23시까지 입력 가능합니다."
+                    },
+                    wakeUpMinutes: {
+                        required: "기상 시간을 입력해주세요.",
+                        range: "기상 시간은 0~59분까지 입력 가능합니다."
+                    },
+                    goalCountQuota: {
+                        required: "목표의 최대 값을 입력해주세요.",
+                        range:"목표의 최대 값은 1 ~ 100000000개까지 입력 가능합니다."
+                    },
+                    goalTimeQuota: {
+                        required:"목표의 최대 시간을 입력해주세요.",
+                        range:"목표의 최대 시간은 1 ~ 1000시간까지 입력 가능합니다."
+                    }
+                }
+            });
+        });
+    }
+
+    // 검증 로직 -> text 에서 alert로 표시되게
+    $.validator.setDefaults({
+
+        onkeyup:false,
+
+        onclick:false,
+
+        onfocusout:false,
+
+        showErrors:function(errorMap, errorList){
+
+            if(this.numberOfInvalids()) {
+
+                Swal.fire({
+                    title: errorList[0].message,
+                    showClass: {
+                        popup: 'animate__animated animate__headShake'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOut'
+                    }
+                })
+            }
+
+        }
+    });
+
+    // 월간 목표 생성(년, 월)모달 없애기
+    function monthlyGoalModalOff() {
+        let createMonthlyGoal = document.getElementById("create-monthly-goal");
+        createMonthlyGoal.style.display = "none";
+    }
+
+    // 일간 목표 생성(년, 월, 일)모달 없애기
+    function  dailyGoalModalOff() {
+        let createDailyGoal = document.getElementById("create-daily-goal");
+        createDailyGoal.style.display = "none";
+    }
+
+    // 월간 목표 수정 모달 없애기
+    function updateMonthlyGoalModalOff() {
+        let createMonthlyGoal = document.getElementById("update-monthly-goal");
+        createMonthlyGoal.style.display = "none";
+    }
 
     // 주간 목표 <-> 일간 목표 전환용 토글
     var check = $("input[type='checkbox']");
@@ -1066,6 +1654,7 @@
             success: function (fragment) {
                 if (fragment === '<div id="monthly-goal-success" hidden></div>') {
 
+                    console.log("monthlyGoalSuccess : ");
                     Swal.fire({
                         title: '월간 목표 달성',
                         text: '축하드립니다! 이번 달에도 계획한 무언갈 해내셨군요.',
@@ -1105,7 +1694,7 @@
                 if (value !== undefined && valueQuota === value + 1) {
                     changeCheck(monthlyGoalId, value, valueQuota);
                 } else if (value === undefined) {
-                    console.log("monthlyGoalSuccess")
+                    console.log("~~~~~monthlyGoalSuccess~~~~~~")
                     $("#check-monthly-goal-" + monthlyGoalId).replaceWith('<img src="/images/check-fail.png" class="goal-check" id="check-' +  monthlyGoalId + '">');
                 }
             }
@@ -1131,6 +1720,7 @@
             success: function (fragment) {
 
                 if (fragment === '<div id="monthly-goal-success" hidden></div>') {
+                    console.log("monthlyGoalFail : ");
                     location.reload();
                     return;
                 }
@@ -1270,6 +1860,79 @@
         }
     }
 
+    // 월간 목표 수정
+    function updateMonthlyGoal(id, year, month) {
+
+        var monthlyGoalUpdateReqDto = {
+            monthlyGoalId : id,
+            year: year,
+            month: month
+        }
+
+        $.ajax({
+            url: "/goal/update/monthly",
+            data: monthlyGoalUpdateReqDto,
+            type:"GET",
+            success: function (fragment) {
+
+                console.log(fragment)
+                detailMonthlyGoalModalOff();
+                $("#update-monthly-goal-modal").replaceWith(fragment)
+                document.getElementById("update-monthly-goal").style.display = "inline";
+
+            }
+        })
+    }
+
+    // 월간 목표 클릭
+    // '<button onclick="updateMonthlyGoal(monthlyGoalId, year, month)"> 수정 </button>'
+    // 월간 목표 상세
+    function detailMonthlyGoal(monthlyGoalId) {
+
+        $.ajax({
+            url: "/goal/detail/monthly",
+            data: {monthlyGoalId},
+            type:"GET",
+            success: function (fragment) {
+                console.log(fragment);
+                $("#monthly-goal-detail").replaceWith(fragment);
+                detailMonthlyGoalModalOn();
+            }
+        })
+    }
+
+    function detailMonthlyGoalModalOn() {
+        let monthlyGoalDetail = document.getElementById("monthly-goal-detail");
+        monthlyGoalDetail.style.display = "inline";
+    }
+
+    function detailMonthlyGoalModalOff() {
+        let monthlyGoalDetail = document.getElementById("monthly-goal-detail");
+        monthlyGoalDetail.style.display = "none";
+    }
+
+    function isDetailMonthlyGoalModalOn() {
+        let monthlyGoalDetail = document.getElementById("monthly-goal-detail");
+        return monthlyGoalDetail.style.display === "inline"
+    }
+
+    window.addEventListener("keyup", e => {
+        if(isDetailMonthlyGoalModalOn() && e.key === "Escape") {
+            detailMonthlyGoalModalOff()
+        }
+    })
+
+    // 월간 목표 삭제
+    function deleteMonthlyGoal(monthlyGoalId) {
+        $.ajax({
+            url: "/goal/delete/monthly",
+            data: {monthlyGoalId},
+            type:"POST",
+            success: function (fragment) {
+                location.reload();
+            }
+        })
+    }
 
 </script>
 

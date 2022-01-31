@@ -23,42 +23,45 @@ import java.time.LocalTime;
 @Setter
 public class MonthlyGoalReqDto {
 
-    @NotEmpty
-    @NotNull
+    @Nullable
+    private Long monthlyGoalId;
+
+    @NotEmpty(message = "값을 입력해주세요.")
+    @NotNull(message = "값을 입력해주세요.")
     @Length(max = 50)
     private String name;
 
     @Nullable
     private String content;
 
-    @NotNull
+    @NotNull(message = "값을 입력해주세요.")
     private GoalType goalType;
 
-    @NotNull
+    @NotNull(message = "값을 입력해주세요.")
     private AchieveType achieveType;
 
-    @Min(0) @Max(23)
+    @Min(value = 0, message = "0이상") @Max(value = 23, message = "23미만")
     @Nullable
     private Integer wakeUpHours;
 
-    @Min(0) @Max(59)
+    @Min(value = 0, message = "0이상") @Max(value = 59, message = "59미만")
     @Nullable
     private Integer wakeUpMinutes;
 
     @Nullable
-    @Min(0) @Max(value = 100000000)
+    @Min(value = 0, message = "0이상") @Max(value = 100000000, message = "1000000미만")
     private Integer goalCountQuota;
 
     @Nullable
-    @Min(0) @Max(100000000)
+    @Min(value = 0, message = "0이상") @Max(value = 100000000, message = "100000미만")
     private Integer goalCount;
 
     @Nullable
-    @Min(0) @Max(1000)
+    @Min(value = 0, message = "0이상") @Max(value = 1000, message = "1000미만")
     private Integer goalTimeQuota;
 
     @Nullable
-    @Min(0) @Max(1000)
+    @Min(value = 0, message = "0이상") @Max(value = 1000,message = "1000미만")
     private Integer goalTime;
 
     private Integer year;
