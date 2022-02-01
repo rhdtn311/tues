@@ -4,7 +4,9 @@ import kong.tues.commons.argumentresolver.Login;
 import kong.tues.goal.AchieveType;
 import kong.tues.goal.dailyGoal.application.DailyGoalAchieveService;
 import kong.tues.goal.dailyGoal.application.DailyGoalCreateService;
+import kong.tues.goal.dailyGoal.application.DailyGoalDetailService;
 import kong.tues.goal.dailyGoal.application.DailyGoalFindService;
+import kong.tues.goal.dailyGoal.application.dto.DailyGoalDetailResDto;
 import kong.tues.goal.dailyGoal.application.dto.DailyGoalMainResDto;
 import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalAchieveReqDto;
 import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalAchieveResDto;
@@ -52,6 +54,7 @@ public class GoalController {
     private final MonthlyGoalUpdateService monthlyGoalUpdateService;
     private final MonthlyGoalDetailService monthlyGoalDetailService;
     private final MonthlyGoalDeleteService monthlyGoalDeleteService;
+    private final DailyGoalDetailService dailyGoalDetailService;
 
     private final MonthlyGoalReqDtoValidator memberJoinReqDtoValidator;
     private final DailyGoalReqDtoValidator dailyGoalReqDtoValidator;
@@ -500,5 +503,25 @@ public class GoalController {
         monthlyGoalDeleteService.deleteMonthlyGoal(monthlyGoalId);
 
         return "redirect:/goal/main";
+    }
+
+    @GetMapping("/detail/daily")
+    public String detailDaily(@Login Member member,
+                              Long dailyGoalId,
+                              Model model) {
+        if (member == null) {
+            return "/member/login";
+        }
+
+        DailyGoalDetailResDto detailGoal
+                = dailyGoalDetailService.getDailyGoalDetail(dailyGoalId);
+        log.info("detailDailyGoal = {}" , detailGoal);
+
+        model.addAttribute("detailDailyGoal", detailGoal);
+
+        model.addAttribute("year", LocalDate.now().getYear());
+        model.addAttribute("month", LocalDate.now().getMonthValue());
+
+        return "/goal/detailDailyGoal :: #daily-goal-detail";
     }
 }

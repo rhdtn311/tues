@@ -751,8 +751,14 @@
             border: 1px solid #516BEB;
         }
 
+        /*일간 목표 hover*/
+        .daily-goal-name:hover {
+            cursor:pointer;
+            border:1px solid #516BEB;
+        }
+
             /*    월간 목표 상세 */
-        #monthly-goal-detail {
+        #monthly-goal-detail, #daily-goal-detail {
             position: fixed;
             top: 5%;
             left: 37%;
@@ -767,15 +773,16 @@
             display: none;
         }
 
-        .monthly-goal-detail-title {
+        .monthly-goal-detail-title, .daily-goal-detail-title {
             font-weight: bold;
             font-size: 20px;
         }
 
-        .monthly-goal-detail-content {
+        .monthly-goal-detail-content, .daily-goal-detail-content {
             word-break: break-all;
             margin-bottom: 15px;
         }
+
 
     </style>
 
@@ -884,7 +891,7 @@
                                 <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? @{/images/check-success.png} : @{/images/check-fail.png}" class="daily-goal-check">
                             </div>
                             <div class="daily-goal-name-and-goalType">
-                                <span class="daily-goal-name" th:text="${goal.name}"></span>
+                                <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])"></span>
                                 <img class="goal-type-img" th:src="@{/images/tues-goal-type-} + ${goal.getGoalType()} + '.png'">
                             </div>
                         </div>
@@ -938,7 +945,7 @@
                                     <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? @{/images/check-success.png} : @{/images/check-fail.png}" class="daily-goal-check">
                                 </div>
                                 <div class="daily-goal-name-and-goalType">
-                                    <span class="daily-goal-name" th:text="${goal.name}"></span>
+                                    <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])"></span>
                                     <img class="goal-type-img" th:src="@{/images/tues-goal-type-} + ${goal.getGoalType()} + '.png'">
                                 </div>
                             </div>
@@ -1319,6 +1326,9 @@
 
     <!--    월간 목표 세부-->
     <div id="monthly-goal-detail"></div>
+
+    <!--    일간 목표 세부-->
+    <div id="daily-goal-detail"></div>
 
 </div>
 
@@ -1897,6 +1907,7 @@
                 console.log(fragment);
                 $("#monthly-goal-detail").replaceWith(fragment);
                 detailMonthlyGoalModalOn();
+                detailDailyGoalModalOff();
             }
         })
     }
@@ -1933,6 +1944,43 @@
             }
         })
     }
+
+    // 일간 목표 상세
+    function detailDailyGoal(dailyGoalId) {
+
+        $.ajax({
+            url: "/goal/detail/daily",
+            data: {dailyGoalId},
+            type:"GET",
+            success: function (fragment) {
+                console.log(fragment);
+                $("#daily-goal-detail").replaceWith(fragment);
+                detailMonthlyGoalModalOff();
+                detailDailyGoalModalOn();
+            }
+        })
+    }
+
+    function detailDailyGoalModalOn() {
+        let dailyGoalDetail = document.getElementById("daily-goal-detail");
+        dailyGoalDetail.style.display = "inline";
+    }
+
+    function detailDailyGoalModalOff() {
+        let dailyGoalDetail = document.getElementById("daily-goal-detail");
+        dailyGoalDetail.style.display = "none";
+    }
+
+    function isDetailDailyGoalModalOn() {
+        let dailyGoalDetail = document.getElementById("daily-goal-detail");
+        return dailyGoalDetail.style.display === "inline"
+    }
+
+    window.addEventListener("keyup", e => {
+        if(isDetailDailyGoalModalOn() && e.key === "Escape") {
+            detailDailyGoalModalOff()
+        }
+    });
 
 </script>
 
