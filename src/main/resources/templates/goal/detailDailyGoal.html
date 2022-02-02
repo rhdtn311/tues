@@ -26,7 +26,7 @@
     <div class="daily-goal-detail-title">성공 여부</div>
     <div id="detail-success" th:text="${detailDailyGoal.success} ? '성공' : '진행 중'" class="daily-goal-detail-content"></div>
     <div id="detail-goal-buttons" style="margin-bottom: 12px; text-align: center;">
-        <button id="daily-goal-update-button" style="margin-right: 25px;" th:onclick="updateDailyGoal([[${detailDailyGoal.dailyGoalId}]], [[${year}]], [[${month}]])">수정</button>
+        <button id="daily-goal-update-button" style="margin-right: 25px;" th:onclick="updateDailyGoal([[${detailDailyGoal.dailyGoalId}]], [[${year}]], [[${month}]], [[${day}]])">수정</button>
         <button id="daily-goal-delete-button" th:onclick="deleteDailyGoal([[${detailDailyGoal.dailyGoalId}]])">삭제</button>
     </div>
 </div>

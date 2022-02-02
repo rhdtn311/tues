@@ -24,6 +24,7 @@ public class DailyGoalDetailResDto {
     private GoalType goalType;
     private Integer year;
     private Integer month;
+    private Integer day;
     private AchieveType achieveType;
     private Integer goalCountQuota;
     private Integer goalCount;
@@ -39,8 +40,9 @@ public class DailyGoalDetailResDto {
                 .name(dailyGoal.getName())
                 .content(dailyGoal.getContent())
                 .goalType(dailyGoal.getGoalType())
-                .year(LocalDateTime.now().getYear())
-                .month(LocalDateTime.now().getMonthValue())
+                .year(dailyGoal.getDate().getYear())
+                .month(dailyGoal.getDate().getMonthValue())
+                .day(dailyGoal.getDate().getDayOfMonth())
                 .achieveType(dailyGoal.getAchieveType())
                 .goalCountQuota(dailyGoal.getGoalCountQuota())
                 .goalCount(dailyGoal.getGoalCount())
