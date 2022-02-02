@@ -26,7 +26,7 @@ public class MonthlyGoalUpdateService {
     }
 
     @Transactional
-    public void updateMonthlyGoal(MonthlyGoalReqDto monthlyGoalReqDto, Member member) {
+    public void updateMonthlyGoal(MonthlyGoalReqDto monthlyGoalReqDto) {
 
         MonthlyGoal updateMonthlyGoal
                 = monthlyGoalRepository.findById(monthlyGoalReqDto.getMonthlyGoalId()).orElseThrow(GoalNotFoundException::new);

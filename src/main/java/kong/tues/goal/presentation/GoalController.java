@@ -55,6 +55,7 @@ public class GoalController {
     private final MonthlyGoalDeleteService monthlyGoalDeleteService;
     private final DailyGoalDetailService dailyGoalDetailService;
     private final DailyGoalUpdateService dailyGoalUpdateService;
+    private final DailyGoalDeleteService dailyGoalDeleteService;
 
     private final MonthlyGoalReqDtoValidator memberJoinReqDtoValidator;
     private final DailyGoalReqDtoValidator dailyGoalReqDtoValidator;
@@ -569,6 +570,18 @@ public class GoalController {
         }
 
         dailyGoalUpdateService.updateDailyGoal(dailyGoalReqDto);
+
+        return "redirect:/goal/main";
+    }
+
+    @PostMapping("/delete/daily")
+    public String deleteDailyGoal(@Login Member member,
+                                  Long dailyGoalId) {
+        if (member == null) {
+            return "/member/login";
+        }
+
+        dailyGoalDeleteService.deleteDailyGoal(dailyGoalId, member.getId());
 
         return "redirect:/goal/main";
     }

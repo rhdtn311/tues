@@ -3,6 +3,7 @@ package kong.tues.goal.mothlyGoal.domain.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kong.tues.goal.AchieveType;
 import kong.tues.goal.GoalType;
 import kong.tues.goal.dailyGoal.application.dto.CreatedMonthlyGoalResDto;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
@@ -68,6 +69,13 @@ public class MonthlyGoalQueryRepository {
                 .fetchOne();
     }
 
+    public MonthlyGoal findMonthlyGoalByGoalTypeAndAchieveType(Long memberId, int year, int month, GoalType goalType, AchieveType achieveType) {
+        return queryFactory.selectFrom(monthlyGoal)
+                .leftJoin(member).on(member.id.eq(memberId))
+                .where(eqYear(year).and(eqMonth(month)).and(eqGoalType(goalType)).and(eqMemberId(memberId)).and(eqAchieveType(achieveType)))
+                .fetchOne();
+    }
+
     public BooleanExpression eqYear(int year) {
         return monthlyGoal.date.year().eq(year);
     }
@@ -82,6 +90,10 @@ public class MonthlyGoalQueryRepository {
 
     public BooleanExpression eqMemberId(Long memberId) {
         return monthlyGoal.member.id.eq(memberId);
+    }
+
+    public BooleanExpression eqAchieveType(AchieveType achieveType) {
+        return monthlyGoal.achieveType.eq(achieveType);
     }
 
 }

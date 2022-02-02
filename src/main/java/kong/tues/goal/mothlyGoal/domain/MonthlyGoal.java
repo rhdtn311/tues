@@ -9,6 +9,7 @@ import kong.tues.member.domain.Member;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.Nullable;
+import org.springframework.security.core.parameters.P;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -116,6 +117,22 @@ public class MonthlyGoal {
             case COUNT : success = goalCountQuota <= goalCount; break;
             case TIME : success = goalTimeQuota <= goalTime; break;
             case BASIC : success = !success;
+        }
+    }
+
+    public void minusGoalCounts(Integer minusGoalCounts) {
+        goalCount -= minusGoalCounts;
+
+        if (goalCount < 0) {
+            goalCount = 0;
+        }
+    }
+
+    public void minusGoalTimes(Integer minusGoalTimes) {
+        goalTime -= minusGoalTimes;
+
+        if (goalTime < 0) {
+            goalTime = 0;
         }
     }
 
