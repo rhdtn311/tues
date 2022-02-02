@@ -1270,15 +1270,15 @@
                 <div>YEAR</div>
                 <label for="year"></label>
                 <input style="width: 194px" type="number" th:min="${year}" th:value="${year}" max="3000"
-                       th:id="year" name="year"
+                       id="create-monthly-goal-year" name="year"
                        placeholder="년">
                 <div>MONTH</div>
                 <label for="month"></label>
-                <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" th:id="month"
+                <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" id="create-monthly-goal-month"
                        name="month" placeholder="월">
                 <br>
                 <div style="padding-top: 10px">
-                    <button th:onclick="createMonthlyGoal([[${year}]], [[${month}]])">월간 목표 생성</button>
+                    <button onclick="createMonthlyGoal()">월간 목표 생성</button>
                 </div>
             </div>
         </div>
@@ -1293,20 +1293,20 @@
             <div class="content">
                 <div>YEAR</div>
                 <label for="year"></label>
-                <input style="width: 194px" type="number" th:min="${year}" th:value="${year}" max="3000" id="year"
+                <input style="width: 194px" type="number" th:min="${year}" th:value="${year}" max="3000" id="create-daily-goal-year"
                        name="year"
                        placeholder="년">
                 <div>MONTH</div>
                 <label for="month"></label>
-                <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" id="month"
+                <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" id="create-daily-goal-month"
                        name="month" placeholder="월">
                 <div>DAY</div>
                 <label for="day"></label>
-                <input style="width: 194px" type="number" min="1" max="31" th:value="${day}" id="day" name="day"
+                <input style="width: 194px" type="number" min="1" max="31" th:value="${day}" id="create-daily-goal-day" name="day"
                        placeholder="일">
                 <br>
                 <div style="padding-top: 10px">
-                    <button th:onclick="createDailyGoal([[${year}]], [[${month}]], [[${day}]])">일간 목표 생성</button>
+                    <button th:onclick="createDailyGoal()">일간 목표 생성</button>
                 </div>
             </div>
         </div>
@@ -1429,7 +1429,10 @@
         document.getElementById("input_out").innerHTML = input;
     }
 
-    function createMonthlyGoal(year, month) {
+    function createMonthlyGoal() {
+
+        var year =  document.getElementById('create-monthly-goal-year').value;
+        var month =  document.getElementById('create-monthly-goal-month').value;
 
         console.log("create monthly goal");
 
@@ -1448,7 +1451,11 @@
     }
 
     // 일간 목표 생성 화면
-    function createDailyGoal(year, month, day) {
+    function createDailyGoal() {
+        var year =  document.getElementById('create-daily-goal-year').value;
+        var month = document.getElementById('create-daily-goal-month').value;
+        var day = document.getElementById('create-daily-goal-day').value;
+
         $.ajax({
             url: "/goal/create/daily",
             data: {year, month, day},
@@ -2014,6 +2021,18 @@
     function  updateDailyGoalModalOff() {
         let updateDailyGoal = document.getElementById("update-daily-goal-modal");
         updateDailyGoal.style.display = "none";
+    }
+
+    // 일간 목표 삭제
+    function deleteDailyGoal(dailyGoalId) {
+        $.ajax({
+            url: "/goal/delete/daily",
+            data: {dailyGoalId},
+            type:"POST",
+            success: function (fragment) {
+                location.reload();
+            }
+        })
     }
 
 </script>

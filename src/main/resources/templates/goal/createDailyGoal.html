@@ -229,49 +229,28 @@
         <div class="buttons">
             <div th:errors="*{goalType}"></div>
             <ul>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-A.png}"><input
-                        onclick="createdGoalChecked('A', 'goalTypeA')"
-                        th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'A')}" class="goals" type="radio"
-                        name="goalType" id="goalTypeA" value="A"><label for="goalTypeA"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-B.png}"><input
-                        onclick="createdGoalChecked('B', 'goalTypeB')"
-                        th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'B')}" class="goals" type="radio"
-                        name="goalType" id="goalTypeB" value="B"><label for="goalTypeB"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-C.png}"><input
-                        onclick="createdGoalChecked('C', 'goalTypeC')"
-                        th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'C')}" class="goals" type="radio"
-                        name="goalType" id="goalTypeC" value="C"><label for="goalTypeC"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-D.png}"><input
-                        onclick="createdGoalChecked('D', 'goalTypeD')"
-                        th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'D')}" class="goals" type="radio"
-                        name="goalType" id="goalTypeD" value="D"><label for="goalTypeD"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-E.png}"><input
-                        onclick="createdGoalChecked('E', 'goalTypeE')"
-                        th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'E')}" class="goals" type="radio"
-                        name="goalType" id="goalTypeE" value="E"><label for="goalTypeE"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-F.png}"><input
-                        onclick="createdGoalChecked('F', 'goalTypeF')"
-                        th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'F')}" class="goals" type="radio"
-                        name="goalType" id="goalTypeF" value="F"><label for="goalTypeF"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-G.png}"><input
-                        onclick="createdGoalChecked('G', 'goalTypeG')"
-                        th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'G')}" class="goals" type="radio"
-                        name="goalType" id="goalTypeG" value="G"><label for="goalTypeG"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-H.png}"><input
-                        onclick="createdGoalChecked('H', 'goalTypeH')"
-                        th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'H')}" class="goals" type="radio"
-                        name="goalType" id="goalTypeH" value="H"><label for="goalTypeH"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-I.png}"><input
-                        onclick="createdGoalChecked('I', 'goalTypeI')"
-                        th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'I')}" class="goals" type="radio"
-                        name="goalType" id="goalTypeI" value="I"><label for="goalTypeI"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-J.png}"><input
-                        onclick="createdGoalChecked('J', 'goalTypeJ')"
-                        th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'J')}" class="goals" type="radio"
-                        name="goalType" id="goalTypeJ" value="J"><label for="goalTypeJ"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-OTHER.png}"><input
-                        th:checked="${#strings.equals(dailyGoalReqDto.goalType, 'OTHER')}" type="radio" name="goalType"
-                        id="goalTypeOTHER" value="OTHER"><label for="goalTypeOTHER"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-A.png}">
+                    <input class="goals" type="radio" name="goalType" id="goalTypeA" value="A"><label for="goalTypeA"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-B.png}">
+                    <input class="goals" type="radio" name="goalType" id="goalTypeB" value="B"><label for="goalTypeB"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-C.png}">
+                    <input class="goals" type="radio" name="goalType" id="goalTypeC" value="C"><label for="goalTypeC"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-D.png}">
+                    <input class="goals" type="radio" name="goalType" id="goalTypeD" value="D"><label for="goalTypeD"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-E.png}">
+                    <input class="goals" type="radio" name="goalType" id="goalTypeE" value="E"><label for="goalTypeE"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-F.png}">
+                    <input class="goals" type="radio" name="goalType" id="goalTypeF" value="F"><label for="goalTypeF"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-G.png}">
+                    <input class="goals" type="radio" name="goalType" id="goalTypeG" value="G"><label for="goalTypeG"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-H.png}">
+                    <input class="goals" type="radio" name="goalType" id="goalTypeH" value="H"><label for="goalTypeH"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-I.png}">
+                    <input class="goals" type="radio" name="goalType" id="goalTypeI" value="I"><label for="goalTypeI"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-J.png}">
+                    <input class="goals" type="radio" name="goalType" id="goalTypeJ" value="J"><label for="goalTypeJ"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-OTHER.png}">
+                    <input type="radio" name="goalType" id="goalTypeOTHER" value="OTHER"><label for="goalTypeOTHER"></label></li>
             </ul>
         </div>
         <br>
