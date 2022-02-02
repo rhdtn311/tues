@@ -511,7 +511,7 @@
             margin-left: 10px;
         }
 
-        #create-monthly-goal,#create-daily-goal, #update-monthly-goal {
+        #create-monthly-goal,#create-daily-goal, #update-monthly-goal-modal, #update-daily-goal-modal {
             display: none;
             position:fixed;
             top:50%;
@@ -1322,7 +1322,11 @@
     <div id="create-daily-goal-modal" class="content"></div>
 
     <!--    월간 목표 수정 모달-->
-    <div id="update-monthly-goal-modal"> 아녕하세요 </div>
+    <div id="update-monthly-goal-modal"> </div>
+
+    <!--    일간 목표 수정 모달-->
+    <div id="update-daily-goal-modal"> </div>
+
 
     <!--    월간 목표 세부-->
     <div id="monthly-goal-detail"></div>
@@ -1635,7 +1639,7 @@
 
     // 월간 목표 수정 모달 없애기
     function updateMonthlyGoalModalOff() {
-        let createMonthlyGoal = document.getElementById("update-monthly-goal");
+        let createMonthlyGoal = document.getElementById("update-monthly-goal-modal");
         createMonthlyGoal.style.display = "none";
     }
 
@@ -1888,8 +1892,7 @@
                 console.log(fragment)
                 detailMonthlyGoalModalOff();
                 $("#update-monthly-goal-modal").replaceWith(fragment)
-                document.getElementById("update-monthly-goal").style.display = "inline";
-
+                document.getElementById("update-monthly-goal-modal").style.display = "inline";
             }
         })
     }
@@ -1981,6 +1984,37 @@
             detailDailyGoalModalOff()
         }
     });
+
+    // 일간 목표 수정
+    function updateDailyGoal(id, year, month, day) {
+
+        var dailyGoalUpdateReqDto = {
+            dailyGoalId : id,
+            year: year,
+            month: month,
+            day: day
+        }
+
+        $.ajax({
+            url: "/goal/update/daily",
+            data: dailyGoalUpdateReqDto,
+            type:"GET",
+            success: function (fragment) {
+
+                console.log(fragment)
+                detailDailyGoalModalOff();
+                $("#update-daily-goal-modal").replaceWith(fragment)
+                document.getElementById("update-daily-goal-modal").style.display = "inline";
+
+            }
+        })
+    }
+
+    // 일간 목표 수정(년, 월, 일)모달 없애기
+    function  updateDailyGoalModalOff() {
+        let updateDailyGoal = document.getElementById("update-daily-goal-modal");
+        updateDailyGoal.style.display = "none";
+    }
 
 </script>
 

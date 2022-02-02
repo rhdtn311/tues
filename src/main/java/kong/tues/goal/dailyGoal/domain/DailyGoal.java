@@ -2,6 +2,7 @@ package kong.tues.goal.dailyGoal.domain;
 
 import kong.tues.goal.AchieveType;
 import kong.tues.goal.GoalType;
+import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalReqDto;
 import kong.tues.goal.exception.GoalCountOutOfRangeException;
 import kong.tues.goal.exception.GoalTimeOutOfRangeException;
 import kong.tues.member.domain.Member;
@@ -26,6 +27,7 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "daily_goal")
 public class DailyGoal {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -122,6 +124,31 @@ public class DailyGoal {
             case WAKE : success = wakeUpTime.isAfter(LocalTime.now()); break;
             case BASIC : success = !success;
         }
+    }
+
+    public DailyGoal update(DailyGoalReqDto dailyGoalReqDto) {
+        this.setName(dailyGoalReqDto.getName());
+        this.setContent(dailyGoalReqDto.getContent());
+        this.setGoalType(dailyGoalReqDto.getGoalType());
+        this.setAchieveType(dailyGoalReqDto.getAchieveType());
+        this.setGoalCountQuota(dailyGoalReqDto.getGoalCountQuota());
+        this.setGoalTimeQuota(dailyGoalReqDto.getGoalTimeQuota());
+
+        if (dailyGoalReqDto.getWakeUpHours() != null) {
+            this.setWakeUpTime(LocalTime.of(dailyGoalReqDto.getWakeUpHours(), dailyGoalReqDto.getWakeUpMinutes()));
+        }
+
+        if (dailyGoalReqDto.getAchieveType() == AchieveType.BASIC) {
+            this.success = false;
+        } else if (dailyGoalReqDto.getAchieveType() == AchieveType.TIME) {
+            this.success = this.goalTime >= this.goalTimeQuota;
+        } else if (dailyGoalReqDto.getAchieveType() == AchieveType.COUNT) {
+            this.success = this.goalCount >= this.goalCountQuota;
+        } else if (dailyGoalReqDto.getAchieveType() == AchieveType.WAKE) {
+            this.success = false;
+        }
+
+        return this;
     }
 
 }

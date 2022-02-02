@@ -28,6 +28,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class DailyGoalReqDto {
 
+    @Nullable
+    private Long dailyGoalId;
+
     @NotEmpty
     @Length(max = 50)
     private String name;
