@@ -22,7 +22,6 @@ import kong.tues.goal.mothlyGoal.presentation.validator.MonthlyGoalSuccessValida
 import kong.tues.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -86,6 +85,7 @@ public class GoalController {
         model.addAttribute("year", LocalDate.now().getYear());
         model.addAttribute("month", LocalDate.now().getMonthValue());
         model.addAttribute("day", LocalDate.now().getDayOfMonth());
+        model.addAttribute("dayOfWeek", LocalDate.now().getDayOfWeek().name());
 
         // 월간목표를 위한 데이터
         List<MonthlyGoalMainResDto> monthlyGoals
@@ -133,7 +133,7 @@ public class GoalController {
         model.addAttribute("year", year);
         model.addAttribute("month", month);
 
-        return "/goal/createMonthlyGoal :: #create-monthly-goal";
+        return "/goal/createMonthlyGoal :: #create-monthly-goal-modal";
     }
 
     @PostMapping("/create/monthly")
@@ -177,7 +177,7 @@ public class GoalController {
 
         model.addAttribute("dailyGoalReqDto", new DailyGoalReqDto());
 
-        return "/goal/createDailyGoal :: #create-daily-goal";
+        return "/goal/createDailyGoal :: #create-daily-goal-modal";
     }
 
     @PostMapping("/create/daily")
