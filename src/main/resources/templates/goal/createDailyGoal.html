@@ -210,14 +210,14 @@
 
 </head>
 <body>
-<div class="container" id="create-daily-goal">
+<div class="container" id="create-daily-goal-modal">
     <div id="head">
         <h1 id="title">일간 목표 생성</h1>
         <button id="check-monthly-goals-btn" onclick="checkMonthlyGoals()"> 월간 목표 확인 ▶</button>
     </div>
     <div id="check-monthly-goals" style="display: none; background-color: #ffcf93">
         <div id="all-monthly-goals">
-            <ul th:each="createdMonthlyGoal : ${createdGoalsMap}" style="padding-left: 27px; padding-right: 40px;">
+            <ul th:each="createdMonthlyGoal : ${createdGoalsMap}" style="padding-left: 27px; padding-right: 40px;" >
                 <div style="display: flex">
                     <img style="width: 20px" th:src="@{/images/tues-goal-type-} + ${createdMonthlyGoal.getKey()} +'.png'" >
                     <li th:text="${createdMonthlyGoal.getValue()}"></li>
@@ -229,28 +229,17 @@
         <div class="buttons">
             <div th:errors="*{goalType}"></div>
             <ul>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-A.png}">
-                    <input class="goals" type="radio" name="goalType" id="goalTypeA" value="A"><label for="goalTypeA"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-B.png}">
-                    <input class="goals" type="radio" name="goalType" id="goalTypeB" value="B"><label for="goalTypeB"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-C.png}">
-                    <input class="goals" type="radio" name="goalType" id="goalTypeC" value="C"><label for="goalTypeC"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-D.png}">
-                    <input class="goals" type="radio" name="goalType" id="goalTypeD" value="D"><label for="goalTypeD"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-E.png}">
-                    <input class="goals" type="radio" name="goalType" id="goalTypeE" value="E"><label for="goalTypeE"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-F.png}">
-                    <input class="goals" type="radio" name="goalType" id="goalTypeF" value="F"><label for="goalTypeF"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-G.png}">
-                    <input class="goals" type="radio" name="goalType" id="goalTypeG" value="G"><label for="goalTypeG"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-H.png}">
-                    <input class="goals" type="radio" name="goalType" id="goalTypeH" value="H"><label for="goalTypeH"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-I.png}">
-                    <input class="goals" type="radio" name="goalType" id="goalTypeI" value="I"><label for="goalTypeI"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-J.png}">
-                    <input class="goals" type="radio" name="goalType" id="goalTypeJ" value="J"><label for="goalTypeJ"></label></li>
-                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-OTHER.png}">
-                    <input type="radio" name="goalType" id="goalTypeOTHER" value="OTHER"><label for="goalTypeOTHER"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-A.png}"><input class="goals" type="radio" name="goalType" id="goalTypeA" value="A"><label for="goalTypeA"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-B.png}"><input class="goals" type="radio" name="goalType" id="goalTypeB" value="B"><label for="goalTypeB"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-C.png}"><input class="goals" type="radio" name="goalType" id="goalTypeC" value="C"><label for="goalTypeC"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-D.png}"><input class="goals" type="radio" name="goalType" id="goalTypeD" value="D"><label for="goalTypeD"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-E.png}"><input class="goals" type="radio" name="goalType" id="goalTypeE" value="E"><label for="goalTypeE"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-F.png}"><input class="goals" type="radio" name="goalType" id="goalTypeF" value="F"><label for="goalTypeF"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-G.png}"><input class="goals" type="radio" name="goalType" id="goalTypeG" value="G"><label for="goalTypeG"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-H.png}"><input class="goals" type="radio" name="goalType" id="goalTypeH" value="H"><label for="goalTypeH"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-I.png}"><input class="goals" type="radio" name="goalType" id="goalTypeI" value="I"><label for="goalTypeI"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-J.png}"><input class="goals" type="radio" name="goalType" id="goalTypeJ" value="J"><label for="goalTypeJ"></label></li>
+                <li><img style="width: 20px" th:src="@{/images/tues-goal-type-OTHER.png}"><input type="radio" name="goalType" id="goalTypeOTHER" value="OTHER"><label for="goalTypeOTHER"></label></li>
             </ul>
         </div>
         <br>

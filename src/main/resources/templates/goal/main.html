@@ -5,786 +5,18 @@
     <title>Title</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
-    <style>
-        html {
-            height: 90%;
-        }
-        body {
-            background-color: #FFF8F3;
-            height: 100%;
-            margin: 40px;
-        }
-
-        /*월간 목표 생성창 년도, 월 보내기 모달창*/
-        #monthly-modal.modal-overlay {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            backdrop-filter: blur(1.5px);
-            -webkit-backdrop-filter: blur(1.5px);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-        #monthly-modal .modal-window {
-            background: rgba( 69, 139, 197, 0.70 );
-            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-            backdrop-filter: blur( 13.5px );
-            -webkit-backdrop-filter: blur( 13.5px );
-            border-radius: 10px;
-            border: 1px solid rgba( 255, 255, 255, 0.18 );
-            width: 220px;
-            height: 200px;
-            position: relative;
-            top: -100px;
-            padding: 10px;
-        }
-        #monthly-modal .title {
-            padding-left: 10px;
-            display: inline;
-            text-shadow: 1px 1px 2px gray;
-            color: white;
-
-        }
-        #monthly-modal .title h2 {
-            display: inline;
-        }
-        #monthly-modal .close-area {
-            display: inline;
-            float: right;
-            padding-right: 10px;
-            cursor: pointer;
-            text-shadow: 1px 1px 2px gray;
-            color: white;
-        }
-
-        #monthly-modal .content {
-            margin-top: 20px;
-            padding: 0px 10px;
-            text-shadow: 1px 1px 2px gray;
-            color: white;
-        }
-
-    /* 일간 목표 생성- 년도, 월, 일 보내기 모달창 */
-        #daily-modal.modal-overlay {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            backdrop-filter: blur(1.5px);
-            -webkit-backdrop-filter: blur(1.5px);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-        #daily-modal .modal-window {
-            background: rgba( 69, 139, 197, 0.70 );
-            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-            backdrop-filter: blur( 13.5px );
-            -webkit-backdrop-filter: blur( 13.5px );
-            border-radius: 10px;
-            border: 1px solid rgba( 255, 255, 255, 0.18 );
-            width: 220px;
-            height: 250px;
-            position: relative;
-            top: -100px;
-            padding: 10px;
-        }
-        #daily-modal .title {
-            padding-left: 10px;
-            display: inline;
-            text-shadow: 1px 1px 2px gray;
-            color: white;
-
-        }
-        #daily-modal .title h2 {
-            display: inline;
-        }
-        #daily-modal .close-area {
-            display: inline;
-            float: right;
-            padding-right: 10px;
-            cursor: pointer;
-            text-shadow: 1px 1px 2px gray;
-            color: white;
-        }
-
-        #daily-modal .content {
-            margin-top: 20px;
-            padding: 0px 10px;
-            text-shadow: 1px 1px 2px gray;
-            color: white;
-        }
-
-        /* 월간 목표 생성 모달 창 */
-        #monthly-goal-create-modal.modal-overlay {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            backdrop-filter: blur(1.5px);
-            -webkit-backdrop-filter: blur(1.5px);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-        #monthly-goal-create-modal .modal-window {
-            background: rgba( 69, 139, 197, 0.70 );
-            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-            backdrop-filter: blur( 13.5px );
-            -webkit-backdrop-filter: blur( 13.5px );
-            border-radius: 10px;
-            border: 1px solid rgba( 255, 255, 255, 0.18 );
-            width: 220px;
-            height: 200px;
-            position: relative;
-            top: -100px;
-            padding: 10px;
-        }
-        #monthly-goal-create-modal .title {
-            padding-left: 10px;
-            display: inline;
-            text-shadow: 1px 1px 2px gray;
-            color: white;
-
-        }
-        #monthly-goal-create-modal .title h2 {
-            display: inline;
-        }
-        #monthly-goal-create-modal .close-area {
-            display: inline;
-            float: right;
-            padding-right: 10px;
-            cursor: pointer;
-            text-shadow: 1px 1px 2px gray;
-            color: white;
-        }
-
-        #monthly-goal-create-modal .content {
-            margin-top: 20px;
-            padding: 0px 10px;
-            text-shadow: 1px 1px 2px gray;
-            color: white;
-        }
-
-        .day-of-week-container {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .goal-success {
-            color: cornflowerblue;
-        }
-
-         /* 주간 목표 <-> 일간 목표 전환 토글 버튼 - 시작 */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-            vertical-align:middle;
-        }
-
-        /* Hide default HTML checkbox */
-        .switch input {display:none;}
-
-        /* The slider */
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            -webkit-transition: .2s;
-            transition: .2s;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            -webkit-transition: .2s;
-            transition: .2s;
-        }
-
-        input:checked + .slider {
-            background-color: #2196F3;
-        }
-
-        input:focus + .slider {
-            box-shadow: 0 0 1px #2196F3;
-        }
-
-        input:checked + .slider:before {
-            -webkit-transform: translateX(26px);
-            -ms-transform: translateX(26px);
-            transform: translateX(26px);
-        }
-
-        /* Rounded sliders */
-        .slider.round {
-            border-radius: 34px;
-        }
-
-        .slider.round:before {
-            border-radius: 50%;
-        }
-
-        p {
-            margin:0px;
-            display:inline-block;
-            font-size:15px;
-            font-weight:bold;
-        }
-        /* 주간 목표 <-> 일간 목표 전환 토글 버튼 - 끝 */
-
-        #monthly-goal-title {
-            font-size: 40px;
-            font-weight: bold;
-        }
-
-        #goal-main-title-img {
-            width: 50px;
-            height: 50px;
-            margin-right: 10px;
-        }
-
-        #monthly-goal-container {
-            display: flex;
-            flex-direction: row;
-        }
-
-        #monthly-goals {
-            margin-bottom: -10px;
-        }
-
-        .goal-type-img {
-            width: 15px;
-            height: 20px;
-            margin-left: 4px;
-            margin-right: 15px;
-        }
-        
-        .monthly-goal-name {
-            font-size: 16px;
-            margin-left:5px;
-        }
-
-        .goal-check {
-            width : 17px;
-            height : 17px;
-            display: inline-block;
-        }
-
-        #one-monthly-goal {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-        }
-
-        #make-goal-button {
-            margin-top: 30px;
-            margin-left: 45px;
-        }
-
-        /*일간 목표 레이아웃*/
-        #daily-goals-container {
-            display: flex;
-            justify-content: space-between;
-            border: #475762 solid 2px;
-            border-top-left-radius: 1rem;
-            border-top-right-radius: 1rem;
-            border-bottom-left-radius: 1rem;
-            border-bottom-right-radius: 1rem;
-        }
-
-        #one-daily-goal {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-        }
-
-        #monday {
-            border-right: #475762 solid 2px;
-            border-top-left-radius: 1rem;
-            border-bottom-left-radius: 1rem;
-            width: 14%;
-        }
-        #tuesday {
-            border-right:#475762 solid 2px;
-            width: 14%;
-        }
-        #wednesday {
-            border-right: #475762 solid 2px;
-            width: 14%;
-        }
-        #thursday {
-            border-right: #475762 solid 2px;
-            width: 14%;
-        }
-        #friday {
-            border-right:#475762 solid 2px;
-            width: 14%;
-        }
-        #saturday {
-            border-right: #475762 solid 2px;
-            width: 14%;
-        }
-        #sunday {
-            width: 14%;
-        }
-
-        .day-title {
-            text-align: center;
-            margin-top: 10px;
-            height: 30px;
-            margin-bottom: 10px;
-            font-size: 20px;
-            font-weight: bold;
-            font-style: italic;
-        }
-
-        .day-content {
-            margin-left: 10px;
-            overflow: auto;
-            height: 470px;
-        }
-
-        .goal-plus-button, .goal-minus-button {
-            border: solid 1px #313552;
-            background-color: #FAEEE7;
-            border-radius: 6px;
-            width: 20px;
-        }
-
-        .goal-button-text {
-            color: #142F43;
-            position: relative;
-            right: 3px;
-        }
-
-        .goal-check-button {
-            border: solid 1px #313552;
-            background-color: #FAEEE7;
-            border-radius: 6px;
-        }
-
-        .goal-check-text {
-            font-style: italic;
-            font-weight: bold;
-            color: #313552;
-        }
-
-        .daily-goal-without-success-box-image {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .daily-goal-count-and-button {
-            margin-left: 25px;
-        }
-
-        .daily-goal-check {
-            margin-right: 5px;
-            position: relative;
-            top: 5px;
-            width : 17px;
-            height : 17px;
-        }
-
-        .image-and-name-goaltype {
-            display: flex;
-            align-items: start;
-        }
-
-        .one-daily-goal {
-            margin-bottom: 15px;
-        }
-
-        /*스크롤바*/
-        /* width */
-        ::-webkit-scrollbar {
-            width: 5px;
-        }
-        /* Handle */
-        ::-webkit-scrollbar-thumb {
-            background: #CDDEFF;
-            border-radius: 10px;
-        }
-
-        /* Handle on hover */
-        ::-webkit-scrollbar-thumb:hover {
-            background: #2C2891;
-        }
-
-        /*버튼*/
-        button {
-            cursor: pointer;
-        }
-
-        /*버튼 hover 효과*/
-        .hvr-fade {
-            display: inline-block;
-            vertical-align: middle;
-            -webkit-transform: perspective(1px) translateZ(0);
-            transform: perspective(1px) translateZ(0);
-            box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-            overflow: hidden;
-            -webkit-transition-duration: 0.3s;
-            transition-duration: 0.3s;
-            -webkit-transition-property: color, background-color;
-            transition-property: color, background-color;
-        }
-        .hvr-fade:hover, .hvr-fade:focus, .hvr-fade:active {
-            background-color: #516BEB;
-            color: white;
-        }
-
-        /*버튼 눌렀을 때 효과*/
-        @-webkit-keyframes hvr-push {
-            50% {
-                -webkit-transform: scale(0.8);
-                transform: scale(0.8);
-            }
-            100% {
-                -webkit-transform: scale(1);
-                transform: scale(1);
-            }
-        }
-        @keyframes hvr-push {
-            50% {
-                -webkit-transform: scale(0.8);
-                transform: scale(0.8);
-            }
-            100% {
-                -webkit-transform: scale(1);
-                transform: scale(1);
-            }
-        }
-        .hvr-push {
-            display: inline-block;
-            vertical-align: middle;
-            -webkit-transform: perspective(1px) translateZ(0);
-            transform: perspective(1px) translateZ(0);
-            box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-        }
-        .hvr-push:focus, .hvr-push:active {
-            -webkit-animation-name: hvr-push;
-            animation-name: hvr-push;
-            -webkit-animation-duration: 0.3s;
-            animation-duration: 0.3s;
-            -webkit-animation-timing-function: linear;
-            animation-timing-function: linear;
-            -webkit-animation-iteration-count: 1;
-            animation-iteration-count: 1;
-        }
-
-        /*월간 목표 생성 모달창*/
-        ul li {
-            list-style-type: none;
-            float: left;
-            margin-left: 10px;
-        }
-
-        #create-monthly-goal,#create-daily-goal, #update-monthly-goal-modal, #update-daily-goal-modal {
-            display: none;
-            position:fixed;
-            top:50%;
-            left:50%;
-            transform: translate(-50%,-50%);
-            background-color: #F5F5F5;
-            height: 600px;
-            width: 650px;
-            border-radius: 20px;
-            border: solid 4px #325288;
-        }
-
-        #create-monthly-goal-title {
-            text-align: center;
-            display: inline-block;
-            position: relative;
-        }
-
-        /* 일간 목표 생성 모달창*/
-        #title {
-            text-align: center;
-            display: inline-block;
-            position: relative;
-            left: 50px;
-        }
-
-        #date, #input-name, #input-content, #input-type {
-            margin-left: 30px;
-            margin-top: 20px;
-        }
-
-        #all-monthly-goals {
-            left: 104%;
-            position: fixed;
-            top: 7%;
-            width: fit-content;
-            display: flex;
-            flex-direction: column;
-            background-color: #F5F5F5;
-            border-radius: 20px;
-            border: solid 4px #325288;
-        }
-
-        #check-monthly-goals-btn {
-            border: solid 3px #FEF9EF;
-            height: 27px;
-            background-color: #172774;
-            border-radius: 15px;
-            font-weight: bold;
-            font-style: oblique;
-            color: #FEF9EF;
-            display: inline;
-            position: relative;
-            left: 153px;
-        }
-
-        #head {
-            text-align: center;
-        }
-
-        #create-goal-year, #create-goal-month, #create-goal-day {
-            height: 30px;
-            background-color: #F5F5F5;
-            border: none;
-            border-bottom: solid 2px #DDDDDD;
-            width: 32px;
-        }
-
-        input:focus {
-            outline: none;
-        }
-
-        #create-goal-month {
-            width: 15px;
-            text-align: center;
-        }
-
-        #create-goal-day {
-            width: 20px;
-            text-align: center;
-        }
-
-        #create-goal-year:focus {
-            color: #325288;
-        }
-
-        #create-goal-name, #create-goal-content {
-            height: 30px;
-            background-color: #F5F5F5;
-            border: none;
-            border-bottom: solid 2px #DDDDDD;
-            width: 570px;
-        }
-
-        #create-goal-name:focus {
-            border-bottom: solid 2px #325288;
-        }
-
-        #create-goal-content:focus {
-            border-bottom: solid 2px #325288;
-        }
-
-        #wakeUpHours {
-            height: 30px;
-            background-color: #F5F5F5;
-            border: none;
-            border-bottom: solid 2px #DDDDDD;
-            width: 50px;
-        }
-        #wakeUpHours:focus {
-            border-bottom: solid 2px #325288;
-        }
-
-        #wakeUpMinutes {
-            height: 30px;
-            background-color: #F5F5F5;
-            border: none;
-            border-bottom: solid 2px #DDDDDD;
-            width: 50px;
-        }
-        #wakeUpMinutes:focus {
-            border-bottom: solid 2px #325288;
-        }
-
-
-        #goalCountQuota {
-            height: 30px;
-            background-color: #F5F5F5;
-            border: none;
-            border-bottom: solid 2px #DDDDDD;
-            width: 50px;
-        }
-        #goalCountQuota:focus {
-            border-bottom: solid 2px #325288;
-        }
-
-
-        #goalTimeQuota {
-            height: 30px;
-            background-color: #F5F5F5;
-            border: none;
-            border-bottom: solid 2px #DDDDDD;
-            width: 50px;
-        }
-        #goalTimeQuota:focus {
-            border-bottom: solid 2px #325288;
-        }
-
-        #input_out {
-            margin-left: 50px;
-        }
-
-        #create-daily-goal-select {
-            -o-appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            width: 150px;
-            height: 35px;
-            background-size: 20px;
-            padding: 5px 30px 5px 10px;
-            border-radius: 8px;
-            outline: 0 none;
-            margin-top: 14px;
-        }
-
-        #create-daily-goal-select:focus {
-            border: solid 2px #325288;
-        }
-
-        #create-daily-goal-select option {
-            background: #325288;
-            color: #FFF8F3;
-        }
-
-        #create-monthly-goal-select {
-            -o-appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            width: 150px;
-            height: 35px;
-            background-size: 20px;
-            padding: 5px 30px 5px 10px;
-            border-radius: 8px;
-            outline: 0 none;
-            margin-top: 14px;
-        }
-
-        #create-monthly-goal-select:focus {
-            border: solid 2px #325288;
-        }
-
-        #create-monthly-goal-select option {
-            background: #325288;
-            color: #FFF8F3;
-        }
-
-        .create-button, #monthly-goal-update-button, #monthly-goal-delete-button {
-            border-radius: 5px;
-            border: solid 0px #292C6D;
-            background-color: #292C6D;
-            width: 62px;
-            height: 32px;
-            font-weight: bold;
-            color: #FFF8F3;
-        }
-
-        #create-buttons {
-            margin-top: 38px;
-            text-align: center;
-        }
-
-        .hvr-fade-create {
-            display: inline-block;
-            vertical-align: middle;
-            -webkit-transform: perspective(1px) translateZ(0);
-            transform: perspective(1px) translateZ(0);
-            box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-            overflow: hidden;
-            -webkit-transition-duration: 0.3s;
-            transition-duration: 0.3s;
-            -webkit-transition-property: color, background-color;
-            transition-property: color, background-color;
-        }
-        .hvr-fade-create:hover {
-            border: solid 2px #292C6D;
-            background-color: #FFF8F3;
-            color: #292C6D;
-        }
-
-        /*    일간 목표 생성 css 끝*/
-
-        /*  월간 목표 hover*/
-        .monthly-goal-name:hover{
-            cursor:pointer;
-            border: 1px solid #516BEB;
-        }
-
-        /*일간 목표 hover*/
-        .daily-goal-name:hover {
-            cursor:pointer;
-            border:1px solid #516BEB;
-        }
-
-            /*    월간 목표 상세 */
-        #monthly-goal-detail, #daily-goal-detail {
-            position: fixed;
-            top: 5%;
-            left: 37%;
-            background-color: #F5F5F5;
-            height: fit-content;
-            width: 300px;
-            padding-top: 30px;
-            padding-left: 30px;
-            padding-right: 30px;
-            border: solid 5px #325288;
-            border-radius: 7px;
-            display: none;
-        }
-
-        .monthly-goal-detail-title, .daily-goal-detail-title {
-            font-weight: bold;
-            font-size: 20px;
-        }
-
-        .monthly-goal-detail-content, .daily-goal-detail-content {
-            word-break: break-all;
-            margin-bottom: 15px;
-        }
-
-
-    </style>
+    <!--    css - start -->
+    <link th:href="@{/styles/css/createMonthlyGoalModal.css}" rel="stylesheet" />
+    <link th:href="@{/styles/css/createDailyGoalModal.css}" rel="stylesheet" />
+    <link th:href="@{/styles/css/monthlyGoalContainer.css}" rel="stylesheet" />
+    <link th:href="@{/styles/css/dailyGoalContainer.css}" rel="stylesheet" />
+    <link th:href="@{/styles/css/scrollBar.css}" rel="stylesheet" />
+    <link th:href="@{/styles/css/button.css}" rel="stylesheet" />
+    <link th:href="@{/styles/css/createGoal.css}" rel="stylesheet" />
+    <link th:href="@{/styles/css/detailGoal.css}" rel="stylesheet" />
+    <link th:href="@{/styles/css/basic.css}" rel="stylesheet" />
+
+    <!--    css - end-->
 
     <!-- 주간 목표 <-> 일간 목표 전환 토글 버튼-->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
@@ -812,6 +44,10 @@
     <div id="monthly-goal-container">
         <img id="goal-main-title-img" src="/images/goal_main_title.png" alt="goal_main_image">
         <span id="monthly-goal-title" th:text="|${month}월의 목표|"></span>
+        <div id="make-goal-button">
+            <button id="btn-monthly-modal" class="hvr-back-pulse">월간 목표 생성 ＋</button>
+            <button id="btn-daily-modal" class="hvr-back-pulse"> 일일 목표 생성 ＋</button>
+        </div>
     </div>
     <div id="monthly-goals-ajax">
         <ul id="monthly-goals" th:each=" monthlyGoal : ${monthlyGoals}">
@@ -854,34 +90,18 @@
         </div>
         </ul>
     </div>
-    <div id="make-goal-button">
-        <button id="btn-monthly-modal">월간 목표 생성</button>
-        <button id="btn-daily-modal"> 일간 목표 생성</button>
-    </div>
 </div>
 
 
 
-<div>
+<div id="week-goals">
     <div style="display: flex; justify-content: space-between">
         <div id="daily-goal-title" style="margin-left: 20px">주간 목표</div>
-        <!-- 토글 버튼 시작 -->
-        <div style="margin-right: 20px">
-            <label class="switch">
-                <input type="checkbox" th:onclick="|location.href='@{/goal/main?isDaily=true}'|">
-                <span class="slider round"></span>
-            </label>
-            <p style="display: inline-block">Weekly
-            <p style="display:none;">Weekly</p>
-        </div>
     </div>
-    <!-- 토글 버튼 끝 -->
-    <!--    <div>-->
-    <!--        <span th:if="${error}" th:text="${error}"></span>-->
-    <!--    </div>-->
-    <div id="daily-goals-container" style="margin-top: 30px">
+
+    <div id="daily-goals-container">
         <div id="monday">
-            <div class="day-title">MON</div>
+            <div class="day-title" th:classappend="${#strings.equals(dayOfWeek,'MONDAY')} ? 'today' : ''">MON</div>
                 <div class="day-content">
                     <div th:if="${dailyGoals.get('MON')}" th:each="goal : ${dailyGoals.get('MON')}">
                         <div id="one-daily-goal" class="one-daily-goal">
@@ -935,7 +155,7 @@
             </div>
         </div>
         <div id="tuesday">
-            <div class="day-title">TUE</div>
+            <div class="day-title" th:classappend="${#strings.equals(dayOfWeek,'TUESDAY')} ? 'today' : ''">TUE</div>
             <div class="day-content">
                 <div th:if="${dailyGoals.get('TUE')}" th:each="goal : ${dailyGoals.get('TUE')}">
                     <div id="one-daily-goal" class="one-daily-goal">
@@ -989,7 +209,7 @@
             </div>
         </div>
         <div id="wednesday">
-            <div class="day-title">WED</div>
+            <div class="day-title" th:classappend="${#strings.equals(dayOfWeek,'WEDNESDAY')} ? 'today' : ''">WED</div>
             <div class="day-content">
                 <div th:if="${dailyGoals.get('WED')}" th:each="goal : ${dailyGoals.get('WED')}">
                     <div id="one-daily-goal" class="one-daily-goal">
@@ -999,7 +219,7 @@
                                     <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? @{/images/check-success.png} : @{/images/check-fail.png}" class="daily-goal-check">
                                 </div>
                                 <div class="daily-goal-name-and-goalType">
-                                    <span class="daily-goal-name" th:text="${goal.name}"></span>
+                                    <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])"></span>
                                     <img class="goal-type-img" th:src="@{/images/tues-goal-type-} + ${goal.getGoalType()} + '.png'">
                                 </div>
                             </div>
@@ -1043,7 +263,7 @@
             </div>
         </div>
         <div id="thursday">
-            <div class="day-title">THU</div>
+            <div class="day-title" th:classappend="${#strings.equals(dayOfWeek,'THURSDAY')} ? 'today' : ''">THU</div>
             <div class="day-content">
                 <div th:if="${dailyGoals.get('THU')}" th:each="goal : ${dailyGoals.get('THU')}">
                     <div id="one-daily-goal" class="one-daily-goal">
@@ -1053,7 +273,7 @@
                                     <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? @{/images/check-success.png} : @{/images/check-fail.png}" class="daily-goal-check">
                                 </div>
                                 <div class="daily-goal-name-and-goalType">
-                                    <span class="daily-goal-name" th:text="${goal.name}"></span>
+                                    <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])"></span>
                                     <img class="goal-type-img" th:src="@{/images/tues-goal-type-} + ${goal.getGoalType()} + '.png'">
                                 </div>
                             </div>
@@ -1097,7 +317,7 @@
             </div>
         </div>
         <div id="friday">
-            <div class="day-title">FRI</div>
+            <div class="day-title" th:classappend="${#strings.equals(dayOfWeek,'FRIDAY')} ? 'today' : ''">FRI</div>
             <div class="day-content">
                 <div th:if="${dailyGoals.get('FRI')}" th:each="goal : ${dailyGoals.get('FRI')}">
                     <div id="one-daily-goal" class="one-daily-goal">
@@ -1107,7 +327,7 @@
                                     <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? @{/images/check-success.png} : @{/images/check-fail.png}" class="daily-goal-check">
                                 </div>
                                 <div class="daily-goal-name-and-goalType">
-                                    <span class="daily-goal-name" th:text="${goal.name}"></span>
+                                    <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])"></span>
                                     <img class="goal-type-img" th:src="@{/images/tues-goal-type-} + ${goal.getGoalType()} + '.png'">
                                 </div>
                             </div>
@@ -1151,7 +371,7 @@
             </div>
         </div>
         <div id="saturday">
-            <div class="day-title">SAT</div>
+            <div class="day-title" th:classappend="${#strings.equals(dayOfWeek,'SATURDAY')} ? 'today' : ''">SAT</div>
             <div class="day-content">
                 <div th:if="${dailyGoals.get('SAT')}" th:each="goal : ${dailyGoals.get('SAT')}">
                     <div id="one-daily-goal" class="one-daily-goal">
@@ -1161,7 +381,7 @@
                                     <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? @{/images/check-success.png} : @{/images/check-fail.png}" class="daily-goal-check">
                                 </div>
                                 <div class="daily-goal-name-and-goalType">
-                                    <span class="daily-goal-name" th:text="${goal.name}"></span>
+                                    <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])"></span>
                                     <img class="goal-type-img" th:src="@{/images/tues-goal-type-} + ${goal.getGoalType()} + '.png'">
                                 </div>
                             </div>
@@ -1205,7 +425,7 @@
             </div>
         </div>
         <div id="sunday">
-            <div class="day-title">SUN</div>
+            <div class="day-title" th:classappend="${#strings.equals(dayOfWeek,'SUNDAY')} ? 'today' : ''">SUN</div>
             <div class="day-content">
                 <div th:if="${dailyGoals.get('SUN')}" th:each="goal : ${dailyGoals.get('SUN')}">
                     <div id="one-daily-goal" class="one-daily-goal">
@@ -1215,7 +435,7 @@
                                     <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? @{/images/check-success.png} : @{/images/check-fail.png}" class="daily-goal-check">
                                 </div>
                                 <div class="daily-goal-name-and-goalType">
-                                    <span class="daily-goal-name" th:text="${goal.name}"></span>
+                                    <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])"></span>
                                     <img class="goal-type-img" th:src="@{/images/tues-goal-type-} + ${goal.getGoalType()} + '.png'">
                                 </div>
                             </div>
@@ -1306,7 +526,7 @@
                        placeholder="일">
                 <br>
                 <div style="padding-top: 10px">
-                    <button th:onclick="createDailyGoal()">일간 목표 생성</button>
+                    <button th:onclick="createDailyGoal()">일일 목표 생성</button>
                 </div>
             </div>
         </div>
@@ -1444,7 +664,7 @@
                 console.log(fragment);
                 monthlyModalOff();
                 $("#create-monthly-goal-modal").replaceWith(fragment);
-                let createMonthlyGoal = document.getElementById("create-monthly-goal");
+                let createMonthlyGoal = document.getElementById("create-monthly-goal-modal");
                 createMonthlyGoal.style.display = "inline";
             }
         })
@@ -1463,7 +683,7 @@
             success : function (fragment) {
                 dailyModalOff();
                 $("#create-daily-goal-modal").replaceWith(fragment);
-                let createDailyGoal = document.getElementById("create-daily-goal");
+                let createDailyGoal = document.getElementById("create-daily-goal-modal");
                 createDailyGoal.style.display = "inline";
             }
         })
@@ -1634,13 +854,13 @@
 
     // 월간 목표 생성(년, 월)모달 없애기
     function monthlyGoalModalOff() {
-        let createMonthlyGoal = document.getElementById("create-monthly-goal");
+        let createMonthlyGoal = document.getElementById("create-monthly-goal-modal");
         createMonthlyGoal.style.display = "none";
     }
 
     // 일간 목표 생성(년, 월, 일)모달 없애기
     function  dailyGoalModalOff() {
-        let createDailyGoal = document.getElementById("create-daily-goal");
+        let createDailyGoal = document.getElementById("create-daily-goal-modal");
         createDailyGoal.style.display = "none";
     }
 
@@ -1649,12 +869,6 @@
         let createMonthlyGoal = document.getElementById("update-monthly-goal-modal");
         createMonthlyGoal.style.display = "none";
     }
-
-    // 주간 목표 <-> 일간 목표 전환용 토글
-    var check = $("input[type='checkbox']");
-    check.click(function(){
-        $("p").toggle();
-    });
 
     // ajax
     function monthlyGoalSuccess(monthlyGoalId, dailyGoalId,achieveType, goalType, value, valueQuota) {
