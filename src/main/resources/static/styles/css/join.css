@@ -11,6 +11,18 @@ body {
     height: 100%;
 }
 
+#back-button {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+}
+
+#back-button:hover {
+    cursor:pointer;
+}
+
 #container{
     height:100%;
 }

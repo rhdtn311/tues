@@ -120,3 +120,20 @@
     flex-direction: row;
     justify-items: center;
 }
+
+.goal-quota {
+    position: relative;
+    top: 3px;
+}
+
+#logout-button {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 60px;
+    top: 23px;
+}
+
+#logout-button:hover {
+    cursor:pointer;
+}
