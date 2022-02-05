@@ -90,8 +90,8 @@ public class MemberController {
         return "redirect:/member/home";
     }
 
-    @PostMapping("logout")
-    public String logOut(HttpServletRequest request) {
+    @GetMapping("logout")
+    public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
 
         if (session != null) {

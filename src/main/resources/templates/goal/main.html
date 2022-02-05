@@ -16,6 +16,71 @@
     <link th:href="@{/styles/css/detailGoal.css}" rel="stylesheet" />
     <link th:href="@{/styles/css/basic.css}" rel="stylesheet" />
 
+    <style>
+        @font-face {
+            font-family: 'LotteMartDream';
+            font-style: normal;
+            font-weight: 400;
+            src: url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff2') format('woff2'), url('//cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff') format('woff');
+        }
+
+        @font-face {
+            font-family: 'MinSans-Bold';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Bold.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SpoqaHanSansNeo-Regular';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Regular.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'GoyangIlsan';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GoyangIlsan.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Galmuri11';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/Galmuri11.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'BinggraeTaom';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.1/BinggraeTaomA1.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'TmonMonsori';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        /* 제목 */
+        .main-title {
+            font-family: 'TmonMonsori';
+        }
+
+        /* MON ~ SUN*/
+        .day-title {
+
+        }
+
+        body {
+            font-family: 'SpoqaHanSansNeo-Regular';
+        }
+
+    </style>
+
     <!--    css - end-->
 
     <!-- 주간 목표 <-> 일간 목표 전환 토글 버튼-->
@@ -42,8 +107,10 @@
 
 <div>
     <div id="monthly-goal-container">
-        <img id="goal-main-title-img" src="/images/goal_main_title.png" alt="goal_main_image">
-        <span id="monthly-goal-title" th:text="|${month}월의 목표|"></span>
+        <div class="image-and-title">
+        <img id="goal-main-title-img" th:src="@{/images/month-} + ${month} + '.png'" alt="goal_main_image" style="position: relative; bottom: 6px;">
+        <span id="monthly-goal-title" class="main-title" th:text="|${month}월의 목표|"></span>
+        </div>
         <div id="make-goal-button">
             <button id="btn-monthly-modal" class="hvr-back-pulse">월간 목표 생성 ＋</button>
             <button id="btn-daily-modal" class="hvr-back-pulse"> 일일 목표 생성 ＋</button>
@@ -96,7 +163,7 @@
 
 <div id="week-goals">
     <div style="display: flex; justify-content: space-between">
-        <div id="daily-goal-title" style="margin-left: 20px">주간 목표</div>
+        <div id="daily-goal-title" style="margin-left: 20px" class="main-title">주간 목표</div>
     </div>
 
     <div id="daily-goals-container">
@@ -483,9 +550,9 @@
     <div id="monthly-modal" class="modal-overlay">
         <div class="modal-window">
             <div class="title">
-                <h2>날짜</h2>
+                <h2>DATE</h2>
             </div>
-            <div class="close-area">X</div>
+            <div class="close-area">ⓧ</div>
             <div class="content">
                 <div>YEAR</div>
                 <label for="year"></label>
@@ -497,8 +564,8 @@
                 <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" id="create-monthly-goal-month"
                        name="month" placeholder="월">
                 <br>
-                <div style="padding-top: 10px">
-                    <button onclick="createMonthlyGoal()">월간 목표 생성</button>
+                <div style="padding-top: 15px; text-align: center;">
+                    <button id="create-button" class="hvr-fade-create" onclick="createMonthlyGoal()">생성</button>
                 </div>
             </div>
         </div>
@@ -507,9 +574,9 @@
     <div id="daily-modal" class="modal-overlay">
         <div class="modal-window">
             <div class="title">
-                <h2>날짜</h2>
+                <h2>DATE</h2>
             </div>
-            <div class="close-area">X</div>
+            <div class="close-area">ⓧ</div>
             <div class="content">
                 <div>YEAR</div>
                 <label for="year"></label>
@@ -525,8 +592,8 @@
                 <input style="width: 194px" type="number" min="1" max="31" th:value="${day}" id="create-daily-goal-day" name="day"
                        placeholder="일">
                 <br>
-                <div style="padding-top: 10px">
-                    <button th:onclick="createDailyGoal()">일일 목표 생성</button>
+                <div style="padding-top: 15px; text-align: center;">
+                    <button th:onclick="createDailyGoal()" id="create-button">생성</button>
                 </div>
             </div>
         </div>
@@ -892,7 +959,7 @@
                     console.log("monthlyGoalSuccess : ");
                     Swal.fire({
                         title: '월간 목표 달성',
-                        text: '축하드립니다! 이번 달에도 계획한 무언갈 해내셨군요.',
+                        text: '축하드립니다! 이번 달 계획한 목표 하나를 이뤘습니다.',
                         showClass: {
                             popup: 'animate__animated animate__fadeInDown'
                         },

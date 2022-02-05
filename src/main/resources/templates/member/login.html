@@ -3,123 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link th:href="@{/styles/css/login.css}" rel="stylesheet" />
 
     <style>
-        html {
-            height: 90%;
+        @import url('https://fonts.googleapis.com/css2?family=Contrail+One&family=Gowun+Dodum&family=Poppins:wght@300&display=swap');
+        @font-face {
+            font-family: 'SBAggroB';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
         }
-
-        body {
-            height: 100%;
-        }
-
-        .title {
-            font-size: 80px;
-            margin-bottom: 10px;
-        }
-
-        .field-error-color {
-            color: #FF6666;
-        }
-
-        .container {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .inputs-and-button {
-            display: flex;
-            align-items: center;
-            position: relative;
-            left: 20px;
-        }
-
-        .join-find-button {
-            height: 30px;
-            width: 10px;
-        }
-
-        .bottom-buttons {
-            width: fit-content;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-content: space-between;
-        }
-
-        .login-input {
-            width: 220px;
-            height: 40px;
-            margin-top: 15px;
-            border: solid 1px #cfcfcf; border-radius : 5px;
-            padding-left: 10px;
-        }
-
-        input::placeholder{
-            color: #cfcfcf;
-        }
-
-        input:focus {
-            outline-color: #ffab8a;
-        }
-
-        #loginButton {
-            margin-left: 10px;
-        }
-
-        @keyframes hvr-wobble-top {
-            16.65% {
-                -webkit-transform: skew(-12deg);
-                transform: skew(-12deg);
-            }
-            33.3% {
-                -webkit-transform: skew(10deg);
-                transform: skew(10deg);
-            }
-            49.95% {
-                -webkit-transform: skew(-6deg);
-                transform: skew(-6deg);
-            }
-            66.6% {
-                -webkit-transform: skew(4deg);
-                transform: skew(4deg);
-            }
-            83.25% {
-                -webkit-transform: skew(-2deg);
-                transform: skew(-2deg);
-            }
-            100% {
-                -webkit-transform: skew(0);
-                transform: skew(0);
-            }
-        }
-
-        .hvr-wobble-top {
-            horiz-align: center;
-            -webkit-transform: perspective(1px) translateZ(0);
-            transform: perspective(1px) translateZ(0);
-            box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-            -webkit-transform-origin: 0 100%;
-            transform-origin: 0 100%;
-        }
-
-        .hvr-wobble-top {
-            -webkit-animation-name: hvr-wobble-top;
-            animation-name: hvr-wobble-top;
-            -webkit-animation-duration: 1s;
-            animation-duration: 1s;
-            -webkit-animation-timing-function: ease-in-out;
-            animation-timing-function: ease-in-out;
-            -webkit-animation-iteration-count: 1;
-            animation-iteration-count: 1;
-        }
-
     </style>
 </head>
-<body style="background-color: #FFFFF5">
+<body>
     <div class="container">
         <div><img id="main-logo" src="/images/tues-logo.png" alt="tues-logo.png"></div>
         <div class="hvr-wobble-top field-error-color" th:if="${error}" th:text="${error}"></div>
@@ -131,14 +27,14 @@
                 <label for="password"></label>
                 <input placeholder="PASSWORD" class="login-input" type="password" id="password" name="password">
             <span>
-                <button id="loginButton" type="submit">login</button>
+                <button id="loginButton" type="submit">LOGIN</button>
             </span>
             </form>
         </div>
 
         <div class="bottom-buttons">
-            <button class="join-find-button" th:onclick="|location.href='@{/member/join}'|"> join </button>
-            <button class="join-find-button" th:onclick="|location.href='@{/member/find}'|"> find </button>
+            <button class="join-find-button hvr-float" th:onclick="|location.href='@{/member/join}'|"> JOIN </button>
+            <button class="join-find-button hvr-float" th:onclick="|location.href='@{/member/find}'|"> FIND </button>
         </div>
     </div>
 

@@ -1,11 +1,11 @@
 #create-monthly-goal-modal, #create-daily-goal-modal, #update-monthly-goal-modal, #update-daily-goal-modal {
     display: none;
-    position:fixed;
-    top:50%;
-    left:50%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%,-50%);
     background-color: #F5F5F5;
-    height: 600px;
+    height: fit-content;
     width: 650px;
     border-radius: 20px;
     border: solid 4px #325288;
@@ -197,7 +197,7 @@ input:focus {
     color: #FFF8F3;
 }
 
-.create-button, #monthly-goal-update-button, #monthly-goal-delete-button {
+.create-button, #monthly-goal-update-button, #monthly-goal-delete-button, #daily-goal-update-button, #daily-goal-delete-button {
     border-radius: 5px;
     border: solid 0px #292C6D;
     background-color: #292C6D;
@@ -205,6 +205,7 @@ input:focus {
     height: 32px;
     font-weight: bold;
     color: #FFF8F3;
+    margin-bottom: 15px;
 }
 
 #create-buttons {
