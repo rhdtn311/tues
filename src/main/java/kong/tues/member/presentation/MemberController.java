@@ -80,7 +80,7 @@ public class MemberController {
         joinService.join(memberJoinReqDto);
 
         log.info("POST : /member/join - 4");
-        return "redirect:member/home";
+        return "redirect:/member/home";
     }
 
     @PostMapping("/login")
