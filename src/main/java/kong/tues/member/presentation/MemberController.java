@@ -62,7 +62,7 @@ public class MemberController {
 
         model.addAttribute("member", new MemberJoinReqDto());
         model.addAttribute("errorMember", new MemberJoinReqDto());
-        return "member/join";
+        return "/member/join";
     }
 
     @PostMapping("/join")
@@ -106,7 +106,7 @@ public class MemberController {
         model.addAttribute("loginId", null);
         model.addAttribute("mail", null);
         model.addAttribute("error", null);
-        return "member/find";
+        return "/member/find";
     }
 
     @GetMapping("/find/id")
