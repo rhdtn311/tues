@@ -21,7 +21,7 @@ public class MemberExControllerAdvice {
 
         model.addAttribute("errorMember", errorMember);
 
-        return "/member/join";
+        return "/join";
     }
 
     @ExceptionHandler(MailExistException.class)
@@ -35,20 +35,20 @@ public class MemberExControllerAdvice {
 
         model.addAttribute("errorMember", errorMember);
 
-        return "/member/join";
+        return "/join";
     }
 
     @ExceptionHandler(LoginFailException.class)
     public String loginFail(LoginFailException error, Model model) {
         model.addAttribute("error", error.getMessage());
 
-        return "/member/login";
+        return "/login";
     }
 
     @ExceptionHandler(MemberNotFoundException.class)
     public String memberNotFound(MemberNotFoundException error, Model model) {
         model.addAttribute("error", error.getMessage());
 
-        return "/member/find";
+        return "/find";
     }
 }
