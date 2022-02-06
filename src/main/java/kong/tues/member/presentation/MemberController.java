@@ -43,6 +43,7 @@ public class MemberController {
     @GetMapping("/home")
     public String home(HttpServletRequest request, Model model) {
 
+        log.info("GET : /member/home");
         HttpSession session = request.getSession(false);
         if (session == null) {
             return "/member/login";
@@ -75,6 +76,7 @@ public class MemberController {
 
         joinService.join(memberJoinReqDto);
 
+        log.info("POST : /member/join");
         return "redirect:member/home";
     }
 
