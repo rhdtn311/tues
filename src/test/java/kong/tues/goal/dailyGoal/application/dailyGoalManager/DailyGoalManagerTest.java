@@ -125,34 +125,34 @@ class DailyGoalManagerTest {
         assertThat(dailyGoal.getSuccess()).isTrue();
     }
 
-    @Test
-    @DisplayName("AchieveType이 BASIC인 경우")
-    void achieveTypeBASIC() {
-
-        // given
-        DailyGoal dailyGoal = DailyGoal.builder()
-                .achieveType(AchieveType.BASIC)
-                .goalType(GoalType.A)
-                .name("일간목표A")
-                .build();
-
-        MonthlyGoal monthlyGoal = MonthlyGoal.builder()
-                .achieveType(AchieveType.COUNT)
-                .goalType(GoalType.A)
-                .name("월간 목표 A")
-                .goalCountQuota(1000)
-                .goalCount(40)
-                .build();
-
-        doReturn(Optional.of(dailyGoal)).when(dailyGoalRepository).findById(any());
-        doReturn(monthlyGoal).when(monthlyGoalQueryRepository).findMonthlyGoalByGoalType(any(Long.class), any(Integer.class), any(Integer.class), any(GoalType.class));
-
-        // when
-        dailyGoalManager.successGoal(1L, 1L);
-
-        // then
-        assertThat(dailyGoal.getSuccess()).isTrue();
-    }
+//    @Test
+//    @DisplayName("AchieveType이 BASIC인 경우")
+//    void achieveTypeBASIC() {
+//
+//        // given
+//        DailyGoal dailyGoal = DailyGoal.builder()
+//                .achieveType(AchieveType.BASIC)
+//                .goalType(GoalType.A)
+//                .name("일간목표A")
+//                .build();
+//
+//        MonthlyGoal monthlyGoal = MonthlyGoal.builder()
+//                .achieveType(AchieveType.COUNT)
+//                .goalType(GoalType.A)
+//                .name("월간 목표 A")
+//                .goalCountQuota(1000)
+//                .goalCount(40)
+//                .build();
+//
+//        doReturn(Optional.of(dailyGoal)).when(dailyGoalRepository).findById(any());
+//        doReturn(monthlyGoal).when(monthlyGoalQueryRepository).findMonthlyGoalByGoalType(any(Long.class), any(Integer.class), any(Integer.class), any(GoalType.class));
+//
+//        // when
+//        dailyGoalManager.successGoal(1L, 1L);
+//
+//        // then
+//        assertThat(dailyGoal.getSuccess()).isTrue();
+//    }
 
 
 }
