@@ -69,6 +69,7 @@ public class MemberController {
     @PostMapping("/join")
     public String join(@ModelAttribute(value = "member") @Validated MemberJoinReqDto memberJoinReqDto,
                        BindingResult bindingResult) {
+        log.info("POST : /member/join");
 
         if (bindingResult.hasErrors()) {
             return "/member/join";
@@ -76,7 +77,6 @@ public class MemberController {
 
         joinService.join(memberJoinReqDto);
 
-        log.info("POST : /member/join");
         return "redirect:member/home";
     }
 
