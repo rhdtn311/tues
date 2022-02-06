@@ -75,7 +75,7 @@ public class MemberController {
 
         joinService.join(memberJoinReqDto);
 
-        return "redirect:/member/home";
+        return "redirect:member/home";
     }
 
     @PostMapping("/login")
