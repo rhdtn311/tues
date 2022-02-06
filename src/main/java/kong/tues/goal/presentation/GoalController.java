@@ -75,7 +75,7 @@ public class GoalController {
                        @RequestParam(value = "isDaily", defaultValue = "false") Boolean isDaily) {
 
         if (member == null) {
-            return "member/login";
+            return "/member/login";
         }
 
         //에러가 있을 경우
@@ -112,14 +112,13 @@ public class GoalController {
         // dailymodal
         model.addAttribute("createdGoalsMap", new HashMap<>());
 
-        return "goal/main";
+        return "/goal/main";
     }
 
     @GetMapping("/create/monthly")
     public String createMonthlyGoal(@Login Member member, Model model, Integer year, Integer month) {
 
         model.addAttribute("achieveTypes", AchieveType.values());
-        log.info("되냐 .. ? 1");
 
         if (member == null) {
             return "redirect:/member/home";
@@ -153,7 +152,7 @@ public class GoalController {
         }
 
         if (member == null) {
-            return "member/login";
+            return "/member/login";
         }
 
         monthlyGoalCreateService.save(monthlyGoalReqDto, member.getId());
@@ -165,7 +164,7 @@ public class GoalController {
     public String createDailyGoal(@Login Member member, Model model, Integer year, Integer month, Integer day) {
 
         if (member == null) {
-            return "member/login";
+            return "/member/login";
         }
 
         Map<String, String> createdGoalsMap = dailyGoalCreateService.findCreatedGoal(member.getId(), year, month);
@@ -187,7 +186,7 @@ public class GoalController {
                                   Model model) {
 
         if (member == null) {
-            return "member/login";
+            return "/member/login";
         }
 
         if (bindingResult.hasErrors()) {
@@ -213,7 +212,7 @@ public class GoalController {
 
         log.info("monthlyGoalId = {}", monthlyGoalAchieveReqDto.getMonthlyGoalId());
         if (member == null) {
-            return "member/login";
+            return "/member/login";
         }
 
         // 입력 검증
@@ -278,7 +277,7 @@ public class GoalController {
                                    Model model) {
 
         if (member == null) {
-            return "member/login";
+            return "/member/login";
         }
 
         // 입력 검증
@@ -344,7 +343,7 @@ public class GoalController {
                                     Model model) {
 
         if (member == null) {
-            return "member/login";
+            return "/member/login";
         }
 
         // 입력 검증
@@ -392,7 +391,7 @@ public class GoalController {
                                  Model model) {
 
         if (member == null) {
-            return "member/login";
+            return "/member/login";
         }
 
         if (dailyGoalFailValidator.validate(dailyGoalAchieveReqDto)) {
@@ -437,7 +436,7 @@ public class GoalController {
 
         log.info("update Monthly = {}", monthlyGoalUpdateReqDto);
         if (member == null) {
-            return "member/login";
+            return "/member/login";
         }
         List<String> createdGoalTypes
                 = monthlyGoalCreateService.findCreatedGoalTypes(member.getId(), monthlyGoalUpdateReqDto.getYear(), monthlyGoalUpdateReqDto.getMonth());
@@ -461,7 +460,7 @@ public class GoalController {
                                     @ModelAttribute @Validated MonthlyGoalReqDto monthlyGoalReqDto,
                                     BindingResult bindingResult) {
         if (member == null) {
-            return "member/login";
+            return "/member/login";
         }
 
         if (bindingResult.hasErrors()) {
@@ -535,7 +534,7 @@ public class GoalController {
 
         log.info("update Monthly = {}", dailyGoalUpdateReqDto.getDailyGoalId());
         if (member == null) {
-            return "member/login";
+            return "/member/login";
         }
 
         Map<String, String> createdGoalsMap = dailyGoalCreateService.findCreatedGoal(member.getId(), dailyGoalUpdateReqDto.getYear(), dailyGoalUpdateReqDto.getMonth());
