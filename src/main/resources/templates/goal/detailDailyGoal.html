@@ -11,7 +11,7 @@
     <div class="daily-goal-detail-title">내용</div>
     <div id="detail-goal-content" th:text="${detailDailyGoal.content}" class="daily-goal-detail-content"></div>
     <div class="daily-goal-detail-title">목표 종류</div>
-    <img id="detail-goal-type" class="daily-goal-detail-content" th:src="@{/images/tues-goal-type-} + ${detailDailyGoal.getGoalType()} + '.png'" style="width: 68px">
+    <img id="detail-goal-type" class="daily-goal-detail-content" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + ${detailDailyGoal.getGoalType()} + '.png'" style="width: 68px">
     <div class="daily-goal-detail-title">타입</div>
     <div id="detail-achieve-type" th:text="${detailDailyGoal.achieveType}" class="daily-goal-detail-content"></div>
     <div class="daily-goal-detail-title" th:if="${#strings.equals(detailDailyGoal.achieveType,'COUNT')} or ${#strings.equals(detailDailyGoal.achieveType,'TIME')}">할달량</div>
