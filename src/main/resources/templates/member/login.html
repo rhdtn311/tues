@@ -17,7 +17,7 @@
 </head>
 <body>
     <div class="container">
-        <div><img id="main-logo" src="/images/tues-logo.png" alt="tues-logo.png"></div>
+        <div><img id="main-logo" src="tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-logo.png" alt="tues-logo.png"></div>
         <div class="hvr-wobble-top field-error-color" th:if="${error}" th:text="${error}"></div>
         <div class="inputs-and-button">
             <form th:action="@{/member/login}" th:object="${member}" method="post">
