@@ -90,7 +90,7 @@
         <span id="monthly-goal-title" class="main-title" th:text="|${month}월의 목표|"></span>
         </div>
         <div>
-            <img id="logout-button" src="/images/logout-btn.png" th:onclick="|location.href='@{/member/logout}'|">
+            <img id="logout-button" src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/logout-btn.png" th:onclick="|location.href='@{/member/logout}'|">
         </div>
         <div id="make-goal-button">
             <button id="btn-monthly-modal" class="hvr-back-pulse">월간 목표 생성 ＋</button>
@@ -100,9 +100,9 @@
     <div id="monthly-goals-ajax">
         <ul id="monthly-goals" th:each=" monthlyGoal : ${monthlyGoals}">
             <div id="one-monthly-goal">
-            <img th:attr="id='check-monthly-goal-'+${monthlyGoal.id}" th:src="${monthlyGoal.success} ? @{/images/check-success.png} : @{/images/check-fail.png}" class="goal-check">
+            <img th:attr="id='check-monthly-goal-'+${monthlyGoal.id}" th:src="${monthlyGoal.success} ? 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png' : 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png'" class="goal-check">
                 <span class="monthly-goal-name" th:id="'monthly-goal-name' + ${monthlyGoal.id}" th:text="${monthlyGoal.name}" th:onclick="detailMonthlyGoal([[${monthlyGoal.id}]])"></span>
-            <img class="goal-type-img" th:src="@{/images/tues-goal-type-} + ${monthlyGoal.getGoalType()} + '.png'">
+            <img class="goal-type-img" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + ${monthlyGoal.getGoalType()} + '.png'">
             <span th:switch="${monthlyGoal.achieveType}">
             <div style="display: inline-block" th:case="${T(kong.tues.goal.AchieveType).COUNT}">
                 <div class="monthly-count" th:attr="class='monthly-goal-' + ${monthlyGoal.id}">
@@ -156,11 +156,11 @@
                             <div class="daily-goal-without-success-box-image">
                         <div class="image-and-name-goaltype">
                             <div class="daily-goal-check-image">
-                                <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? @{/images/check-success.png} : @{/images/check-fail.png}" class="daily-goal-check">
+                                <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png' : 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png'" class="daily-goal-check">
                             </div>
                             <div class="daily-goal-name-and-goalType">
                                 <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])"></span>
-                                <img class="goal-type-img" th:src="@{/images/tues-goal-type-} + ${goal.getGoalType()} + '.png'">
+                                <img class="goal-type-img" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + ${goal.getGoalType()} + '.png'">
                             </div>
                         </div>
                             <div class="daily-goal-count-and-button">
@@ -210,11 +210,11 @@
                         <div class="daily-goal-without-success-box-image">
                             <div class="image-and-name-goaltype">
                                 <div class="daily-goal-check-image">
-                                    <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? @{/images/check-success.png} : @{/images/check-fail.png}" class="daily-goal-check">
+                                    <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png' : 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png'" class="daily-goal-check">
                                 </div>
                                 <div class="daily-goal-name-and-goalType">
                                     <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])"></span>
-                                    <img class="goal-type-img" th:src="@{/images/tues-goal-type-} + ${goal.getGoalType()} + '.png'">
+                                    <img class="goal-type-img" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + ${goal.getGoalType()} + '.png'">
                                 </div>
                             </div>
                             <div class="daily-goal-count-and-button">
@@ -264,11 +264,11 @@
                         <div class="daily-goal-without-success-box-image">
                             <div class="image-and-name-goaltype">
                                 <div class="daily-goal-check-image">
-                                    <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? @{/images/check-success.png} : @{/images/check-fail.png}" class="daily-goal-check">
+                                    <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png' : 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png'" class="daily-goal-check">
                                 </div>
                                 <div class="daily-goal-name-and-goalType">
                                     <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])"></span>
-                                    <img class="goal-type-img" th:src="@{/images/tues-goal-type-} + ${goal.getGoalType()} + '.png'">
+                                    <img class="goal-type-img" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + ${goal.getGoalType()} + '.png'">
                                 </div>
                             </div>
                             <div class="daily-goal-count-and-button">
@@ -318,11 +318,11 @@
                         <div class="daily-goal-without-success-box-image">
                             <div class="image-and-name-goaltype">
                                 <div class="daily-goal-check-image">
-                                    <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? @{/images/check-success.png} : @{/images/check-fail.png}" class="daily-goal-check">
+                                    <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png' : 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png'" class="daily-goal-check">
                                 </div>
                                 <div class="daily-goal-name-and-goalType">
                                     <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])"></span>
-                                    <img class="goal-type-img" th:src="@{/images/tues-goal-type-} + ${goal.getGoalType()} + '.png'">
+                                    <img class="goal-type-img" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + ${goal.getGoalType()} + '.png'">
                                 </div>
                             </div>
                             <div class="daily-goal-count-and-button">
@@ -372,11 +372,11 @@
                         <div class="daily-goal-without-success-box-image">
                             <div class="image-and-name-goaltype">
                                 <div class="daily-goal-check-image">
-                                    <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? @{/images/check-success.png} : @{/images/check-fail.png}" class="daily-goal-check">
+                                    <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png' : 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png'" class="daily-goal-check">
                                 </div>
                                 <div class="daily-goal-name-and-goalType">
                                     <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])"></span>
-                                    <img class="goal-type-img" th:src="@{/images/tues-goal-type-} + ${goal.getGoalType()} + '.png'">
+                                    <img class="goal-type-img" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + ${goal.getGoalType()} + '.png'">
                                 </div>
                             </div>
                             <div class="daily-goal-count-and-button">
@@ -426,11 +426,11 @@
                         <div class="daily-goal-without-success-box-image">
                             <div class="image-and-name-goaltype">
                                 <div class="daily-goal-check-image">
-                                    <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? @{/images/check-success.png} : @{/images/check-fail.png}" class="daily-goal-check">
+                                    <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png' : 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png'" class="daily-goal-check">
                                 </div>
                                 <div class="daily-goal-name-and-goalType">
                                     <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])"></span>
-                                    <img class="goal-type-img" th:src="@{/images/tues-goal-type-} + ${goal.getGoalType()} + '.png'">
+                                    <img class="goal-type-img" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + ${goal.getGoalType()} + '.png'">
                                 </div>
                             </div>
                             <div class="daily-goal-count-and-button">
@@ -480,11 +480,11 @@
                         <div class="daily-goal-without-success-box-image">
                             <div class="image-and-name-goaltype">
                                 <div class="daily-goal-check-image">
-                                    <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? @{/images/check-success.png} : @{/images/check-fail.png}" class="daily-goal-check">
+                                    <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png' : 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png'" class="daily-goal-check">
                                 </div>
                                 <div class="daily-goal-name-and-goalType">
                                     <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])"></span>
-                                    <img class="goal-type-img" th:src="@{/images/tues-goal-type-} + ${goal.getGoalType()} + '.png'">
+                                    <img class="goal-type-img" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + ${goal.getGoalType()} + '.png'">
                                 </div>
                             </div>
                             <div class="daily-goal-count-and-button">
@@ -977,8 +977,7 @@
                 if (value !== undefined && valueQuota === value + 1) {
                     changeCheck(monthlyGoalId, value, valueQuota);
                 } else if (value === undefined) {
-                    console.log("~~~~~monthlyGoalSuccess~~~~~~")
-                    $("#check-monthly-goal-" + monthlyGoalId).replaceWith('<img src="/images/check-fail.png" class="goal-check" id="check-' +  monthlyGoalId + '">');
+                    $("#check-monthly-goal-" + monthlyGoalId).replaceWith('<img src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png" class="goal-check" id="check-' +  monthlyGoalId + '">');
                 }
             }
         })
@@ -1033,7 +1032,7 @@
                     changeCheck(monthlyGoalId, value, valueQuota);
                 } else if (value === undefined) {
                     console.log("monthlyGoalFail")
-                    $("#check-monthly-goal-" + monthlyGoalId).replaceWith('<img src="/images/check-success.png" class="goal-check" id="check-' +  monthlyGoalId + '">');
+                    $("#check-monthly-goal-" + monthlyGoalId).replaceWith('<img src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png" class="goal-check" id="check-' +  monthlyGoalId + '">');
                 }
             },
             error : function (error) {
@@ -1080,7 +1079,7 @@
                 if (value !== undefined && valueQuota === value + 1) {
                     changeCheck(dailyGoalId, value, valueQuota);
                 } else if (value === undefined) {
-                    $("#check-" + dailyGoalId).replaceWith('<img src="/images/check-fail.png" class="daily-goal-check" id="check-' +  dailyGoalId + '">');
+                    $("#check-" + dailyGoalId).replaceWith('<img src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png" class="daily-goal-check" id="check-' +  dailyGoalId + '">');
                 }
             }
         })
@@ -1125,7 +1124,7 @@
                     changeCheck(dailyGoalId, value, valueQuota);
                 } else if (value === undefined) {
                     console.log("dailyGoalFail")
-                    $("#check-" + dailyGoalId).replaceWith('<img src="/images/check-success.png" class="daily-goal-check" id="check-' +  dailyGoalId + '">');
+                    $("#check-" + dailyGoalId).replaceWith('<img src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png" class="daily-goal-check" id="check-' +  dailyGoalId + '">');
                 }
             }
         })
@@ -1137,9 +1136,9 @@
 
         console.log("valueQuota : " + valueQuota + "   value : " + value)
         if (valueQuota === value + 1) {
-            $("#check-" + monthlyGoalId).replaceWith('<img src="/images/check-success.png" class="goal-check daily-goal-check" id="check-' +  monthlyGoalId + '">');
+            $("#check-" + monthlyGoalId).replaceWith('<img src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png" class="goal-check daily-goal-check" id="check-' +  monthlyGoalId + '">');
         } else if (valueQuota === value) {
-            $("#check-" + monthlyGoalId).replaceWith('<img src="/images/check-fail.png" class="goal-check daily-goal-check" id="check-' +  monthlyGoalId + '">');
+            $("#check-" + monthlyGoalId).replaceWith('<img src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png" class="goal-check daily-goal-check" id="check-' +  monthlyGoalId + '">');
         }
     }
 
