@@ -47,10 +47,8 @@ public class MonthlyGoal {
 
     @Nullable
     @Column(name = "achieveType")
+    @Enumerated(value = EnumType.STRING)
     private AchieveType achieveType;
-
-    @Column(name = "wakeUpTime")
-    private LocalTime wakeUpTime;
 
     @Min(0) @Max(100000000)
     @Column(name = "goalCountQuota")
@@ -144,18 +142,12 @@ public class MonthlyGoal {
         this.setGoalCountQuota(monthlyGoalReqDto.getGoalCountQuota());
         this.setGoalTimeQuota(monthlyGoalReqDto.getGoalTimeQuota());
 
-        if (monthlyGoalReqDto.getWakeUpHours() != null) {
-            this.setWakeUpTime(LocalTime.of(monthlyGoalReqDto.getWakeUpHours(), monthlyGoalReqDto.getWakeUpMinutes()));
-        }
-
         if (monthlyGoalReqDto.getAchieveType() == AchieveType.BASIC) {
             this.success = false;
         } else if (monthlyGoalReqDto.getAchieveType() == AchieveType.TIME) {
             this.success = this.goalTime >= this.goalTimeQuota;
         } else if (monthlyGoalReqDto.getAchieveType() == AchieveType.COUNT) {
             this.success = this.goalCount >= this.goalCountQuota;
-        } else if (monthlyGoalReqDto.getAchieveType() == AchieveType.WAKE) {
-            this.success = false;
         }
 
         return this;

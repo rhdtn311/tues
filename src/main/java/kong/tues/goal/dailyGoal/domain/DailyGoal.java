@@ -46,11 +46,8 @@ public class DailyGoal {
 
     @NotNull
     @Column(name = "achieveType")
+    @Enumerated(value = EnumType.STRING)
     private AchieveType achieveType;
-
-    @Nullable
-    @Column(name = "wakeUpTime")
-    private LocalTime wakeUpTime;
 
     @Max(value = 100000000)
     @Nullable
@@ -121,7 +118,6 @@ public class DailyGoal {
         switch (achieveType) {
             case COUNT : success = goalCountQuota <= goalCount; break;
             case TIME : success = goalTimeQuota <= goalTime; break;
-            case WAKE : success = wakeUpTime.isAfter(LocalTime.now()); break;
             case BASIC : success = !success;
         }
     }
@@ -134,18 +130,12 @@ public class DailyGoal {
         this.setGoalCountQuota(dailyGoalReqDto.getGoalCountQuota());
         this.setGoalTimeQuota(dailyGoalReqDto.getGoalTimeQuota());
 
-        if (dailyGoalReqDto.getWakeUpHours() != null) {
-            this.setWakeUpTime(LocalTime.of(dailyGoalReqDto.getWakeUpHours(), dailyGoalReqDto.getWakeUpMinutes()));
-        }
-
         if (dailyGoalReqDto.getAchieveType() == AchieveType.BASIC) {
             this.success = false;
         } else if (dailyGoalReqDto.getAchieveType() == AchieveType.TIME) {
             this.success = this.goalTime >= this.goalTimeQuota;
         } else if (dailyGoalReqDto.getAchieveType() == AchieveType.COUNT) {
             this.success = this.goalCount >= this.goalCountQuota;
-        } else if (dailyGoalReqDto.getAchieveType() == AchieveType.WAKE) {
-            this.success = false;
         }
 
         return this;
