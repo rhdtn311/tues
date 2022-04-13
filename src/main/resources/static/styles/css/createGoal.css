@@ -101,29 +101,6 @@ input:focus {
     border-bottom: solid 2px #325288;
 }
 
-#wakeUpHours {
-    height: 30px;
-    background-color: #F5F5F5;
-    border: none;
-    border-bottom: solid 2px #DDDDDD;
-    width: 50px;
-}
-#wakeUpHours:focus {
-    border-bottom: solid 2px #325288;
-}
-
-#wakeUpMinutes {
-    height: 30px;
-    background-color: #F5F5F5;
-    border: none;
-    border-bottom: solid 2px #DDDDDD;
-    width: 50px;
-}
-#wakeUpMinutes:focus {
-    border-bottom: solid 2px #325288;
-}
-
-
 #goalCountQuota {
     height: 30px;
     background-color: #F5F5F5;
