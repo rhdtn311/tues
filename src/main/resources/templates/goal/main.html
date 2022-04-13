@@ -118,12 +118,12 @@
                     <button class="goal-minus-button hvr-fade hvr-push" th:onclick="monthlyGoalSuccess([[${monthlyGoal.id}]], 0, [[${monthlyGoal.achieveType}]], [[${monthlyGoal.goalType}]], [[${monthlyGoal.goalTime}]], [[${monthlyGoal.goalTimeQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
                 </div>
             </div>
-            <div style="display:inline-block;" th:case="${T(kong.tues.goal.AchieveType).WAKE}">
-                <div class="monthly-wake" th:attr="class='monthly-goal-' + ${monthlyGoal.id}">
-                    <span class="goal-quota" th:text="${monthlyGoal.wakeUpTime}"></span>
-                    <button class="goal-check-button hvr-fade hvr-push" th:onclick="monthlyGoalSuccess([[${monthlyGoal.id}]], 0, [[${monthlyGoal.achieveType}]], [[${monthlyGoal.goalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                </div>
-            </div>
+<!--            <div style="display:inline-block;" th:case="${T(kong.tues.goal.AchieveType).WAKE}">-->
+<!--                <div class="monthly-wake" th:attr="class='monthly-goal-' + ${monthlyGoal.id}">-->
+<!--                    <span class="goal-quota" th:text="${monthlyGoal.wakeUpTime}"></span>-->
+<!--                    <button class="goal-check-button hvr-fade hvr-push" th:onclick="monthlyGoalSuccess([[${monthlyGoal.id}]], 0, [[${monthlyGoal.achieveType}]], [[${monthlyGoal.goalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>-->
+<!--                </div>-->
+<!--            </div>-->
             <div style="display:inline-block;" th:case="${T(kong.tues.goal.AchieveType).BASIC}">
                 <div class="monthly-basic" th:attr="class='monthly-goal-' + ${monthlyGoal.id}">
                     <button th:if="${monthlyGoal.success == false}"
@@ -179,18 +179,18 @@
                                     <button class="goal-minus-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalTime}]], [[${goal.goalTimeQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
                                 </div>
                             </span>
-                            <span th:case="${T(kong.tues.goal.AchieveType).WAKE}">
-                                <div class="daily-wake-mon" th:attr="class=${goal.id}">
-                                    <span class="goal-quota" th:text="  ${goal.wakeUpTime}"></span>
-                                    <button class="goal-check-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                                </div>
-                            </span>
+<!--                            <span th:case="${T(kong.tues.goal.AchieveType).WAKE}">-->
+<!--                                <div class="daily-wake-mon" th:attr="class=${goal.id}">-->
+<!--                                    <span class="goal-quota" th:text="  ${goal.wakeUpTime}"></span>-->
+<!--                                    <button class="goal-check-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>-->
+<!--                                </div>-->
+<!--                            </span>-->
                             <span th:case="${T(kong.tues.goal.AchieveType).BASIC}">
                                 <div class="daily-basic-mon" th:attr="class=${goal.id}">
-                                    <button th:if="${goal.success == false}"
+                                    <button th:if="${goal.success == true}"
                                             class="goal-check-button hvr-fade hvr-push"
                                             th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                                    <button th:if="${goal.success == true}"
+                                    <button th:if="${goal.success == false}"
                                             class="goal-check-button hvr-fade hvr-push"
                                             th:onclick="dailyGoalFail([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
                                 </div>
@@ -233,18 +233,18 @@
                                     <button  class="goal-minus-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'tue', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalTime}]], [[${goal.goalTimeQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
                                 </div>
                             </span>
-                            <span th:case="${T(kong.tues.goal.AchieveType).WAKE}">
-                                <div class="daily-wake-tue" th:attr="class=${goal.id}">
-                                    <span class="goal-quota" th:text="  ${goal.wakeUpTime}"></span>
-                                    <button class="goal-check-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'tue', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                                </div>
-                            </span>
+<!--                            <span th:case="${T(kong.tues.goal.AchieveType).WAKE}">-->
+<!--                                <div class="daily-wake-tue" th:attr="class=${goal.id}">-->
+<!--                                    <span class="goal-quota" th:text="  ${goal.wakeUpTime}"></span>-->
+<!--                                    <button class="goal-check-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'tue', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>-->
+<!--                                </div>-->
+<!--                            </span>-->
                             <span th:case="${T(kong.tues.goal.AchieveType).BASIC}">
                                 <div class="daily-basic-tue" th:attr="class=${goal.id}">
-                                    <button th:if="${goal.success == true}"
+                                    <button th:if="${goal.success == false}"
                                             class="goal-check-button hvr-fade hvr-push"
                                             th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'tue', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                                    <button th:if="${goal.success == false}"
+                                    <button th:if="${goal.success == true}"
                                             class="goal-check-button hvr-fade hvr-push"
                                             th:onclick="dailyGoalFail([[${goal.id}]], [[${goal.achieveType}]], 'tue', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
                                 </div>
@@ -287,18 +287,18 @@
                                     <button class="goal-minus-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'wed', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalTime}]], [[${goal.goalTimeQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
                                 </div>
                             </span>
-                            <span th:case="${T(kong.tues.goal.AchieveType).WAKE}">
-                                <div class="daily-wake-wed" th:attr="class=${goal.id}">
-                                    <span class="goal-quota" th:text="  ${goal.wakeUpTime}"></span>
-                                    <button class="goal-check-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'wed', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                                </div>
-                            </span>
+<!--                            <span th:case="${T(kong.tues.goal.AchieveType).WAKE}">-->
+<!--                                <div class="daily-wake-wed" th:attr="class=${goal.id}">-->
+<!--                                    <span class="goal-quota" th:text="  ${goal.wakeUpTime}"></span>-->
+<!--                                    <button class="goal-check-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'wed', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>-->
+<!--                                </div>-->
+<!--                            </span>-->
                             <span th:case="${T(kong.tues.goal.AchieveType).BASIC}">
                                 <div class="daily-basic-wed" th:attr="class=${goal.id}">
-                                    <button th:if="${goal.success == true}"
+                                    <button th:if="${goal.success == false}"
                                             class="goal-check-button hvr-fade hvr-push"
                                             th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'wed', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                                    <button th:if="${goal.success == false}"
+                                    <button th:if="${goal.success == true}"
                                             class="goal-check-button hvr-fade hvr-push"
                                             th:onclick="dailyGoalFail([[${goal.id}]], [[${goal.achieveType}]], 'wed', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
                                 </div>
@@ -341,18 +341,18 @@
                                     <button class="goal-minus-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'thu', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalTime}]], [[${goal.goalTimeQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
                                 </div>
                             </span>
-                            <span th:case="${T(kong.tues.goal.AchieveType).WAKE}">
-                                <div class="daily-wake-thu" th:attr="class=${goal.id}">
-                                    <span class="goal-quota" th:text="  ${goal.wakeUpTime}"></span>
-                                    <button class="goal-check-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'thu', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                                </div>
-                            </span>
+<!--                            <span th:case="${T(kong.tues.goal.AchieveType).WAKE}">-->
+<!--                                <div class="daily-wake-thu" th:attr="class=${goal.id}">-->
+<!--                                    <span class="goal-quota" th:text="  ${goal.wakeUpTime}"></span>-->
+<!--                                    <button class="goal-check-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'thu', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>-->
+<!--                                </div>-->
+<!--                            </span>-->
                             <span th:case="${T(kong.tues.goal.AchieveType).BASIC}">
                                 <div class="daily-basic-thu" th:attr="class=${goal.id}">
-                                    <button th:if="${goal.success == true}"
+                                    <button th:if="${goal.success == false}"
                                             class="goal-check-button hvr-fade hvr-push"
                                             th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'thu', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                                    <button th:if="${goal.success == false}"
+                                    <button th:if="${goal.success == true}"
                                             class="goal-check-button hvr-fade hvr-push"
                                             th:onclick="dailyGoalFail([[${goal.id}]], [[${goal.achieveType}]], 'thu', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
                                 </div>
@@ -395,18 +395,18 @@
                                     <button class="goal-minus-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'fri', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalTime}]], [[${goal.goalTimeQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
                                 </div>
                             </span>
-                            <span th:case="${T(kong.tues.goal.AchieveType).WAKE}">
-                                <div class="daily-wake-fri" th:attr="class=${goal.id}">
-                                    <span class="goal-quota" th:text="  ${goal.wakeUpTime}"></span>
-                                    <button class="goal-check-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'fri', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                                </div>
-                            </span>
+<!--                            <span th:case="${T(kong.tues.goal.AchieveType).WAKE}">-->
+<!--                                <div class="daily-wake-fri" th:attr="class=${goal.id}">-->
+<!--                                    <span class="goal-quota" th:text="  ${goal.wakeUpTime}"></span>-->
+<!--                                    <button class="goal-check-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'fri', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>-->
+<!--                                </div>-->
+<!--                            </span>-->
                             <span th:case="${T(kong.tues.goal.AchieveType).BASIC}">
                                 <div class="daily-basic-fri" th:attr="class=${goal.id}">
-                                    <button th:if="${goal.success == true}"
+                                    <button th:if="${goal.success == false}"
                                             class="goal-check-button hvr-fade hvr-push"
                                             th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'fri', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                                    <button th:if="${goal.success == false}"
+                                    <button th:if="${goal.success == true}"
                                             class="goal-check-button hvr-fade hvr-push"
                                             th:onclick="dailyGoalFail([[${goal.id}]], [[${goal.achieveType}]], 'fri', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
                                 </div>
@@ -449,18 +449,18 @@
                                     <button class="goal-minus-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'sat', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalTime}]], [[${goal.goalTimeQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
                                 </div>
                             </span>
-                            <span th:case="${T(kong.tues.goal.AchieveType).WAKE}">
-                                <div class="daily-wake-sat" th:attr="class=${goal.id}">
-                                    <span class="goal-quota" th:text="  ${goal.wakeUpTime}"></span>
-                                    <button class="goal-check-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'sat', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                                </div>
-                            </span>
+<!--                            <span th:case="${T(kong.tues.goal.AchieveType).WAKE}">-->
+<!--                                <div class="daily-wake-sat" th:attr="class=${goal.id}">-->
+<!--                                    <span class="goal-quota" th:text="  ${goal.wakeUpTime}"></span>-->
+<!--                                    <button class="goal-check-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'sat', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>-->
+<!--                                </div>-->
+<!--                            </span>-->
                             <span th:case="${T(kong.tues.goal.AchieveType).BASIC}">
                                 <div class="daily-basic-sat" th:attr="class=${goal.id}">
-                                    <button th:if="${goal.success == true}"
+                                    <button th:if="${goal.success == false}"
                                             class="goal-check-button hvr-fade hvr-push"
                                             th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'sat', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                                    <button th:if="${goal.success == false}"
+                                    <button th:if="${goal.success == true}"
                                             class="goal-check-button hvr-fade hvr-push"
                                             th:onclick="dailyGoalFail([[${goal.id}]], [[${goal.achieveType}]], 'sat', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
                                 </div>
@@ -503,18 +503,18 @@
                                     <button class="goal-minus-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'sun', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalTime}]], [[${goal.goalTimeQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
                                 </div>
                             </span>
-                            <span th:case="${T(kong.tues.goal.AchieveType).WAKE}">
-                                <div class="daily-wake-sun" th:attr="class=${goal.id}">
-                                    <span class="goal-quota" th:text="  ${goal.wakeUpTime}"></span>
-                                    <button class="goal-check-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'sun', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                                </div>
-                            </span>
+<!--                            <span th:case="${T(kong.tues.goal.AchieveType).WAKE}">-->
+<!--                                <div class="daily-wake-sun" th:attr="class=${goal.id}">-->
+<!--                                    <span class="goal-quota" th:text="  ${goal.wakeUpTime}"></span>-->
+<!--                                    <button class="goal-check-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'sun', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>-->
+<!--                                </div>-->
+<!--                            </span>-->
                             <span th:case="${T(kong.tues.goal.AchieveType).BASIC}">
                                 <div class="daily-basic-sun" th:attr="class=${goal.id}">
-                                    <button th:if="${goal.success == true}"
+                                    <button th:if="${goal.success == false}"
                                             class="goal-check-button hvr-fade hvr-push"
                                             th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'sun', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                                    <button th:if="${goal.success == false}"
+                                    <button th:if="${goal.success == true}"
                                             class="goal-check-button hvr-fade hvr-push"
                                             th:onclick="dailyGoalFail([[${goal.id}]], [[${goal.achieveType}]], 'sun', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
                                 </div>
@@ -683,10 +683,11 @@
             document.getElementById("create-monthly-goal-select").options[document.getElementById("create-monthly-goal-select").selectedIndex].value;
         var input = "";
         if ( gubun != "X" ){
-            if (gubun == "WAKE") {
-                input += "<input type='number'  id='wakeUpHours' name='wakeUpHours' placeholder='hours'> " +
-                    "<input type='number'  id='wakeUpMinutes' name='wakeUpMinutes' placeholder='minutes'>";
-            } else if (gubun == "COUNT"){
+            // if (gubun == "WAKE") {
+            //     input += "<input type='number'  id='wakeUpHours' name='wakeUpHours' placeholder='hours'> " +
+            //         "<input type='number'  id='wakeUpMinutes' name='wakeUpMinutes' placeholder='minutes'>";
+            // } else
+                if (gubun == "COUNT"){
                 input += "<input type= 'number' id='goalCountQuota' name='goalCountQuota' placeholder='개수'>";
             } else if (gubun == "TIME") {
                 input += "<input type= 'number' id='goalTimeQuota' name='goalTimeQuota' placeholder='시간'>";
@@ -743,10 +744,11 @@
         var gubun =
             document.getElementById("create-daily-goal-select").options[document.getElementById("create-daily-goal-select").selectedIndex].value;
         var input = "";
-        if (gubun == "WAKE") {
-            input += "<input type='number' id='wakeUpHours' name='wakeUpHours' placeholder='hours'> " +
-                "<input type='number' id='wakeUpMinutes' name='wakeUpMinutes' placeholder='minutes'>";
-        } else if (gubun == "COUNT"){
+        // if (gubun == "WAKE") {
+        //     input += "<input type='number' id='wakeUpHours' name='wakeUpHours' placeholder='hours'> " +
+        //         "<input type='number' id='wakeUpMinutes' name='wakeUpMinutes' placeholder='minutes'>";
+        // } else
+            if (gubun == "COUNT"){
             input += "<input type= 'number' id='goalCountQuota' name='goalCountQuota' placeholder='개수'>";
         } else if (gubun == "TIME") {
             input += "<input type= 'number' id='goalTimeQuota' name='goalTimeQuota' placeholder='시간'>";
@@ -762,7 +764,6 @@
     // 월간 목표 생성 시 검증
     function validationMonthly() {
         $(document).ready(function () {
-            console.log("방가햄토리")
             $("#create-monthly-goal-form").validate({
                 rules: {
                     name: {
@@ -771,14 +772,14 @@
                     goalType: {
                         required: true
                     },
-                    wakeUpHours: {
-                        required: true,
-                        range: [0, 23]
-                    },
-                    wakeUpMinutes: {
-                        required: true,
-                        range: [0,59]
-                    },
+                    // wakeUpHours: {
+                    //     required: true,
+                    //     range: [0, 23]
+                    // },
+                    // wakeUpMinutes: {
+                    //     required: true,
+                    //     range: [0,59]
+                    // },
                     goalCountQuota: {
                         required:true,
                         range:[1, 100000000]
@@ -795,14 +796,14 @@
                     goalType: {
                         required: "목표의 종류는 필수 입력값 입니다."
                     },
-                    wakeUpHours: {
-                        required: "기상 시간을 입력해주세요.",
-                        range: "기상 시간은 0~23시까지 입력 가능합니다."
-                    },
-                    wakeUpMinutes: {
-                        required: "기상 시간을 입력해주세요.",
-                        range: "기상 시간은 0~59분까지 입력 가능합니다."
-                    },
+                    // wakeUpHours: {
+                    //     required: "기상 시간을 입력해주세요.",
+                    //     range: "기상 시간은 0~23시까지 입력 가능합니다."
+                    // },
+                    // wakeUpMinutes: {
+                    //     required: "기상 시간을 입력해주세요.",
+                    //     range: "기상 시간은 0~59분까지 입력 가능합니다."
+                    // },
                     goalCountQuota: {
                         required: "목표의 최대 값을 입력해주세요.",
                         range:"목표의 최대 값은 1 ~ 100000000개까지 입력 가능합니다."
@@ -828,14 +829,14 @@
                     goalType: {
                         required: true
                     },
-                    wakeUpHours: {
-                        required: true,
-                        range: [0, 23]
-                    },
-                    wakeUpMinutes: {
-                        required: true,
-                        range: [0,59]
-                    },
+                    // wakeUpHours: {
+                    //     required: true,
+                    //     range: [0, 23]
+                    // },
+                    // wakeUpMinutes: {
+                    //     required: true,
+                    //     range: [0,59]
+                    // },
                     goalCountQuota: {
                         required:true,
                         range:[1, 100000000]
@@ -852,14 +853,14 @@
                     goalType: {
                         required: "목표의 종류는 필수 입력값 입니다."
                     },
-                    wakeUpHours: {
-                        required: "기상 시간을 입력해주세요.",
-                        range: "기상 시간은 0~23시까지 입력 가능합니다."
-                    },
-                    wakeUpMinutes: {
-                        required: "기상 시간을 입력해주세요.",
-                        range: "기상 시간은 0~59분까지 입력 가능합니다."
-                    },
+                    // wakeUpHours: {
+                    //     required: "기상 시간을 입력해주세요.",
+                    //     range: "기상 시간은 0~23시까지 입력 가능합니다."
+                    // },
+                    // wakeUpMinutes: {
+                    //     required: "기상 시간을 입력해주세요.",
+                    //     range: "기상 시간은 0~59분까지 입력 가능합니다."
+                    // },
                     goalCountQuota: {
                         required: "목표의 최대 값을 입력해주세요.",
                         range:"목표의 최대 값은 1 ~ 100000000개까지 입력 가능합니다."
@@ -962,6 +963,7 @@
                 }
 
                 if (fragment === '<div id="error" hidden></div>') {
+                    console.log("1");
                     Swal.fire({
                         text: '값의 범위를 초과했습니다.',
                         width : 300,
@@ -1013,6 +1015,7 @@
                 }
 
                 if (fragment == '<div id="error" hidden></div>') {
+                    console.log(2);
                     Swal.fire({
                         text: '값의 범위를 초과했습니다.',
                         width : 300,
@@ -1061,6 +1064,7 @@
             success: function (fragment) {
 
                 if (fragment == '<div id="error" hidden></div>') {
+                    console.log(3);
                     Swal.fire({
                         text: '값의 범위를 초과했습니다.',
                         width : 300,
@@ -1105,6 +1109,7 @@
             success: function (fragment) {
 
                 if (fragment == '<div id="error" hidden></div>') {
+                    console.log(4);
                     Swal.fire({
                         text: '값의 범위를 초과했습니다.',
                         width : 300,
