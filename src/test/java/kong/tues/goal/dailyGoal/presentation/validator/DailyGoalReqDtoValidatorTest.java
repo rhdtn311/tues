@@ -25,30 +25,6 @@ class DailyGoalReqDtoValidatorTest {
     public Errors errors;
 
     @Test
-    @DisplayName("DailyGoalReqDto의 AchieveType이 WAKE인 경우 검증")
-    void dailyGoalAchieveTypeWakeValidate() {
-
-        // given
-        DailyGoalReqDto dailyGoalReqDto = DailyGoalReqDto.builder()
-                .achieveType(AchieveType.WAKE)
-                .name("일찍 일어나기")
-                .wakeUpHours(null)
-                .wakeUpMinutes(null)
-                .year(2022)
-                .month(1)
-                .goalType(GoalType.A)
-                .content("8시에 기상한다.")
-                .build();
-
-        // when
-        errors = new BeanPropertyBindingResult(dailyGoalReqDto, "dailyGoalReqDto");
-        validator.validate(dailyGoalReqDto, errors);
-
-        // then
-        assertTrue(errors.hasErrors());
-    }
-
-    @Test
     @DisplayName("DailyGoalReqDto의 AchieveType이 COUNT인 경우 검증")
     void dailyGoalAchieveTypeCountValidate() {
         // given

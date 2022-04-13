@@ -22,6 +22,5 @@ public class DailyGoalMainResDto {
     private Integer goalCount;
     private Integer goalTimeQuota;
     private Integer goalTime;
-    private LocalTime wakeUpTime;
     private Boolean success;
 }

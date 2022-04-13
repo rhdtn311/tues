@@ -44,14 +44,6 @@ public class DailyGoalReqDto {
     @NotNull
     private AchieveType achieveType;
 
-    @Min(0) @Max(23)
-    @Nullable
-    private Integer wakeUpHours;
-
-    @Min(0) @Max(59)
-    @Nullable
-    private Integer wakeUpMinutes;
-
     @Nullable
     @Min(0) @Max(value = 100000000)
     private Integer goalCountQuota;
@@ -90,10 +82,6 @@ public class DailyGoalReqDto {
                 .date(LocalDate.of(year, month, day))
                 .success(false)
                 .build();
-
-        if (this.getAchieveType() == AchieveType.WAKE) {
-            dailyGoal.setWakeUpTime(LocalTime.of(wakeUpHours, wakeUpMinutes));
-        }
 
         return dailyGoal;
     }

@@ -19,7 +19,6 @@ public class MonthlyGoalAchieveResDto {
     private Integer goalCount;
     private Integer goalTimeQuota;
     private Integer goalTime;
-    private LocalTime wakeUpTime;
     private Boolean success;
 
     public static MonthlyGoalAchieveResDto entityToDto(MonthlyGoal monthlyGoal) {
@@ -31,7 +30,6 @@ public class MonthlyGoalAchieveResDto {
                 monthlyGoal.getGoalCount(),
                 monthlyGoal.getGoalTimeQuota(),
                 monthlyGoal.getGoalTime(),
-                monthlyGoal.getWakeUpTime(),
                 monthlyGoal.getSuccess()
         );
     }

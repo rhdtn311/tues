@@ -24,11 +24,7 @@ public class MonthlyGoalReqDtoValidator implements Validator {
 
         MonthlyGoalReqDto monthlyGoalReqDto = (MonthlyGoalReqDto) target;
 
-        if (monthlyGoalReqDto.getAchieveType() == AchieveType.WAKE) {
-            if (monthlyGoalReqDto.getWakeUpHours() == null || monthlyGoalReqDto.getWakeUpMinutes() == null) {
-                errors.reject("NoValue");
-            }
-        } else if (monthlyGoalReqDto.getAchieveType() == AchieveType.COUNT) {
+        if (monthlyGoalReqDto.getAchieveType() == AchieveType.COUNT) {
             if (monthlyGoalReqDto.getGoalCountQuota() == null) {
                 errors.reject("NoValue");
             }

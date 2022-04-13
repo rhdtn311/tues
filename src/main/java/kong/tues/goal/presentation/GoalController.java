@@ -244,8 +244,6 @@ public class GoalController {
             return "/goal/main :: .monthly-count";
         } else if (monthlyGoalAchieveReqDto.getAchieveType() == AchieveType.TIME) {
             return "/goal/main :: .monthly-time";
-        } else if (monthlyGoalAchieveReqDto.getAchieveType() == AchieveType.WAKE) {
-            return "/goal/main :: .monthly-wake";
         } else if (monthlyGoalAchieveReqDto.getAchieveType() == AchieveType.BASIC) {
             return "/goal/main :: .monthly-basic";
         }
@@ -309,8 +307,6 @@ public class GoalController {
             return "/goal/main :: .monthly-count";
         } else if (monthlyGoalAchieveReqDto.getAchieveType() == AchieveType.TIME) {
             return "/goal/main :: .monthly-time";
-        } else if (monthlyGoalAchieveReqDto.getAchieveType() == AchieveType.WAKE) {
-            return "/goal/main :: .monthly-wake";
         } else if (monthlyGoalAchieveReqDto.getAchieveType() == AchieveType.BASIC) {
             return "/goal/main :: .monthly-basic";
         }
@@ -375,8 +371,6 @@ public class GoalController {
             return "/goal/main :: .daily-count-" + dailyGoalAchieveReqDto.getWeek();
         } else if (dailyGoalAchieveReqDto.getAchieveType() == AchieveType.TIME) {
             return "/goal/main :: .daily-time-" + dailyGoalAchieveReqDto.getWeek();
-        } else if (dailyGoalAchieveReqDto.getAchieveType() == AchieveType.WAKE) {
-            return "/goal/main :: .daily-wake-" + dailyGoalAchieveReqDto.getWeek();
         } else if (dailyGoalAchieveReqDto.getAchieveType() == AchieveType.BASIC) {
             return "/goal/main :: .daily-basic-" + dailyGoalAchieveReqDto.getWeek();
         }
@@ -420,8 +414,6 @@ public class GoalController {
             return "/goal/main :: .daily-count-" + dailyGoalAchieveReqDto.getWeek();
         } else if (dailyGoalAchieveReqDto.getAchieveType() == AchieveType.TIME) {
             return "/goal/main :: .daily-time-" + dailyGoalAchieveReqDto.getWeek();
-        } else if (dailyGoalAchieveReqDto.getAchieveType() == AchieveType.WAKE) {
-            return "/goal/main :: .daily-wake-" + dailyGoalAchieveReqDto.getWeek();
         } else if (dailyGoalAchieveReqDto.getAchieveType() == AchieveType.BASIC) {
             return "/goal/main :: .daily-basic-" + dailyGoalAchieveReqDto.getWeek();
         }

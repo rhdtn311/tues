@@ -45,8 +45,6 @@ public class DailyGoalUpdateResDto {
                 .goalCountQuota(dailyGoal.getGoalCountQuota())
                 .goalCount(dailyGoal.getGoalCount())
                 .goalTimeQuota(dailyGoal.getGoalTime())
-                .hours(dailyGoal.getWakeUpTime() != null ? dailyGoal.getWakeUpTime().getHour() : null)
-                .minutes(dailyGoal.getWakeUpTime() != null ? dailyGoal.getWakeUpTime().getMinute() : null)
                 .build();
     }
 

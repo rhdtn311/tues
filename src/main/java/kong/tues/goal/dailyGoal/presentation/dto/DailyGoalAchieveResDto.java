@@ -21,7 +21,6 @@ public class DailyGoalAchieveResDto {
     private Integer goalCount;
     private Integer goalTimeQuota;
     private Integer goalTime;
-    private LocalTime wakeUpTime;
     private Boolean success;
 
     public static DailyGoalAchieveResDto entityToDto(DailyGoal dailyGoal) {
@@ -33,7 +32,6 @@ public class DailyGoalAchieveResDto {
                 dailyGoal.getGoalCount(),
                 dailyGoal.getGoalTimeQuota(),
                 dailyGoal.getGoalTime(),
-                dailyGoal.getWakeUpTime(),
                 dailyGoal.getSuccess()
         );
     }}

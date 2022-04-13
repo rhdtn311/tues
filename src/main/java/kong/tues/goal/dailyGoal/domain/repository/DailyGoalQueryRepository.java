@@ -22,7 +22,7 @@ public class DailyGoalQueryRepository {
 
         return queryFactory.select(Projections.constructor(DailyGoalMainResDto.class,
                 dailyGoal.id, dailyGoal.name, dailyGoal.goalType, dailyGoal.achieveType, dailyGoal.goalCountQuota,
-                dailyGoal.goalCount, dailyGoal.goalTimeQuota, dailyGoal.goalTime, dailyGoal.wakeUpTime, dailyGoal.success))
+                dailyGoal.goalCount, dailyGoal.goalTimeQuota, dailyGoal.goalTime, dailyGoal.success))
                 .from(dailyGoal)
                 .leftJoin(member).on(member.id.eq(memberId))
                 .where(eqYear(year).and(eqMonth(month)).and(eqDay(day)), eqMemberId(memberId))

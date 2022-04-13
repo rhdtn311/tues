@@ -26,11 +26,7 @@ public class DailyGoalReqDtoValidator implements Validator {
 
         DailyGoalReqDto dailyGoalReqDto = (DailyGoalReqDto) target;
 
-        if (dailyGoalReqDto.getAchieveType() == AchieveType.WAKE) {
-            if (dailyGoalReqDto.getWakeUpHours() == null || dailyGoalReqDto.getWakeUpMinutes() == null) {
-                errors.reject("NoValue");
-            }
-        } else if (dailyGoalReqDto.getAchieveType() == AchieveType.COUNT) {
+        if (dailyGoalReqDto.getAchieveType() == AchieveType.COUNT) {
             if (dailyGoalReqDto.getGoalCountQuota() == null) {
                 errors.reject("NoValue");
             }

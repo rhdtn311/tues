@@ -37,8 +37,6 @@ public class DailyGoalManager implements GoalManager {
             dailyGoal.plusGoalCount();
         } else if (dailyGoal.getAchieveType() == AchieveType.TIME) {
             dailyGoal.plusGoalTime();
-        } else if (dailyGoal.getAchieveType() == AchieveType.WAKE) {
-            dailyGoal.checkSuccess();
         } else if (dailyGoal.getAchieveType() == AchieveType.BASIC) {
             dailyGoal.checkSuccess();
         }
@@ -62,8 +60,6 @@ public class DailyGoalManager implements GoalManager {
             dailyGoal.minusGoalCount();
         } else if (dailyGoal.getAchieveType() == AchieveType.TIME) {
             dailyGoal.minusGoalTime();
-        } else if (dailyGoal.getAchieveType() == AchieveType.WAKE) {
-            dailyGoal.checkSuccess();
         } else if (dailyGoal.getAchieveType() == AchieveType.BASIC) {
             dailyGoal.checkSuccess();
         }

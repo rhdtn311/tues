@@ -40,14 +40,6 @@ public class MonthlyGoalReqDto {
     @NotNull(message = "값을 입력해주세요.")
     private AchieveType achieveType;
 
-    @Min(value = 0, message = "0이상") @Max(value = 23, message = "23미만")
-    @Nullable
-    private Integer wakeUpHours;
-
-    @Min(value = 0, message = "0이상") @Max(value = 59, message = "59미만")
-    @Nullable
-    private Integer wakeUpMinutes;
-
     @Nullable
     @Min(value = 0, message = "0이상") @Max(value = 100000000, message = "1000000미만")
     private Integer goalCountQuota;
@@ -84,10 +76,6 @@ public class MonthlyGoalReqDto {
                 .date(LocalDate.of(year, month, 1))
                 .success(false)
                 .build();
-
-        if (this.getAchieveType() == AchieveType.WAKE) {
-            monthlyGoal.setWakeUpTime(LocalTime.of(wakeUpHours, wakeUpMinutes));
-        }
 
         return monthlyGoal;
     }

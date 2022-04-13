@@ -55,7 +55,7 @@ public class MonthlyGoalQueryRepository {
     public List<MonthlyGoalMainResDto> findAllMonthlyGoals(Long memberId, int year, int month) {
         return queryFactory.select(Projections.constructor(MonthlyGoalMainResDto.class,
                 monthlyGoal.id, monthlyGoal.name, monthlyGoal.goalType, monthlyGoal.achieveType,monthlyGoal.goalCountQuota, monthlyGoal.goalCount,
-                monthlyGoal.goalTimeQuota, monthlyGoal.goalTime, monthlyGoal.wakeUpTime, monthlyGoal.success))
+                monthlyGoal.goalTimeQuota, monthlyGoal.goalTime,  monthlyGoal.success))
                 .from(monthlyGoal)
                 .leftJoin(member).on(member.id.eq(memberId))
                 .where(eqYear(year).and(eqMonth(month)).and(eqMemberId(memberId)))

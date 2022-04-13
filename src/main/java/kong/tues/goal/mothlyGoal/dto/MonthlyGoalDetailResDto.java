@@ -45,8 +45,6 @@ public class MonthlyGoalDetailResDto {
                 .goalTimeQuota(monthlyGoal.getGoalTimeQuota())
                 .goalTime(monthlyGoal.getGoalTime())
                 .success(monthlyGoal.getSuccess())
-                .hours(monthlyGoal.getWakeUpTime() != null ? monthlyGoal.getWakeUpTime().getHour() : null)
-                .minutes(monthlyGoal.getWakeUpTime() != null ? monthlyGoal.getWakeUpTime().getMinute() : null)
                 .build();
     }
 

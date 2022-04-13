@@ -49,8 +49,6 @@ public class DailyGoalDetailResDto {
                 .goalTimeQuota(dailyGoal.getGoalTimeQuota())
                 .goalTime(dailyGoal.getGoalTime())
                 .success(dailyGoal.getSuccess())
-                .hours(dailyGoal.getWakeUpTime() != null ? dailyGoal.getWakeUpTime().getHour() : null)
-                .minutes(dailyGoal.getWakeUpTime() != null ? dailyGoal.getWakeUpTime().getMinute() : null)
                 .build();
     }
 }
