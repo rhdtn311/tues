@@ -81,7 +81,6 @@
             <div style="font-size: 18px; font-weight: bold;">타입</div>
             <select name="achieveType" id="create-monthly-goal-select" onchange="OnChange(this.value);">
                 <option value="BASIC">기본</option>
-                <option value="WAKE">기상</option>
                 <option value="COUNT">개수</option>
                 <option value="TIME">시간</option>
             </select>
@@ -101,10 +100,7 @@
             document.getElementById("achieveType").options[document.getElementById("achieveType").selectedIndex].value;
         var input = "";
         if ( gubun != "X" ){
-            if (gubun == "WAKE") {
-                input += "<input type='number'  id='wakeUpHours' name='wakeUpHours' placeholder='hours'> " +
-                    "<input type='number'  id='wakeUpMinutes' name='wakeUpMinutes' placeholder='minutes'>";
-            } else if (gubun == "COUNT"){
+            if (gubun == "COUNT"){
                 input += "<input type= 'number' id='goalCountQuota' name='goalCountQuota' placeholder='개수'>";
             } else if (gubun == "TIME") {
                 input += "<input type= 'number' id='goalTimeQuota' name='goalTimeQuota' placeholder='시간'>";

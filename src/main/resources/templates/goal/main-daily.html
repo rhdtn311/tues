@@ -231,10 +231,6 @@
                 <button th:onclick="|plusMonthlyGoal('${monthlyGoal.id}')|">plus</button>
                 <button th:onclick="|minusMonthlyGoal('${monthlyGoal.id}')|">minus</button>
             </div>
-            <div style="display:inline-block;" th:case="${T(kong.tues.goal.AchieveType).WAKE}">
-            <span th:text="|${monthlyGoal.wakeUpTime}|"></span>
-                <button th:onclick="|plusMonthlyGoal('${monthlyGoal.id}')|">check</button>
-            </div>
             <div style="display:inline-block;" th:case="${T(kong.tues.goal.AchieveType).BASIC}">
                 <button th:if="${monthlyGoal.success == true}" th:onclick="|plusMonthlyGoal('${monthlyGoal.id}')|">check</button>
                 <button th:if="${monthlyGoal.success == false}" th:onclick="|minusMonthlyGoal('${monthlyGoal.id}')|">check</button>
@@ -279,10 +275,6 @@
                     <span th:utext="|(${goal.goalTime} / ${goal.goalTimeQuota})|"></span>
                     <button th:onclick="|plusDailyGoal('${goal.id}')|">plus</button>
                     <button th:onclick="|minusDailyGoal('${goal.id}')|">minus</button>
-                </span>
-                <span th:case="${T(kong.tues.goal.AchieveType).WAKE}">
-                    <span th:text="|${goal.goalType}|"></span>
-                    <button th:onclick="|plusDailyGoal('${goal.id}')|">plus</button>
                 </span>
                 <span th:case="${T(kong.tues.goal.AchieveType).BASIC}">
                     <span th:text="|${goal.goalType}|"></span>

@@ -97,29 +97,6 @@
             border-bottom: solid 2px #325288;
         }
 
-        #wakeUpHours {
-            height: 30px;
-            background-color: #F5F5F5;
-            border: none;
-            border-bottom: solid 2px #DDDDDD;
-            width: 50px;
-        }
-        #wakeUpHours:focus {
-            border-bottom: solid 2px #325288;
-        }
-
-        #wakeUpMinutes {
-            height: 30px;
-            background-color: #F5F5F5;
-            border: none;
-            border-bottom: solid 2px #DDDDDD;
-            width: 50px;
-        }
-        #wakeUpMinutes:focus {
-            border-bottom: solid 2px #325288;
-        }
-
-
         #goalCountQuota {
             height: 30px;
             background-color: #F5F5F5;
@@ -192,10 +169,7 @@
             var gubun =
                 document.getElementById("create-daily-goal-select").options[document.getElementById("create-daily-goal-select").selectedIndex].value;
             var input = "";
-            if (gubun == "WAKE") {
-                input += "<input type='number' id='wakeUpHours' name='wakeUpHours' placeholder='hours'> " +
-                    "<input type='number' id='wakeUpMinutes' name='wakeUpMinutes' placeholder='minutes'>";
-            } else if (gubun == "COUNT"){
+            if (gubun == "COUNT"){
                 input += "<input type= 'number' id='goalCountQuota' name='goalCountQuota' placeholder='개수'>";
             } else if (gubun == "TIME") {
                 input += "<input type= 'number' id='goalTimeQuota' name='goalTimeQuota' placeholder='시간'>";
@@ -290,7 +264,6 @@
             <div style="font-size: 18px; font-weight: bold">타입</div>
             <select name="achieveType" id="create-daily-goal-select" onchange="OnChangeDaily(this.value);">
                 <option value="BASIC">기본</option>
-                <option value="WAKE">기상</option>
                 <option value="COUNT">개수</option>
                 <option value="TIME">시간</option>
             </select>
