@@ -997,6 +997,10 @@
                 } else if (value === undefined) {
                     $("#check-" + dailyGoalId).replaceWith('<img src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png" class="daily-goal-check" id="check-' +  dailyGoalId + '">');
                 }
+
+                if (achieveType == 'BASIC') {
+                    location.reload();
+                }
             }
         })
     }
@@ -1042,6 +1046,10 @@
                 } else if (value === undefined) {
                     console.log("dailyGoalFail")
                     $("#check-" + dailyGoalId).replaceWith('<img src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png" class="daily-goal-check" id="check-' +  dailyGoalId + '">');
+                }
+
+                if (achieveType == 'BASIC') {
+                    location.reload();
                 }
             }
         })
