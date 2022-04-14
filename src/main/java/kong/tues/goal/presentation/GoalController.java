@@ -353,7 +353,7 @@ public class GoalController {
         DailyGoalAchieveResDto dailyGoalAchieveResDto = (DailyGoalAchieveResDto) dailyGoalAndMonthlyGoalMap.get("dailyGoal");
         model.addAttribute("goal", dailyGoalAchieveResDto);
 
-        if (dailyGoalAndMonthlyGoalMap.containsKey("monthlyGoal")) {
+        if (dailyGoalAchieveReqDto.getAchieveType() != AchieveType.BASIC && dailyGoalAndMonthlyGoalMap.containsKey("monthlyGoal")) {
             MonthlyGoalAchieveResDto monthlyGoalAchieveResDto = (MonthlyGoalAchieveResDto) dailyGoalAndMonthlyGoalMap.get("monthlyGoal");
 
             // 값 검증
@@ -398,7 +398,7 @@ public class GoalController {
         DailyGoalAchieveResDto dailyGoalAchieveResDto = (DailyGoalAchieveResDto) dailyGoalAndMonthlyGoalMap.get("dailyGoal");
         model.addAttribute("goal", dailyGoalAchieveResDto);
 
-        if (dailyGoalAndMonthlyGoalMap.containsKey("monthlyGoal")) {
+        if (dailyGoalAchieveReqDto.getAchieveType() != AchieveType.BASIC && dailyGoalAndMonthlyGoalMap.containsKey("monthlyGoal")) {
             MonthlyGoalAchieveResDto monthlyGoalAchieveResDto = (MonthlyGoalAchieveResDto) dailyGoalAndMonthlyGoalMap.get("monthlyGoal");
             // 값 검증
             if (monthlyGoalFailValidator.validate(monthlyGoalAchieveResDto)) {
@@ -409,6 +409,8 @@ public class GoalController {
         } else {
             model.addAttribute("monthlyGoal", new MonthlyGoal());
         }
+        log.info("error - 2");
+
 
         if (dailyGoalAchieveReqDto.getAchieveType() == AchieveType.COUNT) {
             return "/goal/main :: .daily-count-" + dailyGoalAchieveReqDto.getWeek();
