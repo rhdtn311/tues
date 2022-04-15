@@ -15,6 +15,7 @@ import kong.tues.goal.dailyGoal.presentation.validator.DailyGoalReqDtoValidator;
 import kong.tues.goal.dailyGoal.presentation.validator.DailyGoalSuccessValidator;
 import kong.tues.goal.goalList.application.GoalListService;
 import kong.tues.goal.goalList.application.dto.DailyGoalListDto;
+import kong.tues.goal.goalList.application.dto.MonthlyGoalListDto;
 import kong.tues.goal.mothlyGoal.application.*;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
 import kong.tues.goal.mothlyGoal.dto.*;
@@ -607,12 +608,15 @@ public class GoalController {
         List<List<DailyGoalListDto>> dailyGoalList
                 = goalListService.getDailyGoalList(member.getId(), year, month, getLastDay(year, month));
 
-        List<List<List<DailyGoalListDto>>> resultList = getDailyGoalList(dailyGoalList);
-        addBlankDay(resultList);
+        List<List<List<DailyGoalListDto>>> dailyGoals = getDailyGoalList(dailyGoalList);
+        addBlankDay(dailyGoals);
 
-        model.addAttribute("dailyGoalList", resultList);
+        model.addAttribute("dailyGoalList", dailyGoals);
 
-        System.out.println("resultList : " + resultList);
+        // 월간 목표 리스트
+        List<MonthlyGoalListDto> monthlyGoalList = goalListService.getMonthlyGoalList(member.getId(), year, month);
+        model.addAttribute("monthlyGoalList", monthlyGoalList);
+
         return "/goal/goalList";
     }
 

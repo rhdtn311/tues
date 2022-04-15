@@ -56,17 +56,17 @@
             background-color: #FFF8F3;
         }
 
-        .top {
+        .container {
             display: flex;
-            position: absolute;
-            left: 13%;
-            top: 4%;
+            flex-direction: column;
             align-items: center;
         }
 
-        .top_check_box {
-            right: -368%;
-            position: relative;
+        .top {
+            display: flex;
+            width: 76%;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .year_and_month {
@@ -75,11 +75,10 @@
         }
 
         .calendar {
-            position: absolute;
-            left: 13%;
-            top: 10%;
             border-right: 2px solid black;
             border-bottom: 2px solid black;
+            width: fit-content;
+            margin-bottom: 50px;
         }
 
         .calendar-item {
@@ -115,9 +114,63 @@
         .fail-goal {
             color: #E04555;
         }
+
+        .month-records {
+            border: black solid 2px;
+            width: 1417px;
+            padding: 16px;
+            margin-bottom: 30px;
+        }
+
+        .one-monthly-goal {
+            padding-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .monthly-goal-name-and-count {
+            display: flex;
+            align-items: center;
+        }
+
+        #monthly-goal-name {
+            margin-right: 20px;
+        }
+
+        .monthly-goal-achieve-rate {
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        progress {
+            height: 10px;
+            width: 270px;
+        }
+
+        #records-of-the-month-title {
+            font-size: 30px;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        #back-button {
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            top: 30px;
+            left: 30px;
+        }
+
+        #back-button:hover {
+            cursor:pointer;
+        }
+
     </style>
 </head>
 <body>
+    <div>
+        <img id="back-button" src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/back-btn.png" th:onclick="|location.href='@{/member/home}'|">
+    </div>
     <div class="container">
         <div class="top">
             <div class="year_and_month" th:text="${year} + '.' + ${month}"></div>
@@ -160,6 +213,27 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div id="records-of-the-month-title"> 📜 RECORDS OF THE MONTH </div>
+            <div class="month-records">
+                <div class="one-monthly-goal" th:each="monthlyGoal : ${monthlyGoalList}">
+                    <div class="monthly-goal-name-and-count">
+                        <div id="monthly-goal-name" th:text="${monthlyGoal.getGoalName()}"></div>
+                        <div class="monthly-goal-achieve-rate" th:if="${monthlyGoal.getAchieveType() == T(kong.tues.goal.AchieveType).TIME}"
+                             th:text="| : ${monthlyGoal.getGoalTime()}/${monthlyGoal.getGoalTimeQuota()}  (달성률 : ${monthlyGoal.getAchievementRate()}%)|"
+                        ></div>
+                        <div class="monthly-goal-achieve-rate" th:if="${monthlyGoal.getAchieveType() == T(kong.tues.goal.AchieveType).COUNT}"
+                             th:text="| : ${monthlyGoal.getGoalCount()}/${monthlyGoal.getGoalCountQuota()} (달성률 : ${monthlyGoal.getAchievementRate()}%)|"
+                        ></div>
+                        <div class="monthly-goal-achieve-rate" th:if="${monthlyGoal.getAchieveType() == T(kong.tues.goal.AchieveType).BASIC}"
+                             th:text="${monthlyGoal.getSuccess() ? ':' + ' 달성' : ':' + ' 미달성'}"
+                        ></div>
+                    </div>
+                    <progress th:value="${monthlyGoal.getAchievementRate()}" min = "0" max="100"></progress>
                 </div>
             </div>
         </div>

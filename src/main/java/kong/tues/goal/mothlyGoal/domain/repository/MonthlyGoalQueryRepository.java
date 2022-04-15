@@ -6,6 +6,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import kong.tues.goal.AchieveType;
 import kong.tues.goal.GoalType;
 import kong.tues.goal.dailyGoal.application.dto.CreatedMonthlyGoalResDto;
+import kong.tues.goal.goalList.application.dto.MonthlyGoalListDto;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
 import kong.tues.goal.mothlyGoal.dto.MonthlyGoalMainResDto;
 import lombok.RequiredArgsConstructor;
@@ -74,6 +75,17 @@ public class MonthlyGoalQueryRepository {
                 .leftJoin(member).on(member.id.eq(memberId))
                 .where(eqYear(year).and(eqMonth(month)).and(eqGoalType(goalType)).and(eqMemberId(memberId)).and(eqAchieveType(achieveType)))
                 .fetchOne();
+    }
+
+    public List<MonthlyGoalListDto> findAllMonthlyGoalsByDate(Long memberId, int year, int month) {
+        return queryFactory.select(Projections.constructor(MonthlyGoalListDto.class,
+                monthlyGoal.name, monthlyGoal.goalCountQuota, monthlyGoal.goalCount,
+                monthlyGoal.goalTimeQuota, monthlyGoal.goalTime, monthlyGoal.success,monthlyGoal.achieveType
+                ))
+                .from(monthlyGoal)
+                .leftJoin(member).on(member.id.eq(memberId))
+                .where(eqYear(year).and(eqMonth(month)).and(eqMemberId(memberId)))
+                .fetch();
     }
 
     public BooleanExpression eqYear(int year) {
