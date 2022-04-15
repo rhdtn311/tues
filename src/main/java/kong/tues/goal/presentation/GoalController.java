@@ -13,6 +13,8 @@ import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalUpdateReqDto;
 import kong.tues.goal.dailyGoal.presentation.validator.DailyGoalFailValidator;
 import kong.tues.goal.dailyGoal.presentation.validator.DailyGoalReqDtoValidator;
 import kong.tues.goal.dailyGoal.presentation.validator.DailyGoalSuccessValidator;
+import kong.tues.goal.goalList.application.GoalListService;
+import kong.tues.goal.goalList.application.dto.DailyGoalListDto;
 import kong.tues.goal.mothlyGoal.application.*;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
 import kong.tues.goal.mothlyGoal.dto.*;
@@ -33,9 +35,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.constraints.Null;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalTime;
+import java.util.*;
+import java.util.stream.IntStream;
 
 @Slf4j
 @RequestMapping("/goal")
@@ -55,6 +57,7 @@ public class GoalController {
     private final DailyGoalDetailService dailyGoalDetailService;
     private final DailyGoalUpdateService dailyGoalUpdateService;
     private final DailyGoalDeleteService dailyGoalDeleteService;
+    private final GoalListService goalListService;
 
     private final MonthlyGoalReqDtoValidator memberJoinReqDtoValidator;
     private final DailyGoalReqDtoValidator dailyGoalReqDtoValidator;
@@ -577,5 +580,107 @@ public class GoalController {
         dailyGoalDeleteService.deleteDailyGoal(dailyGoalId, member.getId());
 
         return "redirect:/goal/main";
+    }
+
+    @GetMapping("/list")
+    public String getGoalList(@Login Member member, int year, int month, Model model) {
+
+        if (member == null) {
+            return "/member/login";
+        }
+
+        model.addAttribute("year", year);
+        model.addAttribute("month", month);
+
+        // 해당 년도 해당 월의 모든 날짜 구하기
+        model.addAttribute("days", getDayList(year, month));
+
+        // 해당 년도 해당 월의 모든 요일 구하기
+        model.addAttribute("dayOfWeeks", getDayOfWeekList(year, month));
+        model.addAttribute("dayOfWeekList", List.of("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"));
+
+        // 스크롤 바에 넣은 년과 월
+        model.addAttribute("years", IntStream.rangeClosed(2000, 2100).toArray());
+        model.addAttribute("months", IntStream.rangeClosed(1, 12).toArray());
+
+        // 일간 목표 리스트
+        List<List<DailyGoalListDto>> dailyGoalList
+                = goalListService.getDailyGoalList(member.getId(), year, month, getLastDay(year, month));
+
+        List<List<List<DailyGoalListDto>>> resultList = getDailyGoalList(dailyGoalList);
+        addBlankDay(resultList);
+
+        model.addAttribute("dailyGoalList", resultList);
+
+        System.out.println("resultList : " + resultList);
+        return "/goal/goalList";
+    }
+
+    private void addBlankDay(List<List<List<DailyGoalListDto>>> resultList) {
+
+        int firstWeek = resultList.get(0).size();
+        for (int i = 0; i < 7 - firstWeek; i++) {
+            resultList.get(0).add(0, null);
+        }
+
+        int lastWeek = resultList.get(resultList.size() - 1).size();
+        for (int i = 0; i < 7 - lastWeek; i++) {
+            resultList.get(resultList.size() - 1).add(null);
+        }
+    }
+
+    private List<List<List<DailyGoalListDto>>> getDailyGoalList(List<List<DailyGoalListDto>> dailyGoalList) {
+
+        List<List<List<DailyGoalListDto>>> resultList = new ArrayList<>();
+
+        int index = 0;
+        for (int i = 1; i < dailyGoalList.size(); i++) {
+            List<DailyGoalListDto> dailyGoalDto = dailyGoalList.get(i);
+
+            if (i != 1 && dailyGoalDto.get(0).getDayOfWeek().equals("MONDAY")) {
+                index++;
+            }
+
+            if (resultList.size() <= index) {
+                resultList.add(new ArrayList<>());
+            }
+            resultList.get(index).add(dailyGoalList.get(i));
+        }
+
+        return resultList;
+
+    }
+
+    private Integer getLastDay(int year, int month) {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(year, month - 1, 1);
+
+        return calendar.getActualMaximum(Calendar.DATE);
+    }
+
+    private int[] getDayList(int year, int month) {
+
+        Integer lastDay = getLastDay(year, month);
+
+        return IntStream.rangeClosed(1, lastDay).toArray();
+    }
+
+    private List<String> getDayOfWeekList(int year, int month) {
+
+        String[] dayOfWeeks = new String[] {"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
+
+        int lastDay = getLastDay(year, month);
+
+        // 해당 년도 해당 월의 처음 요일과 마지막 요일
+        int firstDayOfWeek = LocalDate.of(year, month, 1).getDayOfWeek().getValue();
+
+        List<String> dayOfWeekList = new ArrayList<>();
+        for (int i = 0; i < lastDay; i++) {
+            dayOfWeekList.add(dayOfWeeks[(firstDayOfWeek - 1) % 7]);
+            firstDayOfWeek++;
+        }
+
+        return dayOfWeekList;
     }
 }

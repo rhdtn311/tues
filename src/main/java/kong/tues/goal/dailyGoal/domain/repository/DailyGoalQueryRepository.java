@@ -4,6 +4,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kong.tues.goal.dailyGoal.application.dto.DailyGoalMainResDto;
+import kong.tues.goal.goalList.application.dto.DailyGoalListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -26,6 +27,17 @@ public class DailyGoalQueryRepository {
                 .from(dailyGoal)
                 .leftJoin(member).on(member.id.eq(memberId))
                 .where(eqYear(year).and(eqMonth(month)).and(eqDay(day)), eqMemberId(memberId))
+                .fetch();
+    }
+
+    public List<DailyGoalListDto> findAllDailyGoals(long memberId, int year, int month) {
+
+        return queryFactory.select(Projections.constructor(DailyGoalListDto.class,
+                dailyGoal.name, dailyGoal.goalCountQuota, dailyGoal.goalCount, dailyGoal.goalTimeQuota,
+                dailyGoal.goalTime, dailyGoal.success, dailyGoal.achieveType, dailyGoal.date.dayOfMonth()))
+                .from(dailyGoal)
+                .leftJoin(member).on(member.id.eq(memberId))
+                .where(eqYear(year).and(eqMonth(month)).and(eqMemberId(memberId)))
                 .fetch();
     }
 

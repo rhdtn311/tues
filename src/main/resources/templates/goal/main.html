@@ -57,6 +57,10 @@
             font-family: 'Pretendard-Regular';
         }
 
+        .main-top-option {
+            display: flex;
+        }
+
     </style>
 
     <!--    css - end-->
@@ -80,17 +84,19 @@
 
 </head>
 <body>
-<!--<h1 id="logo"> tu es </h1>-->
-<!--<img src="/images/tues-logo.png" alt="tues-logo">-->
-
 <div>
     <div id="monthly-goal-container">
         <div class="image-and-title">
         <img id="goal-main-title-img" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/month-' + ${month} + '.png'" alt="goal_main_image" style="position: relative; bottom: 6px;">
         <span id="monthly-goal-title" class="main-title" th:text="|${month}월의 목표|"></span>
         </div>
-        <div>
-            <img id="logout-button" src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/logout-btn.png" th:onclick="|location.href='@{/member/logout}'|">
+        <div class="main-top-option">
+            <div>
+                <img id="goal-list-button" src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/goal_list.jpg" th:onclick="|location.href='@{/goal/list}/?year=${year}&month=${month}'|" alt="logout">
+            </div>
+            <div>
+                <img id="logout-button" src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/logout-btn.png" th:onclick="|location.href='@{/member/logout}'|" alt="goal_list" >
+            </div>
         </div>
         <div id="make-goal-button">
             <button id="btn-monthly-modal" class="hvr-back-pulse">월간 목표 생성 ＋</button>

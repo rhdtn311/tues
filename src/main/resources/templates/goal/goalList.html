@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+        /*스크롤바*/
+        /* width */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #CDDEFF;
+            border-radius: 10px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2C2891;
+        }
+
+        select {
+            width: 57px;
+            text-align: center;
+            padding: 0.15em;
+            font-family: inherit;
+            font-size: 17px;
+            border: 2px solid #292C6D;
+            border-radius: 5px;
+            background: white;
+            color: #292C6D;
+            appearance: none;
+        }
+
+        select::-ms-expand {
+            display: none;
+        }
+
+        button {
+            border-radius: 5px;
+            border: solid 0px #292C6D;
+            background-color: #292C6D;
+            width: 62px;
+            height: 32px;
+            font-weight: bold;
+            color: #FFF8F3;
+        }
+
+        button:hover {
+            cursor: pointer;
+        }
+
+        body {
+            background-color: #FFF8F3;
+        }
+
+        .top {
+            display: flex;
+            position: absolute;
+            left: 13%;
+            top: 4%;
+            align-items: center;
+        }
+
+        .top_check_box {
+            right: -368%;
+            position: relative;
+        }
+
+        .year_and_month {
+            font-style: italic;
+            font-size: 40px;
+        }
+
+        .calendar {
+            position: absolute;
+            left: 13%;
+            top: 10%;
+            border-right: 2px solid black;
+            border-bottom: 2px solid black;
+        }
+
+        .calendar-item {
+            display: flex;
+        }
+
+        .day_box {
+            width : 200px;
+            height : 150px;
+            border: 2px solid black;
+            overflow: auto;
+            overflow-y: auto;
+            border-bottom: none;
+            border-right: none;
+            padding-left: 5px;
+        }
+
+        .day_box_nothing {
+            background-color: #cccccc;
+        }
+
+        .one-goal {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .day_and_day_of_week {
+            display: flex;
+            font-weight: lighter;
+            margin-bottom: 5px;
+        }
+
+        .fail-goal {
+            color: #E04555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top">
+            <div class="year_and_month" th:text="${year} + '.' + ${month}"></div>
+            <form th:action="@{/goal/list}" class="top_check_box">
+                <select name="year" id="year" >
+                    <option th:each="select_year : ${years}"
+                            th:selected="${year} == ${select_year}"
+                            th:value="${select_year}" th:text="${select_year}"> </option>
+                </select>
+                <select name="month" id="month">
+                    <option th:each="select_month : ${months}"
+                            th:value="${select_month}"
+                            th:selected="${month} == ${select_month}"
+                            th:text="${select_month}"> </option>
+                </select>
+                <button type="submit"> 확인 </button>
+            </form>
+        </div>
+        <div class="calendar">
+            <div class="calendar-item" th:each="week, weekNum : ${dailyGoalList}" >
+                <div th:each="day, dayNum : ${week}">
+                    <div class="day_box day_box_nothing" th:if="${day == null}"></div>
+                    <div class="day_box" th:if="${day != null}">
+                        <div class="day_and_day_of_week">
+                            <div th:text="${dayOfWeekList.get(dayNum.index)}"></div>
+                        </div>
+                        <div th:each="goal : ${day}">
+                            <div class="one-goal">
+                                <div class="goal-name" th:classappend="${goal.getSuccess()} ? '' : 'fail-goal'" th:text="${goal.getGoalName()}"></div>
+                                <div class="goal-time-or-count" th:classappend="${goal.getSuccess()} ? '' : 'fail-goal'">
+                                    <span th:if="${goal.getAchieveType() == T(kong.tues.goal.AchieveType).TIME}"
+                                         th:text="'(' + ${goal.getGoalTime()} + '/'"></span>
+                                    <span th:if="${goal.getAchieveType() == T(kong.tues.goal.AchieveType).TIME}"
+                                         th:text="${goal.getGoalTimeQuota()} + ')'"></span>
+                                    <span th:if="${goal.getAchieveType() == T(kong.tues.goal.AchieveType).COUNT}"
+                                         th:text="'(' + ${goal.getGoalCount()} + '/'"></span>
+                                    <span th:if="${goal.getAchieveType() == T(kong.tues.goal.AchieveType).COUNT}"
+                                         th:text="${goal.getGoalCountQuota()} + ')'"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

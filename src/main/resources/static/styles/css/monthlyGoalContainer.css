@@ -126,14 +126,23 @@
     top: 3px;
 }
 
-#logout-button {
-    width: 30px;
-    height: 30px;
+.main-top-option {
+    display: flex;
     position: absolute;
-    right: 60px;
+    right: 45px;
     top: 23px;
 }
 
+#logout-button, #goal-list-button {
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+}
+
 #logout-button:hover {
+    cursor:pointer;
+}
+
+#goal-list-button:hover {
     cursor:pointer;
 }
