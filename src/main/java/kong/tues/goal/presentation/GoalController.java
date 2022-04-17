@@ -34,6 +34,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.Null;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -76,7 +77,10 @@ public class GoalController {
     @GetMapping("/main")
     public String main(@Login Member member, Model model,
                        @RequestParam(value = "error") @Nullable String error,
-                       @RequestParam(value = "isDaily", defaultValue = "false") Boolean isDaily) {
+                       @RequestParam(value = "isDaily", defaultValue = "false") Boolean isDaily,
+                       HttpSession httpSession) {
+
+        log.info("Session timeout = {}", httpSession.getMaxInactiveInterval());
 
         if (member == null) {
             return "/member/login";
