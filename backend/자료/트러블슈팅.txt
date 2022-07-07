@@ -1,0 +1,25 @@
+tues 트러블 슈팅
+
+https://aamoos.tistory.com/453
+https://awse2050.tistory.com/62
+https://simple-ing.tistory.com/48
+https://myserena.tistory.com/155
+
+- AchieveType에서 기상(WAKE)를 삭제하였다. AchieveType은 Enum 타입으로 설정했는데 
+@Enumerate 어노테이션으로 설정을 해놓지 않아 기본값인 EnumType.ORIGINAL로 설정되어있었고
+따라서 DB에 숫자로 저장되었다. 따라서 처음 프로젝트 접속 시 일간, 월간 목표를 불러오는 과정에서
+arrayindexoutofboundsexception이 발생하였다. 그래서 DailyGoal과 MonthlyGoal의 AchieveType을
+EnumType.STRING으로 변경하고 DB에서 모든 DailyGoal, MonthlyGoal 데이터의 AchieveType을 String값으로 변경해주었다.
+
+
+= 혹시나 다음에도 갑자기 ec2가 안된다면. -> ec2 기존 키 페어를 삭제하고 새로운 키 페어를 생성한다. (ec2를 삭제 후 재생성 해야 할 수도 있음)
+
+- ec2를 다시 구축헀다면 RDS와 다시 연결해줘야 한다. (보안그룹 설정에 RDS 추가)
+
+- 배포 시 manifa~ 어쩌구 에러 뜬다면 test 코드를 git에서 제거하고 다시 해본다. 혹은 build.gradle에 
+jar {
+	enabled = false
+}
+를 추가하고 build.gradle 업데이트 후 커밋하고 배포해본다.
+
+- 세션은 application.properties에서 server.servlet.session.timeout으로 설정하면 ec2에 적용된다.

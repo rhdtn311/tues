@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>일간 목표 수정</title>
+    <style>
+        ul li {
+            list-style-type: none;
+            float: left;
+            margin-left: 10px;
+        }
+
+        #create-daily-goal {
+            position:fixed;
+            top:50%;
+            left:50%;
+            transform: translate(-50%,-50%);
+            background-color: #FAEEE7;
+            height: 450px;
+            width: 650px;
+            border-radius: 20px;
+            border: solid 4px #325288;
+        }
+
+        #title {
+            text-align: center;
+            display: inline-block;
+            position: relative;
+            left: 50px;
+        }
+
+        #date, #input-name, #input-content, #input-type {
+            margin-left: 30px;
+            margin-top: 20px;
+        }
+
+        #all-monthly-goals {
+            left: 104%;
+            position: fixed;
+            top: 7%;
+            width: fit-content;
+            display: flex;
+            flex-direction: column;
+            background-color: blueviolet;
+            border-radius: 20px;
+            border: solid 4px #325288;
+        }
+
+        #check-monthly-goals-btn {
+            border: solid 3px #FEF9EF;
+            height: 27px;
+            background-color: #172774;
+            border-radius: 15px;
+            font-weight: bold;
+            font-style: oblique;
+            color: #FEF9EF;
+            display: inline;
+            position: relative;
+            left: 153px;
+        }
+
+        #head {
+            text-align: center;
+        }
+
+        #create-goal-year, #create-goal-month, #create-goal-day {
+            height: 30px;
+            background-color: #F5F5F5;
+            border: none;
+            border-bottom: solid 2px #325288;
+            width: 32px;
+        }
+
+        #create-goal-month {
+            width: 15px;
+            text-align: center;
+        }
+
+        #create-goal-day {
+            width: 20px;
+            text-align: center;
+        }
+
+        #create-goal-name, #create-goal-content {
+            height: 30px;
+            background-color: #F5F5F5;
+            border: none;
+            border-bottom: solid 2px #325288;
+            width: 570px;
+        }
+
+        #create-goal-name :focus {
+            border-bottom: solid 2px #325288;
+        }
+
+        #create-goal-content:focus {
+            border-bottom: solid 2px #325288;
+        }
+
+        #goalCountQuota {
+            height: 30px;
+            background-color: #F5F5F5;
+            border: none;
+            border-bottom: solid 2px #DDDDDD;
+            width: 50px;
+        }
+        #goalCountQuota:focus {
+            border-bottom: solid 2px #325288;
+        }
+
+
+        #goalTimeQuota {
+            height: 30px;
+            background-color: #F5F5F5;
+            border: none;
+            border-bottom: solid 2px #DDDDDD;
+            width: 50px;
+        }
+        #goalTimeQuota:focus {
+            border-bottom: solid 2px #325288;
+        }
+
+        #input_out {
+            margin-left: 50px;
+        }
+
+        #create-daily-goal-select {
+            -o-appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+
+            width: 150px;
+            height: 35px;
+            background:url('https://i.ibb.co/98Vbb8L/gnb-bg.gif') no-repeat 95% 50%;
+            background-size: 20px;
+            padding: 5px 30px 5px 10px;
+            border-radius: 4px;
+            outline: 0 none;
+        }
+
+        #create-daily-goal-select option {
+            background: black;
+            color: #fff;
+            padding: 3px 0;
+        }
+
+        .create-button {
+            border-radius: 5px;
+            border: solid 0px #292C6D;
+            background-color: #292C6D;
+            width: 50px;
+            height: 32px;
+            font-weight: bold;
+            color: #FFF8F3;
+        }
+
+        #create-buttons {
+            margin-top: 38px;
+            text-align: center;
+        }
+
+
+    </style>
+
+    <script>
+        function OnChangeDaily()
+        {
+            var gubun =
+                document.getElementById("create-daily-goal-select").options[document.getElementById("create-daily-goal-select").selectedIndex].value;
+            var input = "";
+            if (gubun == "COUNT"){
+                input += "<input type= 'number' id='goalCountQuota' name='goalCountQuota' placeholder='개수'>";
+            } else if (gubun == "TIME") {
+                input += "<input type= 'number' id='goalTimeQuota' name='goalTimeQuota' placeholder='시간'>";
+            }
+            document.getElementById("input_out").innerHTML = input;
+        }
+
+        function checkMonthlyGoals() {
+            document.getElementById("check-monthly-goals").style.display = "inline";
+        }
+    </script>
+
+</head>
+<body>
+<div class="container" id="update-daily-goal-modal">
+    <div id="head">
+        <h1 id="title">일간 목표 수정</h1>
+        <button id="check-monthly-goals-btn" onclick="checkMonthlyGoals()"> 월간 목표 확인 ▶</button>
+    </div>
+    <div id="check-monthly-goals" style="display: none; background-color: #ffcf93">
+        <div id="all-monthly-goals">
+            <ul th:each="createdMonthlyGoal : ${createdGoalsMap}" style="padding-left: 27px; padding-right: 40px;">
+                <div style="display: flex">
+                    <img style="width: 20px" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + ${createdMonthlyGoal.getKey()} +'.png'" >
+                    <li th:text="${createdMonthlyGoal.getValue()}"></li>
+                </div>
+            </ul>
+        </div>
+    </div>
+    <form id="create-daily-goal-form" th:action="@{/goal/update/daily}" method="post">
+        <input id="daily-goal-id" th:name="dailyGoalId" th:value="${updateDailyGoal.dailyGoalId}" hidden>
+        <div class="buttons">
+            <ul>
+                <li><img style="width: 20px" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-A.png'"><input
+                        th:checked="${#strings.equals(updateDailyGoal.goalType, 'A')}" class="goals" type="radio"
+                        name="goalType" id="goalTypeA" value="A"><label for="goalTypeA"></label></li>
+                <li><img style="width: 20px" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-B.png'"><input
+                        th:checked="${#strings.equals(updateDailyGoal.goalType, 'B')}" class="goals" type="radio"
+                        name="goalType" id="goalTypeB" value="B"><label for="goalTypeB"></label></li>
+                <li><img style="width: 20px" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-C.png'"><input
+                        th:checked="${#strings.equals(updateDailyGoal.goalType, 'C')}" class="goals" type="radio"
+                        name="goalType" id="goalTypeC" value="C"><label for="goalTypeC"></label></li>
+                <li><img style="width: 20px" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-D.png'"><input
+                        th:checked="${#strings.equals(updateDailyGoal.goalType, 'D')}" class="goals" type="radio"
+                        name="goalType" id="goalTypeD" value="D"><label for="goalTypeD"></label></li>
+                <li><img style="width: 20px" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-E.png'"><input
+                        th:checked="${#strings.equals(updateDailyGoal.goalType, 'E')}" class="goals" type="radio"
+                        name="goalType" id="goalTypeE" value="E"><label for="goalTypeE"></label></li>
+                <li><img style="width: 20px" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-F.png'"><input
+                        th:checked="${#strings.equals(updateDailyGoal.goalType, 'F')}" class="goals" type="radio"
+                        name="goalType" id="goalTypeF" value="F"><label for="goalTypeF"></label></li>
+                <li><img style="width: 20px" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-G.png'"><input
+                        th:checked="${#strings.equals(updateDailyGoal.goalType, 'G')}" class="goals" type="radio"
+                        name="goalType" id="goalTypeG" value="G"><label for="goalTypeG"></label></li>
+                <li><img style="width: 20px" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-H.png'"><input
+                        th:checked="${#strings.equals(updateDailyGoal.goalType, 'H')}" class="goals" type="radio"
+                        name="goalType" id="goalTypeH" value="H"><label for="goalTypeH"></label></li>
+                <li><img style="width: 20px" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-I.png'"><input
+                        th:checked="${#strings.equals(updateDailyGoal.goalType, 'I')}" class="goals" type="radio"
+                        name="goalType" id="goalTypeI" value="I"><label for="goalTypeI"></label></li>
+                <li><img style="width: 20px" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-J.png'"><input
+                        th:checked="${#strings.equals(updateDailyGoal.goalType, 'J')}" class="goals" type="radio"
+                        name="goalType" id="goalTypeJ" value="J"><label for="goalTypeJ"></label></li>
+                <li><img style="width: 20px" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-OTHER.png'"><input
+                        th:checked="${#strings.equals(updateDailyGoal.goalType, 'OTHER')}" type="radio" name="goalType"
+                        id="goalTypeOTHER" value="OTHER"><label for="goalTypeOTHER"></label></li>
+            </ul>
+        </div>
+        <br>
+        <div id="addDiv"></div>
+        <br>
+        <div id="date">
+            <div style="font-size: 18px; font-weight: bold">날짜</div>
+            <label for="create-goal-year"></label>
+            <input type="text" id="create-goal-year" name="year" placeholder="YEAR" readonly th:value="${year}">
+            <label for="create-goal-month"></label>
+            <input type="text" id="create-goal-month" name="month" placeholder="MONTH" readonly th:value="${month}">
+            <label for="create-goal-day"></label>
+            <input type="text" id="create-goal-day" name="day" placeholder="DAY" readonly th:value="${day}">
+        </div>
+        <div id="input-name">
+            <div style="font-size: 18px; font-weight: bold">이름</div>
+            <label for="create-goal-name"></label>
+            <input type="text" id="create-goal-name" name="name" th:value="${updateDailyGoal.name}">
+        </div>
+        <div id="input-content">
+            <div style="font-size: 18px; font-weight: bold">내용</div>
+            <label for="create-goal-content"></label>
+            <input type="text" id="create-goal-content" name="content" th:value="${updateDailyGoal.content}">
+        </div>
+        <div id="input-type">
+            <div style="font-size: 18px; font-weight: bold">타입</div>
+            <select name="achieveType" id="create-daily-goal-select" onchange="OnChangeDaily(this.value);">
+                <option value="BASIC">기본</option>
+                <option value="COUNT">개수</option>
+                <option value="TIME">시간</option>
+            </select>
+            <p id="input_out"></p>
+        </div>
+        <div id="create-buttons">
+            <button type="submit" class="create-button hvr-fade-create" onclick="validationDaily()" style="margin-right: 100px;">확인</button>
+            <button type="button" class="create-button hvr-fade-create" onclick="updateDailyGoalModalOff()">취소</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/styles/css/join.css}" rel="stylesheet" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Contrail+One&family=Gowun+Dodum&family=Poppins:wght@300&display=swap');
+
+        @font-face {
+            font-family: 'LeferiPoint-BlackObliqueA';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-BlackObliqueA.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SBAggroB';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+    </style>
+</head>
+<body class="bg-pan-left">
+    <div>
+        <img id="back-button" src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/back-btn.png" th:onclick="|location.href='@{/member/home}'|">
+    </div>
+    <div id="container">
+            <div id="flex">
+                <div id="title" style="font-family:'LeferiPoint-BlackObliqueA'">JOIN</div>
+                <form th:action="@{/member/join}" method="post" th:object="${member}">
+                    <center>
+                    <span class="hvr-wobble-top field-error-color" th:if="${error}" th:text="${error}"></span>
+                    <span th:if="${#fields.hasGlobalErrors()}">
+                        <p class="field-error field-error-color hvr-wobble-top" th:each="err : ${#fields.globalErrors()}" th:text="${err}">
+                            전체 오류 메시지
+                        </p>
+                    </span>
+                    </center>
+                    <div>
+                        <label for="loginId"></label>
+                        <input placeholder="ID" type="text" id="loginId" th:name="loginId" th:errorclass="field-error"
+                        class="join-input" th:value="${errorMember} ? ${errorMember.loginId} : *{loginId}">
+                        <div class="field-error hvr-wobble-top field-error-color" th:errors="*{loginId}"></div>
+                    </div>
+                    <div>
+                        <label for="password"></label>
+                        <input placeholder="PASSWORD" type="password" id="password" th:value="${errorMember} ? ${errorMember.password} : *{password}"
+                               th:name="password" th:errorclass="field-error" class="join-input">
+                        <div class="field-error hvr-wobble-top field-error-color" th:errors="*{password}"></div>
+                    </div>
+                    <div>
+                        <label for="verifyPassword"></label>
+                        <input placeholder="VERIFY PASSWORD" type="password" id="verifyPassword" th:value="${errorMember} ? ${errorMember.verifyPassword} : *{verifyPassword}"
+                               th:name="verifyPassword" th:errorclass="field-error"
+                        class="join-input">
+                        <div class="field-error hvr-wobble-top field-error-color" th:errors="*{verifyPassword}"></div>
+                    </div>
+                    <div>
+                        <label for="mail"></label>
+                        <input placeholder="EMAIL" type="email" id="mail" th:value="${errorMember} ? ${errorMember.mail} : *{mail}"
+                               th:name="mail" th:errorclass="field-error" class="join-input">
+                        <div class="field-error hvr-wobble-top field-error-color" th:errors="*{mail}"></div>
+                    </div>
+                    <div>
+                        <button type="submit" class="join-button hvr-float" >CONFIRM</button>
+                    </div>
+                </form>
+            </div>
+    </div>
+</body>
+</html>

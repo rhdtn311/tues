@@ -1,0 +1,82 @@
+/*월간 목표 생성창 년도, 월 보내기 모달창*/
+#monthly-modal.modal-overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(1.5px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+#monthly-modal .modal-window {
+    background: #FFF8F3;
+    box-shadow: 0 8px 32px 0 rgb(31 38 135 / 37%);
+    backdrop-filter: blur( 13.5px );
+    -webkit-backdrop-filter: blur( 13.5px );
+    border-radius: 10px;
+    border: solid 4px #325288;
+    width: 220px;
+    height: fit-content;
+    position: relative;
+    top: -100px;
+    padding: 10px;
+}
+#monthly-modal .title {
+    padding-left: 10px;
+    display: inline;
+    color: black;
+}
+#monthly-modal .title h2 {
+    display: inline;
+}
+#monthly-modal .close-area {
+    display: inline;
+    float: right;
+    padding-right: 10px;
+    cursor: pointer;
+    text-shadow: 1px 1px 2px grey;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#monthly-modal .content {
+    margin-top: 20px;
+    padding: 0px 10px;
+    text-shadow: 1px 1px 2px grey;
+    color: black;
+}
+
+#create-monthly-goal-year, #create-monthly-goal-month {
+    width: 194px;
+    height: 21px;
+    border: none;
+    border-bottom: solid 2px #325288;
+    background: none;
+    margin-bottom: 15px;
+}
+
+#create-button {
+    border-radius: 5px;
+    border: solid 0px #292C6D;
+    background-color: #292C6D;
+    width: 62px;
+    height: 32px;
+    font-weight: bold;
+    color: #FFF8F3;
+}
+
+/*월간 목표 생성 모달창*/
+ul li {
+    list-style-type: none;
+    float: left;
+    margin-left: 10px;
+}

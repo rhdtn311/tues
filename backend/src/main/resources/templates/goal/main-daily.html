@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html {
+            height: 90%;
+        }
+        body {
+            background-color: #FFFFF0;
+            height: 100%;
+        }
+        #monthly-modal.modal-overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(1.5px);
+            -webkit-backdrop-filter: blur(1.5px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        #monthly-modal .modal-window {
+            background: rgba( 69, 139, 197, 0.70 );
+            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+            backdrop-filter: blur( 13.5px );
+            -webkit-backdrop-filter: blur( 13.5px );
+            border-radius: 10px;
+            border: 1px solid rgba( 255, 255, 255, 0.18 );
+            width: 220px;
+            height: 200px;
+            position: relative;
+            top: -100px;
+            padding: 10px;
+        }
+        #monthly-modal .title {
+            padding-left: 10px;
+            display: inline;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+
+        }
+        #monthly-modal .title h2 {
+            display: inline;
+        }
+        #monthly-modal .close-area {
+            display: inline;
+            float: right;
+            padding-right: 10px;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+        }
+
+        #monthly-modal .content {
+            margin-top: 20px;
+            padding: 0px 10px;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+        }
+
+        /*    -----------------------------------------      */
+        #daily-modal.modal-overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(1.5px);
+            -webkit-backdrop-filter: blur(1.5px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        #daily-modal .modal-window {
+            background: rgba( 69, 139, 197, 0.70 );
+            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+            backdrop-filter: blur( 13.5px );
+            -webkit-backdrop-filter: blur( 13.5px );
+            border-radius: 10px;
+            border: 1px solid rgba( 255, 255, 255, 0.18 );
+            width: 220px;
+            height: 250px;
+            position: relative;
+            top: -100px;
+            padding: 10px;
+        }
+        #daily-modal .title {
+            padding-left: 10px;
+            display: inline;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+
+        }
+        #daily-modal .title h2 {
+            display: inline;
+        }
+        #daily-modal .close-area {
+            display: inline;
+            float: right;
+            padding-right: 10px;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+        }
+
+        #daily-modal .content {
+            margin-top: 20px;
+            padding: 0px 10px;
+            text-shadow: 1px 1px 2px gray;
+            color: white;
+        }
+
+        .daily-goals-container {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .day-of-week-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 주간 목표 <-> 일간 목표 전환 토글 버튼 - 시작 */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            vertical-align:middle;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {display:none;}
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .2s;
+            transition: .2s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .2s;
+            transition: .2s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        p {
+            margin:0px;
+            display:inline-block;
+            font-size:15px;
+            font-weight:bold;
+        }
+        /* 주간 목표 <-> 일간 목표 전환 토글 버튼 - 끝 */
+
+        .daily-goal-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+    </style>
+
+    <!-- 주간 목표 <-> 일간 목표 전환 토글 버튼-->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+
+</head>
+<body>
+<h1> 목표 메인 화면 </h1>
+<div>
+    <div id="monthly-goal-title" th:text="|${year}월의 목표|"></div>
+    <ul th:each=" monthlyGoal : ${monthlyGoals}">
+        <li th:classappend="${monthlyGoal.success} ? 'goal-success' : 'goal-not-success'" style="display: inline-block" th:text="${monthlyGoal.name}"></li>
+        <span th:text="${monthlyGoal.goalType}"></span>
+        <span th:switch="${monthlyGoal.achieveType}">
+            <div style="display: inline-block" th:case="${T(kong.tues.goal.AchieveType).COUNT}">
+                <span th:text="|${monthlyGoal.goalCount} / ${monthlyGoal.goalCountQuota}|"> </span>
+                <button th:onclick="|plusMonthlyGoal('${monthlyGoal.id}')|">plus</button>
+                <button th:onclick="|minusMonthlyGoal('${monthlyGoal.id}')|">minus</button>
+            </div>
+            <div style="display:inline-block;" th:case="${T(kong.tues.goal.AchieveType).TIME}">
+                <span th:text="|${monthlyGoal.goalTime} / ${monthlyGoal.goalTimeQuota}|"></span>
+                <button th:onclick="|plusMonthlyGoal('${monthlyGoal.id}')|">plus</button>
+                <button th:onclick="|minusMonthlyGoal('${monthlyGoal.id}')|">minus</button>
+            </div>
+            <div style="display:inline-block;" th:case="${T(kong.tues.goal.AchieveType).BASIC}">
+                <button th:if="${monthlyGoal.success == true}" th:onclick="|plusMonthlyGoal('${monthlyGoal.id}')|">check</button>
+                <button th:if="${monthlyGoal.success == false}" th:onclick="|minusMonthlyGoal('${monthlyGoal.id}')|">check</button>
+            </div>
+    </ul>
+</div>
+
+<button id="btn-monthly-modal">월간 목표 생성</button>
+<button id="btn-daily-modal"> 일간 목표 생성 </button>
+<div>
+    <div style="display: flex; justify-content: space-between">
+        <div id="daily-goal-title" style="margin-left: 20px">일간 목표</div>
+        <!-- 토글 버튼 시작 -->
+        <div style="margin-right: 20px">
+            <label class="switch" style="margin-right: 15px">
+                <input type="checkbox" checked th:onclick="|location.href='@{/goal/main}'|">
+                <span class="slider round"></span>
+            </label>
+            <p style="display: inline-block">Daily</p><p style="display:none;">Daily</p>
+
+        </div>
+    </div>
+    <!-- 토글 버튼 끝 -->
+    <!--                <div style="display: inline-block" th:case="${T(kong.tues.goal.AchieveType).COUNT}">
+            <span th:text="|${monthlyGoal.goalCount} / ${monthlyGoal.goalCountQuota}|"> </span>
+            <button th:onclick="|plusMonthlyGoal('${monthlyGoal.id}')|">plus</button>
+            <button th:onclick="|minusMonthlyGoal('${monthlyGoal.id}')|">minus</button>
+        </div>-->
+    <div>
+        <span th:if="${error}" th:text="${error}"></span>
+    </div>
+    <div class="daily-goal-container" style="margin-top: 30px">
+        <div th:each="goal : ${dailyGoal}">
+            <span th:text="${goal.name}  "></span>
+            <span th:switch="${goal.achieveType}">
+                <span th:case="${T(kong.tues.goal.AchieveType).COUNT}">
+                    <span th:utext="|(${goal.goalCount} / ${goal.goalCountQuota}) ${goal.achieveType}|"></span>
+                    <button th:onclick="|plusDailyGoal('${goal.id}')|">plus</button>
+                    <button th:onclick="|minusDailyGoal('${goal.id}')|">minus</button>
+                </span>
+                <span th:case="${T(kong.tues.goal.AchieveType).TIME}">
+                    <span th:utext="|(${goal.goalTime} / ${goal.goalTimeQuota})|"></span>
+                    <button th:onclick="|plusDailyGoal('${goal.id}')|">plus</button>
+                    <button th:onclick="|minusDailyGoal('${goal.id}')|">minus</button>
+                </span>
+                <span th:case="${T(kong.tues.goal.AchieveType).BASIC}">
+                    <span th:text="|${goal.goalType}|"></span>
+                    <button th:onclick="|plusDailyGoal('${goal.id}')|">check</button>
+                </span>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div id="monthly-modal" class="modal-overlay">
+    <div class="modal-window">
+        <div class="title">
+            <h2>날짜</h2>
+        </div>
+        <div class="close-area">X</div>
+        <div class="content">
+            <form method="get" th:action="@{/goal/create/monthly}">
+                <div>YEAR</div>
+                <label for="year"></label>
+                <input style="width: 194px" type="number" th:min="${year}" th:value="${year}" max="3000" th:id="year" name="year"
+                       placeholder="년">
+                <div>MONTH</div>
+                <label for="month"></label>
+                <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" th:id="month" name="month" placeholder="월">
+                <br>
+                <div style="padding-top: 10px">
+                    <button type="submit">월간 목표 생성</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="daily-modal" class="modal-overlay">
+    <div class="modal-window">
+        <div class="title">
+            <h2>날짜</h2>
+        </div>
+        <div class="close-area">X</div>
+        <div class="content">
+            <form method="get" th:action="@{/goal/create/daily}">
+                <div>YEAR</div>
+                <label for="year"></label>
+                <input style="width: 194px" type="number" th:min="${year}" th:value="${year}" max="3000" id="year" name="year"
+                       placeholder="년">
+                <div>MONTH</div>
+                <label for="month"></label>
+                <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" id="month" name="month" placeholder="월">
+                <div>DAY</div>
+                <label for="day"></label>
+                <input style="width: 194px" type="number" min="1" max="31" th:value="${day}" id="day" name="day" placeholder="일">
+                <br>
+                <div style="padding-top: 10px">
+                    <button type="submit">일간 목표 생성</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+
+
+<script>
+    const monthlyModal = document.getElementById("monthly-modal")
+    function monthlyModalOn() {
+        monthlyModal.style.display = "flex"
+    }
+    function isModalOn() {
+        return monthlyModal.style.display === "flex"
+    }
+    function monthlyModalOff() {
+        monthlyModal.style.display = "none"
+    }
+    const btnMonthlyModal = document.getElementById("btn-monthly-modal")
+    btnMonthlyModal.addEventListener("click", e => {
+        monthlyModalOn()
+    })
+    const closeBtn = monthlyModal.querySelector(".close-area")
+    closeBtn.addEventListener("click", e => {
+        monthlyModalOff()
+    })
+    monthlyModal.addEventListener("click", e => {
+        const evTarget = e.target
+        if(evTarget.classList.contains("modal-overlay")) {
+            monthlyModalOff()
+        }
+    })
+    window.addEventListener("keyup", e => {
+        if(isModalOn() && e.key === "Escape") {
+            monthlyModalOff()
+        }
+    })
+
+    const dailyModal = document.getElementById("daily-modal")
+    function dailyModalOn() {
+        dailyModal.style.display = "flex"
+    }
+    function isDailyModalOn() {
+        return dailyModal.style.display === "flex"
+    }
+    function dailyModalOff() {
+        dailyModal.style.display = "none"
+    }
+    const btnDailyModal = document.getElementById("btn-daily-modal")
+    btnDailyModal.addEventListener("click", e => {
+        dailyModalOn()
+    })
+    const closeDailyBtn = dailyModal.querySelector(".close-area")
+    closeDailyBtn.addEventListener("click", e => {
+        dailyModalOff()
+    })
+    monthlyModal.addEventListener("click", e => {
+        const evTarget = e.target
+        if(evTarget.classList.contains("modal-overlay")) {
+            dailyModalOff()
+        }
+    })
+    window.addEventListener("keyup", e => {
+        if(isDailyModalOn() && e.key === "Escape") {
+            dailyModalOff()
+        }
+    })
+</script>
+<script th:inline="javascript">
+
+    function plusDailyGoal(id, year, month) {
+
+        var form = document.createElement("form");
+        form.setAttribute("method", "Post");
+        form.setAttribute("action", "/goal/plus/daily?isDaily=true");
+
+        var plusButton = document.createElement("input");
+        plusButton.setAttribute("type", "hidden");
+        plusButton.setAttribute("name", "dailyGoalId");
+        plusButton.setAttribute("value", id);
+
+        var plusButton2 = document.createElement("input");
+        plusButton2.setAttribute("type", "hidden");
+        plusButton2.setAttribute("name", "year");
+        plusButton2.setAttribute("value", year);
+
+
+        var plusButton3 = document.createElement("input");
+        plusButton3.setAttribute("type", "hidden");
+        plusButton3.setAttribute("name", "month");
+        plusButton3.setAttribute("value", month);
+
+        form.appendChild(plusButton);
+        form.appendChild(plusButton2);
+        form.appendChild(plusButton3)
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function plusMonthlyGoal(id) {
+
+        var form = document.createElement("form");
+        form.setAttribute("method", "Post");
+        form.setAttribute("action", "/goal/plus/monthly?isDaily=true");
+
+        var plusButton = document.createElement("input");
+        plusButton.setAttribute("type", "hidden");
+        plusButton.setAttribute("name", "monthlyGoalId");
+        plusButton.setAttribute("value", id);
+
+        form.appendChild(plusButton);
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function minusDailyGoal(id, year, month) {
+
+        var form = document.createElement("form");
+        form.setAttribute("method", "Post");
+        form.setAttribute("action", "/goal/minus/daily?isDaily=true");
+
+        var minusInput1 = document.createElement("input");
+        minusInput1.setAttribute("type", "hidden");
+        minusInput1.setAttribute("name", "dailyGoalId");
+        minusInput1.setAttribute("value", id);
+
+        var minusInput2 = document.createElement("input");
+        minusInput2.setAttribute("type", "hidden");
+        minusInput2.setAttribute("name", "year");
+        minusInput2.setAttribute("value", year);
+
+        var minusInput3 = document.createElement("input");
+        minusInput3.setAttribute("type", "hidden");
+        minusInput3.setAttribute("name", "month");
+        minusInput3.setAttribute("value", month);
+
+        form.appendChild(minusInput1);
+        form.appendChild(minusInput2);
+        form.appendChild(minusInput3)
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function minusMonthlyGoal(id) {
+
+        var form = document.createElement("form");
+        form.setAttribute("method", "Post");
+        form.setAttribute("action", "/goal/minus/monthly?isDaily=true");
+
+        var minusInput = document.createElement("input");
+        minusInput.setAttribute("type", "hidden");
+        minusInput.setAttribute("name", "monthlyGoalId");
+        minusInput.setAttribute("value", id);
+
+        form.appendChild(minusInput);
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    // 주간 목표 <-> 일간 목표 전환용 토글
+    var check = $("input[type='checkbox']");
+    check.click(function(){
+        $("p").toggle();
+    });
+</script>
+</html>

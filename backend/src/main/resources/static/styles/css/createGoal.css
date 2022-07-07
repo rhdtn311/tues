@@ -1,0 +1,211 @@
+#create-monthly-goal-modal, #create-daily-goal-modal, #update-monthly-goal-modal, #update-daily-goal-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: #F5F5F5;
+    height: fit-content;
+    width: 650px;
+    border-radius: 20px;
+    border: solid 4px #325288;
+}
+
+#create-monthly-goal-title {
+    text-align: center;
+    display: inline-block;
+    position: relative;
+}
+
+/* 일간 목표 생성 모달창*/
+#title {
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    left: 50px;
+}
+
+#date, #input-name, #input-content, #input-type {
+    margin-left: 30px;
+    margin-top: 20px;
+}
+
+#all-monthly-goals {
+    left: 104%;
+    position: fixed;
+    top: 7%;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    background-color: #F5F5F5;
+    border-radius: 20px;
+    border: solid 4px #325288;
+}
+
+#check-monthly-goals-btn {
+    border: solid 3px #FEF9EF;
+    height: 27px;
+    background-color: #172774;
+    border-radius: 15px;
+    font-weight: bold;
+    font-style: oblique;
+    color: #FEF9EF;
+    display: inline;
+    position: relative;
+    left: 153px;
+}
+
+#head {
+    text-align: center;
+}
+
+#create-goal-year, #create-goal-month, #create-goal-day {
+    height: 30px;
+    background-color: #F5F5F5;
+    border: none;
+    border-bottom: solid 2px #DDDDDD;
+    width: 32px;
+}
+
+input:focus {
+    outline: none;
+}
+
+#create-goal-month {
+    width: 15px;
+    text-align: center;
+}
+
+#create-goal-day {
+    width: 20px;
+    text-align: center;
+}
+
+#create-goal-year:focus {
+    color: #325288;
+}
+
+#create-goal-name, #create-goal-content {
+    height: 30px;
+    background-color: #F5F5F5;
+    border: none;
+    border-bottom: solid 2px #DDDDDD;
+    width: 570px;
+}
+
+#create-goal-name:focus {
+    border-bottom: solid 2px #325288;
+}
+
+#create-goal-content:focus {
+    border-bottom: solid 2px #325288;
+}
+
+#goalCountQuota {
+    height: 30px;
+    background-color: #F5F5F5;
+    border: none;
+    border-bottom: solid 2px #DDDDDD;
+    width: 50px;
+}
+#goalCountQuota:focus {
+    border-bottom: solid 2px #325288;
+}
+
+
+#goalTimeQuota {
+    height: 30px;
+    background-color: #F5F5F5;
+    border: none;
+    border-bottom: solid 2px #DDDDDD;
+    width: 50px;
+}
+#goalTimeQuota:focus {
+    border-bottom: solid 2px #325288;
+}
+
+#input_out {
+    margin-left: 50px;
+}
+
+#create-daily-goal-select {
+    -o-appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 150px;
+    height: 35px;
+    background-size: 20px;
+    padding: 5px 30px 5px 10px;
+    border-radius: 8px;
+    outline: 0 none;
+    margin-top: 14px;
+}
+
+#create-daily-goal-select:focus {
+    border: solid 2px #325288;
+}
+
+#create-daily-goal-select option {
+    background: #325288;
+    color: #FFF8F3;
+}
+
+#create-monthly-goal-select {
+    -o-appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 150px;
+    height: 35px;
+    background-size: 20px;
+    padding: 5px 30px 5px 10px;
+    border-radius: 8px;
+    outline: 0 none;
+    margin-top: 14px;
+}
+
+#create-monthly-goal-select:focus {
+    border: solid 2px #325288;
+}
+
+#create-monthly-goal-select option {
+    background: #325288;
+    color: #FFF8F3;
+}
+
+.create-button, #monthly-goal-update-button, #monthly-goal-delete-button, #daily-goal-update-button, #daily-goal-delete-button {
+    border-radius: 5px;
+    border: solid 0px #292C6D;
+    background-color: #292C6D;
+    width: 62px;
+    height: 32px;
+    font-weight: bold;
+    color: #FFF8F3;
+    margin-bottom: 15px;
+}
+
+#create-buttons {
+    margin-top: 38px;
+    text-align: center;
+}
+
+.hvr-fade-create {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    overflow: hidden;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: color, background-color;
+    transition-property: color, background-color;
+}
+.hvr-fade-create:hover {
+    border: solid 2px #292C6D;
+    background-color: #FFF8F3;
+    color: #292C6D;
+}
+
+/*    일간 목표 생성 css 끝*/

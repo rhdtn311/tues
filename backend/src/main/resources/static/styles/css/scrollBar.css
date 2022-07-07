@@ -1,0 +1,15 @@
+/*스크롤바*/
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #CDDEFF;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #2C2891;
+}
