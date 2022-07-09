@@ -1,7 +1,5 @@
 package kong.tues.member.domain;
 
-import kong.tues.accessTime.domain.AccessTime;
-import kong.tues.achievement.domain.Achievement;
 import kong.tues.goal.dailyGoal.domain.DailyGoal;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
 import lombok.*;
@@ -40,16 +38,10 @@ public class Member {
     String mail;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
-    private List<Achievement> achievement;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
     private List<MonthlyGoal> monthlyGoal;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
     private List<DailyGoal> dailyGoal;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
-    private List<AccessTime> accessTime;
 
     public void passwordEncode(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(password);

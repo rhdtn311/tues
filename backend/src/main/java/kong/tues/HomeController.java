@@ -1,13 +1,29 @@
 package kong.tues;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
+@RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:8080")
 public class HomeController {
 
-    @GetMapping("/")
-    public String home() {
-        return "redirect:/goal/main";
+    @CrossOrigin(origins = "http://localhost:8080")
+    @GetMapping
+    public ResponseEntity<Data> home() {
+        System.out.println("하하하");
+        return ResponseEntity.ok(new Data("ㅋㅋㅋ좀 돼라!!"));
+    }
+
+    class Data {
+        private String data;
+
+        public Data(String data) {
+            this.data = data;
+        }
+
+        public String getData() {
+            return data;
+        }
     }
 }
