@@ -12,16 +12,20 @@ public class BusinessException extends RuntimeException {
 
     private String code;
     private String message;
+
+    private int status;
     private Object object;
 
     public BusinessException() {
         this.code = exceptionDetails.getCode();
         this.message = exceptionDetails.getMessage();
+        this.status = exceptionDetails.getStatus();
     }
 
     public BusinessException(Object object) {
         this.code = exceptionDetails.getCode();
         this.message = exceptionDetails.getMessage();
+        this.status = exceptionDetails.getStatus();
         this.object = object;
     }
 }
