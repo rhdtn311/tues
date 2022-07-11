@@ -1,0 +1,306 @@
+<template>
+  <!DOCTYPE html>
+  <html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  </head>
+  <body class="bg-pan-left">
+  <div>
+    <img @click="goBack" id="back-button" src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/back-btn.png" >
+  </div>
+  <div id="container">
+    <div id="flex">
+      <div id="title" style="font-family:'LeferiPoint-BlackObliqueA'">JOIN</div>
+      <form th:action="@{/member/join}" method="post" th:object="${member}">
+        <div class="center">
+            <span class="hvr-wobble-top field-error-color" th:if="${error}" th:text="${error}"></span>
+            <span>
+              <p v-if="isError" class = "field-error hvr-wobble-top field-error-color">{{errorMessage}}</p>
+            </span>
+        </div>
+        <div>
+          <label for="loginId"></label>
+          <input placeholder="ID" type="text" id="loginId" v-model="joinRequest.loginId" th:errorclass="field-error"
+                 class="join-input" th:value="${errorMember} ? ${errorMember.loginId} : *{loginId}">
+          <div class="field-error hvr-wobble-top field-error-color" v-if="isVerifyError.loginId"> {{verifyCode.loginId}}</div>
+        </div>
+        <div>
+          <label for="password"></label>
+          <input placeholder="PASSWORD" type="password" id="password" v-model="joinRequest.password" th:value="${errorMember} ? ${errorMember.password} : *{password}"
+                 th:name="password" th:errorclass="field-error" class="join-input">
+          <div class="field-error hvr-wobble-top field-error-color" v-if="isVerifyError.password">{{verifyCode.password}}</div>
+        </div>
+        <div>
+          <label for="verifyPassword"></label>
+          <input placeholder="VERIFY PASSWORD" type="password" id="verifyPassword" v-model="joinRequest.verifyPassword" th:value="${errorMember} ? ${errorMember.verifyPassword} : *{verifyPassword}"
+                 th:name="verifyPassword" th:errorclass="field-error"
+                 class="join-input">
+          <div class="field-error hvr-wobble-top field-error-color" v-if="isVerifyError.passwordVerifyError">{{verifyCode.passwordVerifyError}}</div>
+        </div>
+        <div>
+          <label for="mail"></label>
+          <input placeholder="EMAIL" type="email" id="mail" v-model="joinRequest.mail" th:name="mail" class="join-input">
+          <div class="field-error hvr-wobble-top field-error-color" v-if="isVerifyError.mail">{{verifyCode.mail}}</div>
+        </div>
+        <div>
+          <button type="submit" class="join-button hvr-float" @click="join" >CONFIRM</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  </body>
+  </html>
+</template>
+
+<script>
+import axios from "axios";
+export default {
+  name: "Join",
+  data() {
+    return {
+      joinRequest : {loginId: "", password: "", verifyPassword: "", mail:""},
+      verifyCode: [],
+      isVerifyError: {loginId : false, password : false, mail : false, passwordVerifyError : false},
+      isError: false,
+      errorMessage : ""
+    }
+  },
+  methods: {
+    join: async function(e) {
+      e.preventDefault();
+      const res = await axios.post(this.server + "api/home/join", this.joinRequest)
+          .then((response) => {
+            this.goBack();
+          }).catch((error) => {
+            this.errorCode = []
+            this.isVerifyError = {loginId : false, password : false, mail : false, passwordVerifyError : false}
+            if (Array.isArray(error.response.data)) {
+              this.isError = false;
+              for (var field of error.response.data) {
+                console.log(field.code)
+                this.verifyCode[field.code] = field.message;
+                if (field.code === "loginId") this.isVerifyError.loginId = true;
+                else if (field.code === "password") this.isVerifyError.password = true;
+                else if (field.code === "mail") this.isVerifyError.mail = true;
+                else if (field.code === "passwordVerifyError") this.isVerifyError.passwordVerifyError = true;
+              }
+            } else {
+              this.isError = true;
+              this.errorMessage = error.response.data.message;
+            }
+          })
+    },
+    goBack() {
+      this.$router.go(-1);
+    }
+  }
+}
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Contrail+One&family=Gowun+Dodum&family=Poppins:wght@300&display=swap');
+
+@font-face {
+  font-family: 'LeferiPoint-BlackObliqueA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-BlackObliqueA.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SBAggroB';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --shadow: #325288;
+}
+
+html {
+  height: 90%;
+}
+
+body {
+  background-color: #FFF8F3;
+  height: 100%;
+}
+
+.center {
+  text-align: center;
+}
+
+#back-button {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 30px;
+  left: 30px;
+}
+
+#back-button:hover {
+  cursor:pointer;
+}
+
+#container{
+  height:100%;
+}
+
+.field-error {
+  border-color: #ffab8a;
+}
+
+.field-error-color {
+  color: #FF6666;
+}
+
+input::placeholder{
+  color: #cfcfcf;
+}
+
+input:focus {
+  outline-color: #548CFF;
+}
+
+.join-input {
+  width: 220px;
+  height: 40px;
+  margin-top: 15px;
+  border: solid 1px #cfcfcf; border-radius : 5px;
+  padding-left: 10px;
+}
+
+.join-button {
+  width: 100%;
+  height: 40px;
+  margin-top: 18px;
+  border: none;
+  border-radius: 5px;
+  color: #ffffff;
+  background-color: #325288;
+  font-weight: 900;
+  font-size: 15px;
+}
+
+.join-button:hover {
+  cursor : pointer;
+}
+
+#title {
+  font-size: 55px;
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+  -webkit-text-stroke: 3px #325288;
+  color: #FFF8F3;
+  text-shadow: 6px 6px var(--shadow),
+  5.75px 5.75px  var(--shadow),
+  5.5px 5.5px    var(--shadow),
+  5.25px 5.25px  var(--shadow),
+  5px 5px        var(--shadow),
+  4.75px 4.75px  var(--shadow),
+  4.5px 4.5px    var(--shadow),
+  4.25px 4.25px  var(--shadow),
+  4px 4px        var(--shadow),
+  3.75px 3.75px  var(--shadow),
+  3.5px 3.5px    var(--shadow),
+  3.25px 3.25px  var(--shadow),
+  3px 3px        var(--shadow),
+  2.75px 2.75px  var(--shadow),
+  2.5px 2.5px    var(--shadow),
+  2.25px 2.25px  var(--shadow),
+  2px 2px        var(--shadow),
+  1.75px 1.75px  var(--shadow),
+  1.5px 1.5px    var(--shadow),
+  1.25px 1.25px  var(--shadow),
+  1px 1px        var(--shadow),
+  0.75px 0.75px  var(--shadow),
+  0.5px 0.5px    var(--shadow),
+  0.25px 0.25px  var(--shadow);
+}
+
+#flex {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hvr-float {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.hvr-float:hover {
+  -webkit-transform: translateY(-8px);
+  transform: translateY(-8px);
+}
+
+@keyframes hvr-wobble-top {
+  16.65% {
+    -webkit-transform: skew(-12deg);
+    transform: skew(-12deg);
+  }
+  33.3% {
+    -webkit-transform: skew(10deg);
+    transform: skew(10deg);
+  }
+  49.95% {
+    -webkit-transform: skew(-6deg);
+    transform: skew(-6deg);
+  }
+  66.6% {
+    -webkit-transform: skew(4deg);
+    transform: skew(4deg);
+  }
+  83.25% {
+    -webkit-transform: skew(-2deg);
+    transform: skew(-2deg);
+  }
+  100% {
+    -webkit-transform: skew(0);
+    transform: skew(0);
+  }
+}
+
+.hvr-wobble-top {
+  horiz-align: center;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-transform-origin: 0 100%;
+  transform-origin: 0 100%;
+}
+
+.hvr-wobble-top {
+  -webkit-animation-name: hvr-wobble-top;
+  animation-name: hvr-wobble-top;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+}
+
+
+/*fonts*/
+#loginId, #password, #verifyPassword, #mail {
+  font-family: 'Poppins', sans-serif;
+}
+
+button {
+  font-family: 'SBAggroB';
+}
+
+</style>
