@@ -36,7 +36,6 @@ import axios from "axios"
 export default {
   data() {
     return {
-      resData: "",
       isError: false,
       errorData : "",
       requestData : {loginId: "", password: ""},
@@ -45,15 +44,12 @@ export default {
   methods: {
     login : async function(e) {
       e.preventDefault();
-      const res = await axios.post(this.server + "api/home/login", this.requestData)
+      const res = await axios.post(this.server + "/api/home/login", this.requestData)
           .then((response) => {
-            this.resData = response.data.data;
-            this.isError = false;
-            this.$cookies.set("JSESSIONID", response.headers['sessionid']);
             this.goToMain();
           }).catch((error) => {
             this.isError = true;
-            // this.errorData = error.response.data.message;
+            this.errorData = error.response.data.message;
             console.log(error)
           })
     },
@@ -67,12 +63,15 @@ export default {
     },
 
     goToMain() {
-      this.$router.push("/main");
+      this.$router.replace("/main");
     }
-
   },
 
-  components: {
+  mounted() {
+    isLogin : axios.post(this.server + "/api/validate/member", null, {withCredentials: true})
+        .then((response) => {
+          this.$router.go("/main")
+        })
   }
 }
 

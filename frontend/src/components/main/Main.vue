@@ -491,13 +491,18 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "Main",
+
   mounted() {
-    if (!this.$cookies.isKey("JSESSIONID")) {
-      this.$router.push("/login")
-    }
-  }
+  isLogin : axios.post(this.server + "/api/validate/member",null)
+      .then((response) => {
+        console.log(response)
+      }).catch((error) => {
+        this.$router.push("/login")
+      })
+}
 }
 </script>
 
