@@ -63,13 +63,13 @@ public class MemberController {
         return "redirect:/goal/main";
     }
 
-//    @PostMapping("/join")
-//    public ResponseEntity<ResponseDTO> join(@RequestBody @Valid MemberJoinReqDto memberJoinReqDto) {
-//
-//        return ResponseEntity.ok(ResponseDTO.builder()
-//                .data(joinService.join(memberJoinReqDto))
-//                .build());
-//    }
+    @PostMapping("/join")
+    public ResponseEntity<ResponseDTO> join(@RequestBody @Valid MemberJoinReqDto memberJoinReqDto) {
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(joinService.join(memberJoinReqDto))
+                .build());
+    }
 
     @PostMapping("/login")
     public ResponseEntity<ResponseDTO> login(@RequestBody MemberLoginReqDto memberLoginReqDto,
