@@ -13,10 +13,4 @@ public class TuesApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TuesApplication.class, args);
 	}
-
-	@Bean
-	public HttpSessionListener httpSessionListener() {
-		return new SessionListener();
-	}
-
 }
