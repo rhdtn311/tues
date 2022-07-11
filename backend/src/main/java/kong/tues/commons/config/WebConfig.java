@@ -24,7 +24,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor())
                 .order(1)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/member/**", "/find/**", "/error");
+                .excludePathPatterns("/member/**", "/find/**", "/error", "/api/home/**");
     }
 
     @Override
@@ -54,7 +54,8 @@ public class WebConfig implements WebMvcConfigurer {
                         .allowedOrigins("http://localhost:3000")
                         .allowedHeaders("*")
                         .allowedMethods("*")
-                        .exposedHeaders("*");
+                        .exposedHeaders("*")
+                        .allowCredentials(true);
             }
         };
     }
