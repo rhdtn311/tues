@@ -20,7 +20,7 @@ public class MemberJoinReqDtoValidator implements Validator {
 
         if (memberJoinReqDto.getPassword() != null && memberJoinReqDto.getVerifyPassword() != null) {
             if (!memberJoinReqDto.getPassword().equals(memberJoinReqDto.getVerifyPassword())) {
-                errors.reject("differentVerifyPassword");
+                errors.reject("passwordVerifyError", "비밀번호가 일치하지 않습니다.");
             }
         }
     }
