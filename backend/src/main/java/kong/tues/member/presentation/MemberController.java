@@ -85,23 +85,16 @@ public class MemberController {
                 .build());
     }
 
-    @GetMapping("logout")
-    public String logout(HttpServletRequest request) {
+    @GetMapping("/logout")
+    public ResponseEntity<ResponseDTO> logout(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
 
         if (session != null) {
             session.invalidate();
         }
 
-        return "redirect:/member/home";
-    }
-
-    @GetMapping("/find")
-    public String find(Model model) {
-        model.addAttribute("loginId", null);
-        model.addAttribute("mail", null);
-        model.addAttribute("error", null);
-        return "/member/find";
+        System.out.println("zzzz");
+        return ResponseEntity.ok(ResponseDTO.builder().build());
     }
 
     @GetMapping("/find/id")
