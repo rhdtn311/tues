@@ -22,6 +22,7 @@
     </form>
     <div class="subject">비밀번호 찾기</div>
     <div>
+      <div v-if="this.findPasswordObj.isWaiting">잠시만 기다려주세요.</div>
       <div v-if="this.findPasswordObj.isFindPassword"> {{this.findPasswordObj.mail}}로 임시 비밀번호가 전송되었습니다. </div>
       <div v-if="this.findPasswordObj.isError" class = "field-error hvr-wobble-top field-error-color">{{this.findPasswordObj.findPasswordErrorMessage}}</div>
     </div>
@@ -56,7 +57,8 @@ export default {
         mail: "",
         isFindPassword: false,
         isError: false,
-        findPasswordErrorMessage : ""
+        findPasswordErrorMessage : "",
+        isWaiting : false
       }
     }
   },
@@ -76,14 +78,18 @@ export default {
       },
     findPassword : async function(e) {
       e.preventDefault();
+      this.findPasswordObj.isWaiting = true;
       const res = await axios.get(this.server + "/api/home/find/password", {
         params : {loginId: this.findPasswordObj.loginId, mail : this.findPasswordObj.mail}})
           .then((response) => {
             this.findPasswordObj.isFindPassword = true;
             this.findPasswordObj.isError = false;
+            this.findPasswordObj.isWaiting = false;
           }).catch((error) => {
             this.findPasswordObj.isError = true;
             this.findPasswordObj.findPasswordErrorMessage = error.response.data.message;
+            this.findPasswordObj.isWaiting = false;
+            this.findPasswordObj.isFindPassword = false;
           })
     },
     goBack() {
