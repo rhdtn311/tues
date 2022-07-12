@@ -12,25 +12,25 @@
   <div class="container">
     <h1 id="title" style="font-family: 'LeferiPoint-BlackObliqueA'">FIND</h1>
 
-    <div th:if="${error}" th:text="${error}" id="error"></div>
-
     <div class="subject">아이디 찾기</div>
-    <div th:if="${loginId}" th:text="${loginId}"></div>
-    <form th:action="@{/member/find/id}" method="get" style="width: 234px; margin-bottom: 50px">
+    <div v-if="this.isFindId">아이디는 『{{this.loginId}}』 입니다.</div>
+    <div v-if="this.isError" class = "field-error hvr-wobble-top field-error-color">{{this.findIdErrorMessage}}</div>
+    <form style="width: 234px; margin-bottom: 50px">
       <label for="mail"></label>
-      <input type="email" th:id="mail" name="mail" placeholder="EMAIL">
-      <button type="submit" th:text="OK" class="hvr-float submit-button"></button>
+      <input type="email" v-model="this.findIdRequest" name="mail" placeholder="EMAIL">
+      <button @click="findId" type="submit" class="hvr-float submit-button">OK</button>
     </form>
     <div class="subject">비밀번호 찾기</div>
     <div>
-      <div th:if="${mail}" th:text="${mail} + '로 임시 비밀번호가 전송되었습니다.'"></div>
+<!--      <div v-if="this.isFindId"> {{this.findIdRequest}}로 임시 비밀번호가 전송되었습니다. </div>-->
+<!--      <div v-if="this.isError">잠시 후 다시 시도해주세요.</div>-->
     </div>
     <form th:action="@{/member/find/password}" method="get">
       <label for="loginId"></label>
       <input type="text" id="loginId" name="loginId" placeholder="ID">
       <label for="mail"></label>
       <input type="text" id="mail" name="mail" placeholder="EMAIL">
-      <button type="submit" th:text="OK" class="hvr-float submit-button"></button>
+      <button type="submit" class="hvr-float submit-button">OK</button>
     </form>
 
   </div>
@@ -39,9 +39,33 @@
 </template>
 
 <script>
+import axios from "axios"
 export default {
   name: "Find",
+  data() {
+    return {
+      findIdRequest : "",
+      loginId : "",
+      isFindId : false,
+      isError : false,
+      findIdErrorMessage : "",
+    }
+  },
   methods: {
+    findId : async function(e) {
+      e.preventDefault();
+      const res = await axios.get(this.server + "/api/home/find/id",          {params: {mail: this.findIdRequest}})
+          .then((response) => {
+            this.isFindId = true
+            this.loginId = response.data.data;
+            this.isError = false;
+            console.log(response)
+          }).catch((error) => {
+            this.isError = true
+            this.findIdErrorMessage = error.response.data.message;
+            this.isFindId = false;
+          })
+      },
     goBack() {
       this.$router.go(-1);
     }
