@@ -68,6 +68,7 @@ export default {
       const res = await axios.post(this.server + "/api/home/join", this.joinRequest)
           .then((response) => {
             this.goBack();
+            alert("회원가입이 완료되었습니다.")
           }).catch((error) => {
             this.errorCode = []
             this.isVerifyError = {loginId : false, password : false, mail : false, passwordVerifyError : false}
