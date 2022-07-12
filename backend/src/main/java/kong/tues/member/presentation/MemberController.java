@@ -73,7 +73,7 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<ResponseDTO> login(@RequestBody MemberLoginReqDto memberLoginReqDto,
-                                             HttpServletRequest request, HttpServletResponse response) throws IOException {
+                                             HttpServletRequest request, HttpServletResponse response) {
 
         Member member = loginService.login(memberLoginReqDto);
 
@@ -105,12 +105,10 @@ public class MemberController {
     }
 
     @GetMapping("/find/id")
-    public String findId(@RequestParam("mail") String mail, Model model) {
-        String loginId = findIdService.findLoginId(mail);
+    public ResponseEntity<ResponseDTO> findId(@RequestParam("mail") String mail) {
 
-        model.addAttribute("loginId",loginId);
-
-        return "/member/find";
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(findIdService.findLoginId(mail)).build());
     }
 
     @GetMapping("/find/password")
