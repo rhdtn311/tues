@@ -12,35 +12,31 @@
   <div id="container">
     <div id="flex">
       <div id="title" style="font-family:'LeferiPoint-BlackObliqueA'">JOIN</div>
-      <form th:action="@{/member/join}" method="post" th:object="${member}">
+      <form>
         <div class="center">
-            <span class="hvr-wobble-top field-error-color" th:if="${error}" th:text="${error}"></span>
+            <span class="hvr-wobble-top field-error-color"></span>
             <span>
               <p v-if="isError" class = "field-error hvr-wobble-top field-error-color">{{errorMessage}}</p>
             </span>
         </div>
         <div>
           <label for="loginId"></label>
-          <input placeholder="ID" type="text" id="loginId" v-model="joinRequest.loginId" th:errorclass="field-error"
-                 class="join-input" th:value="${errorMember} ? ${errorMember.loginId} : *{loginId}">
+          <input placeholder="ID" type="text" id="loginId" v-model="joinRequest.loginId" class="join-input">
           <div class="field-error hvr-wobble-top field-error-color" v-if="isVerifyError.loginId"> {{verifyCode.loginId}}</div>
         </div>
         <div>
           <label for="password"></label>
-          <input placeholder="PASSWORD" type="password" id="password" v-model="joinRequest.password" th:value="${errorMember} ? ${errorMember.password} : *{password}"
-                 th:name="password" th:errorclass="field-error" class="join-input">
+          <input placeholder="PASSWORD" type="password" id="password" v-model="joinRequest.password" class="join-input">
           <div class="field-error hvr-wobble-top field-error-color" v-if="isVerifyError.password">{{verifyCode.password}}</div>
         </div>
         <div>
           <label for="verifyPassword"></label>
-          <input placeholder="VERIFY PASSWORD" type="password" id="verifyPassword" v-model="joinRequest.verifyPassword" th:value="${errorMember} ? ${errorMember.verifyPassword} : *{verifyPassword}"
-                 th:name="verifyPassword" th:errorclass="field-error"
-                 class="join-input">
+          <input placeholder="VERIFY PASSWORD" type="password" id="verifyPassword" v-model="joinRequest.verifyPassword" class="join-input">
           <div class="field-error hvr-wobble-top field-error-color" v-if="isVerifyError.passwordVerifyError">{{verifyCode.passwordVerifyError}}</div>
         </div>
         <div>
           <label for="mail"></label>
-          <input placeholder="EMAIL" type="email" id="mail" v-model="joinRequest.mail" th:name="mail" class="join-input">
+          <input placeholder="EMAIL" type="email" id="mail" v-model="joinRequest.mail" class="join-input">
           <div class="field-error hvr-wobble-top field-error-color" v-if="isVerifyError.mail">{{verifyCode.mail}}</div>
         </div>
         <div>
@@ -78,7 +74,6 @@ export default {
             if (Array.isArray(error.response.data)) {
               this.isError = false;
               for (var field of error.response.data) {
-                console.log(field.code)
                 this.verifyCode[field.code] = field.message;
                 if (field.code === "loginId") this.isVerifyError.loginId = true;
                 else if (field.code === "password") this.isVerifyError.password = true;
