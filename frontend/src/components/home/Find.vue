@@ -13,11 +13,11 @@
     <h1 id="title" style="font-family: 'LeferiPoint-BlackObliqueA'">FIND</h1>
 
     <div class="subject">아이디 찾기</div>
-    <div v-if="this.isFindId">아이디는 『{{this.loginId}}』 입니다.</div>
-    <div v-if="this.isError" class = "field-error hvr-wobble-top field-error-color">{{this.findIdErrorMessage}}</div>
+    <div v-if="this.findIdObj.isFindId">아이디는 『{{this.findIdObj.loginId}}』 입니다.</div>
+    <div v-if="this.findIdObj.isError" class = "field-error hvr-wobble-top field-error-color">{{this.findIdObj.findIdErrorMessage}}</div>
     <form style="width: 234px; margin-bottom: 50px">
       <label for="mail"></label>
-      <input type="email" v-model="this.findIdRequest" name="mail" placeholder="EMAIL">
+      <input type="email" v-model="this.findIdObj.findIdRequest" name="mail" placeholder="EMAIL">
       <button @click="findId" type="submit" class="hvr-float submit-button">OK</button>
     </form>
     <div class="subject">비밀번호 찾기</div>
@@ -44,26 +44,30 @@ export default {
   name: "Find",
   data() {
     return {
-      findIdRequest : "",
-      loginId : "",
-      isFindId : false,
-      isError : false,
-      findIdErrorMessage : "",
+      findIdObj : {
+        findIdRequest: "",
+        loginId: "",
+        isFindId: false,
+        isError: false,
+        findIdErrorMessage: ""
+      },
+      findPasswordObj : {
+
+      }
     }
   },
   methods: {
     findId : async function(e) {
       e.preventDefault();
-      const res = await axios.get(this.server + "/api/home/find/id",          {params: {mail: this.findIdRequest}})
+      const res = await axios.get(this.server + "/api/home/find/id",          {params: {mail: this.findIdObj.findIdRequest}})
           .then((response) => {
-            this.isFindId = true
-            this.loginId = response.data.data;
-            this.isError = false;
-            console.log(response)
+            this.findIdObj.isFindId = true
+            this.findIdObj.loginId = response.data.data;
+            this.findIdObj.isError = false;
           }).catch((error) => {
-            this.isError = true
-            this.findIdErrorMessage = error.response.data.message;
-            this.isFindId = false;
+            this.findIdObj.isError = true
+            this.findIdObj.findIdErrorMessage = error.response.data.message;
+            this.findIdObj.isFindId = false;
           })
       },
     goBack() {
