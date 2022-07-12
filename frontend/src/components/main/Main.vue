@@ -17,7 +17,7 @@
           <img id="goal-list-button" src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/goal_list.jpg" th:onclick="|location.href='@{/goal/list}/?year=${year}&month=${month}'|" alt="logout">
         </div>
         <div>
-          <img id="logout-button" src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/logout-btn.png" th:onclick="|location.href='@{/member/logout}'|" alt="goal_list" >
+          <img id="logout-button" src="https://tues-images.s3.ap-northeast-2.amazonaws.com/images/logout-btn.png" @click="logout" alt="goal_list" >
         </div>
       </div>
       <div id="make-goal-button">
@@ -502,7 +502,16 @@ export default {
       }).catch((error) => {
         this.$router.push("/login")
       })
-}
+  },
+
+  methods:{
+    logout : function() {
+      const res = axios.get(this.server + "/api/home/logout")
+          .then((response) => {
+            this.$router.replace("/login")
+          })
+    }
+  }
 }
 </script>
 
