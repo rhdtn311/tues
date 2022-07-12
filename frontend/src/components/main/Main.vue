@@ -9,8 +9,8 @@
   <div>
     <div id="monthly-goal-container">
       <div class="image-and-title">
-        <img id="goal-main-title-img" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/month-' + ${month} + '.png'" alt="goal_main_image" style="position: relative; bottom: 6px;">
-        <span id="monthly-goal-title" class="main-title" th:text="|${month}월의 목표|"></span>
+        <img id="goal-main-title-img" v-bind:src="monthLogoImage" alt="goal_main_image" style="position: relative; bottom: 6px;">
+        <span id="monthly-goal-title" class="main-title">{{this.date.month}}월의 목표</span>
       </div>
       <div class="main-top-option">
         <div>
@@ -26,37 +26,36 @@
       </div>
     </div>
     <div id="monthly-goals-ajax">
-      <ul id="monthly-goals" th:each=" monthlyGoal : ${monthlyGoals}">
+      <ul id="monthly-goals" v-for="monthlyGoal in monthlyGoals">
         <div id="one-monthly-goal">
-          <img th:attr="id='check-monthly-goal-'+${monthlyGoal.id}" th:src="${monthlyGoal.success} ? 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png' : 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png'" class="goal-check">
-          <span class="monthly-goal-name" th:id="'monthly-goal-name' + ${monthlyGoal.id}" th:text="${monthlyGoal.name}" th:onclick="detailMonthlyGoal([[${monthlyGoal.id}]])"></span>
-          <img class="goal-type-img" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + ${monthlyGoal.getGoalType()} + '.png'">
-          <span th:switch="${monthlyGoal.achieveType}">
-            <div style="display: inline-block" th:case="${T(kong.tues.goal.AchieveType).COUNT}">
-                <div class="monthly-count" th:attr="class='monthly-goal-' + ${monthlyGoal.id}">
+          <img class="goal-checkbox-img" v-bind:src="[monthlyGoal.success == true ? successGoalImage : failGoalImage]">
+          <span class="monthly-goal-name" @click="detailMonthlyGoal">{{monthlyGoal.name}}</span>
+          <img class="goal-type-img" v-bind:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + monthlyGoal.goalType + '.png'">
+            <div style="display: inline-block" v-if="monthlyGoal.achieveType === 'COUNT'">
+              <div class="monthly-count" th:attr="class='monthly-goal-' + ${monthlyGoal.id}">
                     <button class="goal-plus-button hvr-fade hvr-push" th:onclick="monthlyGoalFail([[${monthlyGoal.id}]],0, [[${monthlyGoal.achieveType}]], [[${monthlyGoal.goalType}]], [[${monthlyGoal.goalCount}]], [[${monthlyGoal.goalCountQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▼</span></button>
-                    <span class="goal-quota" th:text="|${monthlyGoal.goalCount} / ${monthlyGoal.goalCountQuota}|"> </span>
+                    <span class="goal-quota" th:text="|${monthlyGoal.goalCount} / ${monthlyGoal.goalCountQuota}|"> {{monthlyGoal.goalCount}} / {{monthlyGoal.goalCountQuota}} </span>
                     <button class="goal-minus-button hvr-fade hvr-push" th:onclick="monthlyGoalSuccess([[${monthlyGoal.id}]], 0, [[${monthlyGoal.achieveType}]], [[${monthlyGoal.goalType}]], [[${monthlyGoal.goalCount}]], [[${monthlyGoal.goalCountQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
                 </div>
             </div>
-            <div style="display:inline-block;" th:case="${T(kong.tues.goal.AchieveType).TIME}">
+            <div style="display:inline-block;" v-if="monthlyGoal.achieveType == 'TIME'">
                 <div class="monthly-time" th:attr="class='monthly-goal-' + ${monthlyGoal.id}">
                     <button class="goal-plus-button hvr-fade hvr-push" th:onclick="monthlyGoalFail([[${monthlyGoal.id}]],0, [[${monthlyGoal.achieveType}]], [[${monthlyGoal.goalType}]], [[${monthlyGoal.goalTime}]], [[${monthlyGoal.goalTimeQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▼</span></button>
-                    <span class="goal-quota" th:text="|${monthlyGoal.goalTime} / ${monthlyGoal.goalTimeQuota}|"></span>
+                    <span class="goal-quota">{{monthlyGoal.goalTime}} / {{monthlyGoal.goalTimeQuota}}</span>
                     <button class="goal-minus-button hvr-fade hvr-push" th:onclick="monthlyGoalSuccess([[${monthlyGoal.id}]], 0, [[${monthlyGoal.achieveType}]], [[${monthlyGoal.goalType}]], [[${monthlyGoal.goalTime}]], [[${monthlyGoal.goalTimeQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
                 </div>
             </div>
-            <div style="display:inline-block;" th:case="${T(kong.tues.goal.AchieveType).BASIC}">
+            <div style="display:inline-block;" v-if="monthlyGoal.achieveType == 'BASIC'">
                 <div class="monthly-basic" th:attr="class='monthly-goal-' + ${monthlyGoal.id}">
-                    <button th:if="${monthlyGoal.success == false}"
+                    <button v-if="monthlyGoal.success == false"
                             class="goal-check-button hvr-fade hvr-push"
                             th:onclick="monthlyGoalSuccess([[${monthlyGoal.id}]], 0, [[${monthlyGoal.achieveType}]], [[${monthlyGoal.goalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                    <button th:if="${monthlyGoal.success == true}"
+                    <button v-if="monthlyGoal.success == true"
                             class="goal-check-button hvr-fade hvr-push"
                             th:onclick="monthlyGoalFail([[${monthlyGoal.id}]],0, [[${monthlyGoal.achieveType}]], [[${monthlyGoal.goalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
                 </div>
             </div>
-        </span>
+<!--        </span>-->
         </div>
       </ul>
     </div>
@@ -495,22 +494,69 @@ import axios from "axios";
 export default {
   name: "Main",
 
-  mounted() {
-  isLogin : axios.post(this.server + "/api/validate/member",null)
-      .then((response) => {
-        console.log(response)
-      }).catch((error) => {
-        this.$router.push("/login")
-      })
+  data() {
+    return {
+      date : {
+        year : "",
+        month : "",
+        day : "",
+        dayOfWeek : ""
+      },
+      monthlyGoals: [
+      ],
+      dailyGoals: [],
+    }
   },
 
-  methods:{
-    logout : function() {
+  computed: {
+    monthLogoImage() {return "https://tues-images.s3.ap-northeast-2.amazonaws.com/images/month-" + this.date.month + ".png"},
+    successGoalImage() {return "https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png"},
+    failGoalImage() {return "https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png"},
+    goalTypeImage(goalType) {
+      return "https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-" + goalType + ".png"
+    }
+  },
+
+  async mounted() {
+      await this.isLogin();
+      this.init()
+  },
+
+  methods: {
+    init: function () {
+      axios.get(this.server + "/api/main")
+          .then((response) => {
+            console.log("response = " + JSON.stringify(response, null, 2));
+
+            // 날짜 초기화
+            this.date.year = response.data.data.dateResponse.year;
+            this.date.month = response.data.data.dateResponse.month;
+            this.date.day = response.data.data.dateResponse.day;
+            this.date.dayOfWeek = response.data.data.dateResponse.dayOfWeek;
+
+            // monthlyGoals 초기화
+            for (let monthlyGoal of response.data.data.monthlyGoals) {
+              this.monthlyGoals.push(monthlyGoal);
+            }
+
+          }).catch((error) => {
+        console.log("error = " + error);
+      })
+    },
+    logout: function () {
       const res = axios.get(this.server + "/api/home/logout")
           .then((response) => {
             this.$router.replace("/login")
           })
-    }
+    },
+    isLogin: function () {
+      axios.post(this.server + "/api/validate/member", null)
+          .then((response) => {
+            console.log(response)
+          }).catch((error) => {
+        this.$router.push("/login")
+      })
+    },
   }
 }
 </script>
@@ -915,6 +961,10 @@ button {
   animation-timing-function: linear;
   -webkit-animation-iteration-count: 1;
   animation-iteration-count: 1;
+}
+
+.goal-checkbox-img {
+  width: 15px;
 }
 
 html {
