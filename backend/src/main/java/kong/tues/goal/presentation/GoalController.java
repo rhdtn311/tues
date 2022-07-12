@@ -1,6 +1,7 @@
 package kong.tues.goal.presentation;
 
 import kong.tues.commons.argumentresolver.Login;
+import kong.tues.commons.dto.ResponseDTO;
 import kong.tues.goal.AchieveType;
 import kong.tues.goal.dailyGoal.application.*;
 import kong.tues.goal.dailyGoal.application.dto.DailyGoalDetailResDto;
@@ -22,9 +23,12 @@ import kong.tues.goal.mothlyGoal.dto.*;
 import kong.tues.goal.mothlyGoal.presentation.validator.MonthlyGoalFailValidator;
 import kong.tues.goal.mothlyGoal.presentation.validator.MonthlyGoalReqDtoValidator;
 import kong.tues.goal.mothlyGoal.presentation.validator.MonthlyGoalSuccessValidator;
+import kong.tues.goal.presentation.dto.DateResponse;
+import kong.tues.goal.presentation.dto.MainResponse;
 import kong.tues.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,9 +46,9 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 @Slf4j
-@RequestMapping("/goal")
+@RequestMapping("/api/main")
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class GoalController {
 
     private final MonthlyGoalCreateService monthlyGoalCreateService;
@@ -74,21 +78,16 @@ public class GoalController {
         dataBinder.addValidators(dailyGoalReqDtoValidator);
     }
 
-    @GetMapping("/main")
-    public String main(@Login Member member, Model model,
-                       @RequestParam(value = "error") @Nullable String error,
-                       @RequestParam(value = "isDaily", defaultValue = "false") Boolean isDaily,
-                       HttpSession httpSession) {
-
-        log.info("Session timeout = {}", httpSession.getMaxInactiveInterval());
-
-        if (member == null) {
-            return "/member/login";
-        }
+    @GetMapping
+    public ResponseEntity<ResponseDTO> main(@Login Member member, Model model,
+//                                            @RequestParam(value = "error") @Nullable String error,
+//                                            @RequestParam(value = "isDaily", defaultValue = "false") Boolean isDaily,
+                                            HttpSession httpSession) {
 
         //에러가 있을 경우
-        model.addAttribute("error", error);
+//        model.addAttribute("error", error);
 
+        System.out.println("-------1---------------");
         // 월간 목표 생성, 일간 목표 생성을 위한 데이터 (모달 창)
         model.addAttribute("year", LocalDate.now().getYear());
         model.addAttribute("month", LocalDate.now().getMonthValue());
@@ -104,23 +103,25 @@ public class GoalController {
         // 주간 목표를 위한 데이터
         Map<String, List<DailyGoalMainResDto>> dailyGoals = dailyGoalFindService.findWeeklyGoals(member.getId(), LocalDate.now().getYear(), LocalDate.now().getMonthValue(),
                 LocalDate.now().getDayOfMonth());
-
         model.addAttribute("dailyGoals", dailyGoals);
 
         // ajax
         model.addAttribute("monthlyGoal", new MonthlyGoal());
 
         // isDaily
-        if (isDaily) {
-            model.addAttribute("dailyGoal", dailyGoals.get(LocalDate.now().getDayOfWeek().name().substring(0, 3)));
-            log.info("dailyGoal = {}", dailyGoals.get(LocalDate.now().getDayOfWeek().name().substring(0, 3)));
-            return "/goal/main-daily";
-        }
+//        if (isDaily) {
+//            model.addAttribute("dailyGoal", dailyGoals.get(LocalDate.now().getDayOfWeek().name().substring(0, 3)));
+//            log.info("dailyGoal = {}", dailyGoals.get(LocalDate.now().getDayOfWeek().name().substring(0, 3)));
+//            return "/goal/main-daily";
+//        }
 
         // dailymodal
-        model.addAttribute("createdGoalsMap", new HashMap<>());
+//        model.addAttribute("createdGoalsMap", new HashMap<>());
+        System.out.println("-------2---------------");
 
-        return "/goal/main";
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(MainResponse.builder().dateResponse(new DateResponse()).monthlyGoals(monthlyGoals).dailyGoals(dailyGoals).build())
+                .build());
     }
 
     @GetMapping("/create/monthly")
