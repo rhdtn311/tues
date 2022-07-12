@@ -65,7 +65,7 @@ export default {
   methods: {
     join: async function(e) {
       e.preventDefault();
-      const res = await axios.post(this.server + "api/home/join", this.joinRequest)
+      const res = await axios.post(this.server + "/api/home/join", this.joinRequest)
           .then((response) => {
             this.goBack();
           }).catch((error) => {
