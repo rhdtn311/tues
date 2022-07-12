@@ -22,15 +22,15 @@
     </form>
     <div class="subject">비밀번호 찾기</div>
     <div>
-<!--      <div v-if="this.isFindId"> {{this.findIdRequest}}로 임시 비밀번호가 전송되었습니다. </div>-->
-<!--      <div v-if="this.isError">잠시 후 다시 시도해주세요.</div>-->
+      <div v-if="this.findPasswordObj.isFindPassword"> {{this.findPasswordObj.mail}}로 임시 비밀번호가 전송되었습니다. </div>
+      <div v-if="this.findPasswordObj.isError" class = "field-error hvr-wobble-top field-error-color">{{this.findPasswordObj.findPasswordErrorMessage}}</div>
     </div>
-    <form th:action="@{/member/find/password}" method="get">
+    <form>
       <label for="loginId"></label>
-      <input type="text" id="loginId" name="loginId" placeholder="ID">
+      <input v-model="this.findPasswordObj.loginId" type="text" id="loginId" name="loginId" placeholder="ID">
       <label for="mail"></label>
-      <input type="text" id="mail" name="mail" placeholder="EMAIL">
-      <button type="submit" class="hvr-float submit-button">OK</button>
+      <input v-model="this.findPasswordObj.mail" type="text" id="mail" name="mail" placeholder="EMAIL">
+      <button @click="findPassword" type="submit" class="hvr-float submit-button">OK</button>
     </form>
 
   </div>
@@ -51,15 +51,19 @@ export default {
         isError: false,
         findIdErrorMessage: ""
       },
-      findPasswordObj : {
-
+      findPasswordObj: {
+        loginId: "",
+        mail: "",
+        isFindPassword: false,
+        isError: false,
+        findPasswordErrorMessage : ""
       }
     }
   },
   methods: {
     findId : async function(e) {
       e.preventDefault();
-      const res = await axios.get(this.server + "/api/home/find/id",          {params: {mail: this.findIdObj.findIdRequest}})
+      const res = await axios.get(this.server + "/api/home/find/id",{params: {mail: this.findIdObj.findIdRequest}})
           .then((response) => {
             this.findIdObj.isFindId = true
             this.findIdObj.loginId = response.data.data;
@@ -70,6 +74,18 @@ export default {
             this.findIdObj.isFindId = false;
           })
       },
+    findPassword : async function(e) {
+      e.preventDefault();
+      const res = await axios.get(this.server + "/api/home/find/password", {
+        params : {loginId: this.findPasswordObj.loginId, mail : this.findPasswordObj.mail}})
+          .then((response) => {
+            this.findPasswordObj.isFindPassword = true;
+            this.findPasswordObj.isError = false;
+          }).catch((error) => {
+            this.findPasswordObj.isError = true;
+            this.findPasswordObj.findPasswordErrorMessage = error.response.data.message;
+          })
+    },
     goBack() {
       this.$router.go(-1);
     }
