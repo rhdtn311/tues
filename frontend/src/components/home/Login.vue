@@ -70,7 +70,7 @@ export default {
   mounted() {
     isLogin : axios.post(this.server + "/api/validate/member", null, {withCredentials: true})
         .then((response) => {
-          this.$router.go("/main")
+          this.$router.replace("/main")
         })
   }
 }
