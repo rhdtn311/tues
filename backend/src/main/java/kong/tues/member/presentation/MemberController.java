@@ -112,14 +112,11 @@ public class MemberController {
     }
 
     @GetMapping("/find/password")
-    public String findPassword(@RequestParam("loginId") String loginId,
-                               @RequestParam("mail") String mail,
-                               Model model) {
+    public ResponseEntity<ResponseDTO> findPassword(@RequestParam("loginId") String loginId,
+                               @RequestParam("mail") String mail) {
 
         findPasswordService.findPassword(loginId, mail);
 
-        model.addAttribute("mail", mail);
-
-        return "/member/find";
+        return ResponseEntity.ok(ResponseDTO.builder().build());
     }
 }
