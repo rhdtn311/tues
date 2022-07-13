@@ -26,37 +26,41 @@
       </div>
     </div>
     <div id="monthly-goals-ajax">
-      <ul id="monthly-goals" v-for="monthlyGoal in monthlyGoals">
-        <div id="one-monthly-goal">
-          <img class="goal-checkbox-img" v-bind:src="[monthlyGoal.success == true ? successGoalImage : failGoalImage]">
-          <span class="monthly-goal-name" @click="detailMonthlyGoal">{{monthlyGoal.name}}</span>
-          <img class="goal-type-img" v-bind:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + monthlyGoal.goalType + '.png'">
-            <div style="display: inline-block" v-if="monthlyGoal.achieveType === 'COUNT'">
-              <div class="monthly-count" th:attr="class='monthly-goal-' + ${monthlyGoal.id}">
-                    <button class="goal-plus-button hvr-fade hvr-push" th:onclick="monthlyGoalFail([[${monthlyGoal.id}]],0, [[${monthlyGoal.achieveType}]], [[${monthlyGoal.goalType}]], [[${monthlyGoal.goalCount}]], [[${monthlyGoal.goalCountQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▼</span></button>
-                    <span class="goal-quota" th:text="|${monthlyGoal.goalCount} / ${monthlyGoal.goalCountQuota}|"> {{monthlyGoal.goalCount}} / {{monthlyGoal.goalCountQuota}} </span>
-                    <button class="goal-minus-button hvr-fade hvr-push" th:onclick="monthlyGoalSuccess([[${monthlyGoal.id}]], 0, [[${monthlyGoal.achieveType}]], [[${monthlyGoal.goalType}]], [[${monthlyGoal.goalCount}]], [[${monthlyGoal.goalCountQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
-                </div>
-            </div>
-            <div style="display:inline-block;" v-if="monthlyGoal.achieveType == 'TIME'">
-                <div class="monthly-time" th:attr="class='monthly-goal-' + ${monthlyGoal.id}">
-                    <button class="goal-plus-button hvr-fade hvr-push" th:onclick="monthlyGoalFail([[${monthlyGoal.id}]],0, [[${monthlyGoal.achieveType}]], [[${monthlyGoal.goalType}]], [[${monthlyGoal.goalTime}]], [[${monthlyGoal.goalTimeQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▼</span></button>
-                    <span class="goal-quota">{{monthlyGoal.goalTime}} / {{monthlyGoal.goalTimeQuota}}</span>
-                    <button class="goal-minus-button hvr-fade hvr-push" th:onclick="monthlyGoalSuccess([[${monthlyGoal.id}]], 0, [[${monthlyGoal.achieveType}]], [[${monthlyGoal.goalType}]], [[${monthlyGoal.goalTime}]], [[${monthlyGoal.goalTimeQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
-                </div>
-            </div>
-            <div style="display:inline-block;" v-if="monthlyGoal.achieveType == 'BASIC'">
-                <div class="monthly-basic" th:attr="class='monthly-goal-' + ${monthlyGoal.id}">
-                    <button v-if="monthlyGoal.success == false"
-                            class="goal-check-button hvr-fade hvr-push"
-                            th:onclick="monthlyGoalSuccess([[${monthlyGoal.id}]], 0, [[${monthlyGoal.achieveType}]], [[${monthlyGoal.goalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                    <button v-if="monthlyGoal.success == true"
-                            class="goal-check-button hvr-fade hvr-push"
-                            th:onclick="monthlyGoalFail([[${monthlyGoal.id}]],0, [[${monthlyGoal.achieveType}]], [[${monthlyGoal.goalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                </div>
-            </div>
-<!--        </span>-->
-        </div>
+      <ul>
+        <li id="monthly-goals" v-for="(monthlyGoal, index) in monthlyGoals" :key="index">
+          <div id="one-monthly-goal">
+            <img class="goal-checkbox-img" v-bind:src="[monthlyGoal.success == true ? successGoalImage : failGoalImage]">
+            <span class="monthly-goal-name" @click="detailMonthlyGoal">{{monthlyGoal.name}}</span>
+            <img class="goal-type-img" v-bind:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + monthlyGoal.goalType + '.png'">
+              <div style="display: inline-block" v-if="monthlyGoal.achieveType === 'COUNT'">
+                <div class="monthly-count" th:attr="class='monthly-goal-' + ${monthlyGoal.id}">
+                      <button @click="monthlyGoalMinus(monthlyGoal.id)" class="goal-plus-button hvr-fade hvr-push"><span class="goal-button-text hvr-fade hvr-push">▼</span></button>
+                      <span class="goal-quota"> {{monthlyGoal.goalCount}} / {{monthlyGoal.goalCountQuota}} </span>
+                      <button @click="monthlyGoalPlus(monthlyGoal.id)" class="goal-minus-button hvr-fade hvr-push"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
+                  </div>
+              </div>
+              <div style="display:inline-block;" v-if="monthlyGoal.achieveType == 'TIME'">
+                  <div class="monthly-time" th:attr="class='monthly-goal-' + ${monthlyGoal.id}">
+                    <button @click="monthlyGoalMinus(monthlyGoal.id)" class="goal-plus-button hvr-fade hvr-push"><span class="goal-button-text hvr-fade hvr-push">▼</span></button>
+                      <span class="goal-quota">{{monthlyGoal.goalTime}} / {{monthlyGoal.goalTimeQuota}}</span>
+                    <button @click="monthlyGoalPlus(monthlyGoal.id)" class="goal-minus-button hvr-fade hvr-push"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
+                  </div>
+              </div>
+              <div style="display:inline-block;" v-if="monthlyGoal.achieveType == 'BASIC'">
+                  <div class="monthly-basic" th:attr="class='monthly-goal-' + ${monthlyGoal.id}">
+                      <button v-if="monthlyGoal.success == false"
+                              @click="monthlyGoalMinus(monthlyGoal.id)"
+                              class="goal-check-button hvr-fade hvr-push">
+                        <span class="goal-check-text hvr-fade hvr-push">check</span></button>
+                      <button v-if="monthlyGoal.success == true"
+                              @click="monthlyGoalMinus(monthlyGoal.id)"
+                              class="goal-check-button hvr-fade hvr-push">
+                        <span class="goal-check-text hvr-fade hvr-push">check</span></button>
+                  </div>
+              </div>
+  <!--        </span>-->
+          </div>
+        </li>
       </ul>
     </div>
   </div>
@@ -72,45 +76,43 @@
       <div id="monday">
         <div class="day-title" th:classappend="${#strings.equals(dayOfWeek,'MONDAY')} ? 'today' : ''">MON</div>
         <div class="day-content">
-          <div th:if="${dailyGoals.get('MON')}" th:each="goal : ${dailyGoals.get('MON')}">
+          <div v-if="this.dailyGoals.MON != []" v-for="dailyGoal in this.dailyGoals.MON">
             <div id="one-daily-goal" class="one-daily-goal">
               <div class="daily-goal-without-success-box-image">
                 <div class="image-and-name-goaltype">
                   <div class="daily-goal-check-image">
-                    <img style="display: inline-block" th:attr="id='check-'+${goal.id}" th:src="${goal.success} ? 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png' : 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png'" class="daily-goal-check">
+                    <img style="display: inline-block" th:attr="id='check-'+${goal.id}"  v-bind:src="[dailyGoal.success === true ? 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png' : 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png']" class="daily-goal-check">
                   </div>
                   <div class="daily-goal-name-and-goalType">
-                    <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])"></span>
-                    <img class="goal-type-img" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + ${goal.getGoalType()} + '.png'">
+                    <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])">{{dailyGoal.name}}</span>
+                    <img class="goal-type-img" v-bind:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + dailyGoal.goalType + '.png'" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + ${goal.getGoalType()} + '.png'">
                   </div>
                 </div>
                 <div class="daily-goal-count-and-button">
-                        <span th:switch="${goal.achieveType}">
-                            <span th:case="${T(kong.tues.goal.AchieveType).COUNT}">
-                                <div class="daily-count-mon" th:attr="class=${goal.id}">
-                                    <button class="goal-minus-button hvr-fade hvr-push" th:onclick="dailyGoalFail([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalCount}]], [[${goal.goalCountQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▼</span></button>
-                                    <span class="goal-quota" th:text="|${goal.goalCount} / ${goal.goalCountQuota}|"></span>
-                                    <button class="goal-plus-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalCount}]], [[${goal.goalCountQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
-                                </div>
-                            </span>
-                            <span th:case="${T(kong.tues.goal.AchieveType).TIME}">
-                                <div class="daily-time-mon" th:attr="class=${goal.id}">
-                                    <button class="goal-plus-button hvr-fade hvr-push" th:onclick="dailyGoalFail([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalTime}]], [[${goal.goalTimeQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▼</span></button>
-                                    <span class="goal-quota" th:text="|${goal.goalTime} / ${goal.goalTimeQuota}|"></span>
-                                    <button class="goal-minus-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalTime}]], [[${goal.goalTimeQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
-                                </div>
-                            </span>
-                            <span th:case="${T(kong.tues.goal.AchieveType).BASIC}">
-                                <div class="daily-basic-mon" th:attr="class=${goal.id}">
-                                    <button th:if="${goal.success == true}"
-                                            class="goal-check-button hvr-fade hvr-push"
-                                            th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                                    <button th:if="${goal.success == false}"
-                                            class="goal-check-button hvr-fade hvr-push"
-                                            th:onclick="dailyGoalFail([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
-                                </div>
-                            </span>
-                        </span>
+                    <span v-if="dailyGoal.achieveType === 'COUNT'">
+                        <div class="daily-count-mon" th:attr="class=${goal.id}">
+                            <button class="goal-minus-button hvr-fade hvr-push" th:onclick="dailyGoalFail([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalCount}]], [[${goal.goalCountQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▼</span></button>
+                            <span class="goal-quota">{{ dailyGoal.goalCount }} / {{ dailyGoal.goalCountQuota }}</span>
+                            <button class="goal-plus-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalCount}]], [[${goal.goalCountQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
+                        </div>
+                    </span>
+                    <span v-if="dailyGoal.achieveType === 'TIME'">
+                        <div class="daily-time-mon" th:attr="class=${goal.id}">
+                            <button class="goal-plus-button hvr-fade hvr-push" th:onclick="dailyGoalFail([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalTime}]], [[${goal.goalTimeQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▼</span></button>
+                            <span class="goal-quota">{{ dailyGoal.goalTime }} / {{ dailyGoal.goalTimeQuota }}</span>
+                            <button class="goal-minus-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalTime}]], [[${goal.goalTimeQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
+                        </div>
+                    </span>
+                    <span v-if="dailyGoal.achieveType === 'BASIC'">
+                        <div class="daily-basic-mon" th:attr="class=${goal.id}">
+                            <button v-if="dailyGoal.success === true"
+                                    class="goal-check-button hvr-fade hvr-push"
+                                    th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
+                            <button v-if="dailyGoal.success === false"
+                                    class="goal-check-button hvr-fade hvr-push"
+                                    th:onclick="dailyGoalFail([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]])"><span class="goal-check-text hvr-fade hvr-push">check</span></button>
+                        </div>
+                    </span>
                 </div>
               </div>
             </div>
@@ -505,6 +507,9 @@ export default {
       monthlyGoals: [
       ],
       dailyGoals: [],
+      viewMonthlyGoals : [
+
+      ]
     }
   },
 
@@ -539,6 +544,8 @@ export default {
               this.monthlyGoals.push(monthlyGoal);
             }
 
+            // dailyGoals 초기화
+            this.dailyGoals = response.data.data.dailyGoals;
           }).catch((error) => {
         console.log("error = " + error);
       })
@@ -557,6 +564,22 @@ export default {
         this.$router.push("/login")
       })
     },
+    monthlyGoalMinus : function (monthlyGoalId) {
+      axios.post(this.server + "/api/main/minus/monthly/" + monthlyGoalId)
+          .then((response) => {
+            this.monthlyGoals = response.data.data;
+          }).catch((error) => {
+            alert(error.response.data.message)
+      })
+    },
+    monthlyGoalPlus : function(monthlyGoalId) {
+      axios.post(this.server + "/api/main/plus/monthly/" + monthlyGoalId)
+          .then((response) => {
+            this.monthlyGoals = response.data.data;
+          }).catch((error) => {
+            alert(error.response.data.message)
+      })
+    }
   }
 }
 </script>
