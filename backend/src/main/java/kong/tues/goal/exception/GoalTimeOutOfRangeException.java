@@ -1,4 +1,6 @@
 package kong.tues.goal.exception;
 
-public class GoalTimeOutOfRangeException extends RuntimeException{
+import kong.tues.commons.exception.BusinessException;
+
+public class GoalTimeOutOfRangeException extends BusinessException {
 }
