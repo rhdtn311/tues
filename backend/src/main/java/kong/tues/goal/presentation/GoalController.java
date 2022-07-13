@@ -277,6 +277,22 @@ public class GoalController {
         return false;
     }
 
+    // new 월간 목표 개수 감소
+    @PostMapping("/minus/monthly/{monthlyGoalId}")
+    public ResponseEntity<ResponseDTO> minusMonthlyGoal(@PathVariable Long monthlyGoalId) {
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(monthlyGoalAchieveService.minusMonthlyGoal(monthlyGoalId)).build());
+    }
+
+    // new 월간 목표 개수 증가
+    @PostMapping("/plus/monthly/{monthlyGoalId}")
+    public ResponseEntity<ResponseDTO> plushMonthlyGoal(@PathVariable Long monthlyGoalId) {
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(monthlyGoalAchieveService.plusMonthlyGoal(monthlyGoalId)).build());
+    }
+
     // 월간 목표 개수 감소
     @PostMapping("/ajax/minus/monthly")
     public String failMonthlyGoal2(@Login Member member,

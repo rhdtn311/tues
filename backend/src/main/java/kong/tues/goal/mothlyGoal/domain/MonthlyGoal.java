@@ -134,6 +134,18 @@ public class MonthlyGoal {
         }
     }
 
+    public boolean isTime() {
+        return this.achieveType == AchieveType.TIME;
+    }
+
+    public boolean isBasic() {
+        return this.achieveType == AchieveType.BASIC;
+    }
+
+    public boolean isCount() {
+        return this.achieveType == AchieveType.COUNT;
+    }
+
     public MonthlyGoal update(MonthlyGoalReqDto monthlyGoalReqDto) {
         this.setName(monthlyGoalReqDto.getName());
         this.setContent(monthlyGoalReqDto.getContent());
