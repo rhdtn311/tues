@@ -7,6 +7,8 @@ import kong.tues.goal.dailyGoal.application.*;
 import kong.tues.goal.dailyGoal.application.dto.DailyGoalDetailResDto;
 import kong.tues.goal.dailyGoal.application.dto.DailyGoalMainResDto;
 import kong.tues.goal.dailyGoal.application.dto.DailyGoalUpdateResDto;
+import kong.tues.goal.dailyGoal.application.dto.GoalAchieveResDto;
+import kong.tues.goal.dailyGoal.domain.DailyGoal;
 import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalAchieveReqDto;
 import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalAchieveResDto;
 import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalReqDto;
@@ -291,6 +293,42 @@ public class GoalController {
 
         return ResponseEntity.ok(ResponseDTO.builder()
                 .data(monthlyGoalAchieveService.plusMonthlyGoal(monthlyGoalId)).build());
+    }
+
+    // new 일간 목표 개수 감소
+    @PostMapping("/minus/daily/{dailyGoalId}")
+    public ResponseEntity<ResponseDTO> minusDailyGoal(@PathVariable Long dailyGoalId) {
+
+        DailyGoal dailyGoal = dailyGoalAchieveService.minusDailyGoal(dailyGoalId);
+        MonthlyGoal monthlyGoal = dailyGoal.getMonthlyGoal();
+
+        GoalAchieveResDto goalAchieveResDto = new GoalAchieveResDto();
+        if (monthlyGoal != null) {
+            goalAchieveResDto.setMonthlyGoals(monthlyGoalFindService.findMonthlyGoals(dailyGoal.getMember().getId(), LocalDate.now().getYear(), LocalDate.now().getMonthValue()));
+        }
+
+        goalAchieveResDto.setDailyGoals(dailyGoalFindService.findDailyGoalsByDate(dailyGoal.getDate()));
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(goalAchieveResDto).build());
+    }
+
+    // new 일간 목표 개수 증가
+    @PostMapping("/plus/daily/{dailyGoalId}")
+    public ResponseEntity<ResponseDTO> plusDailyGoal(@PathVariable Long dailyGoalId) {
+
+        DailyGoal dailyGoal = dailyGoalAchieveService.plusDailyGoal(dailyGoalId);
+        MonthlyGoal monthlyGoal = dailyGoal.getMonthlyGoal();
+
+        GoalAchieveResDto goalAchieveResDto = new GoalAchieveResDto();
+        if (monthlyGoal != null) {
+            goalAchieveResDto.setMonthlyGoals(monthlyGoalFindService.findMonthlyGoals(dailyGoal.getMember().getId(), LocalDate.now().getYear(), LocalDate.now().getMonthValue()));
+        }
+
+        goalAchieveResDto.setDailyGoals(dailyGoalFindService.findDailyGoalsByDate(dailyGoal.getDate()));
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(goalAchieveResDto).build());
     }
 
     // 월간 목표 개수 감소

@@ -5,6 +5,7 @@ import kong.tues.goal.GoalType;
 import lombok.*;
 import org.springframework.lang.Nullable;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Getter
@@ -23,4 +24,5 @@ public class DailyGoalMainResDto {
     private Integer goalTimeQuota;
     private Integer goalTime;
     private Boolean success;
+    private Object dayOfWeek;
 }

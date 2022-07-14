@@ -1,7 +1,9 @@
 package kong.tues.goal.dailyGoal.application;
 
 import kong.tues.goal.dailyGoal.application.dto.DailyGoalMainResDto;
+import kong.tues.goal.dailyGoal.domain.DailyGoal;
 import kong.tues.goal.dailyGoal.domain.repository.DailyGoalQueryRepository;
+import kong.tues.goal.dailyGoal.domain.repository.DailyGoalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,12 +11,14 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class DailyGoalFindService {
 
     private final DailyGoalQueryRepository dailyGoalQueryRepository;
+    private final DailyGoalRepository dailyGoalRepository;
 
     public Map<String, List<DailyGoalMainResDto>> findWeeklyGoals(Long memberId, int year, int month, int day) {
 
@@ -51,6 +55,13 @@ public class DailyGoalFindService {
         }
 
         return weeklyGoalsMap;
+    }
+
+    public List<DailyGoalMainResDto> findDailyGoalsByDate(LocalDate date) {
+        return dailyGoalRepository.findDailyGoalByDate(date)
+                .stream()
+                .map(DailyGoal::toDailyGoalMainResDTO)
+                .collect(Collectors.toList());
     }
 
     // 윤년
