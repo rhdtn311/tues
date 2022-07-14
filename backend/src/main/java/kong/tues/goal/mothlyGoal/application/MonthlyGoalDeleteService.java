@@ -14,11 +14,13 @@ public class MonthlyGoalDeleteService {
     private final MonthlyGoalRepository monthlyGoalRepository;
 
     @Transactional
-    public void deleteMonthlyGoal(Long monthlyGoalId) {
+    public Long deleteMonthlyGoal(Long monthlyGoalId) {
 
         MonthlyGoal monthlyGoal
                 = monthlyGoalRepository.findById(monthlyGoalId).orElseThrow(GoalNotFoundException::new);
 
         monthlyGoalRepository.delete(monthlyGoal);
+
+        return monthlyGoalId;
     }
 }

@@ -331,6 +331,24 @@ public class GoalController {
                 .data(goalAchieveResDto).build());
     }
 
+    // new 월간 목표 상세
+    @GetMapping("/detail/monthly/{monthlyGoalId}")
+    public ResponseEntity<ResponseDTO> detailMonthly(@PathVariable Long monthlyGoalId) {
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(monthlyGoalDetailService.getMonthlyGoalDetail(monthlyGoalId))
+                .build());
+    }
+
+    // new 월간 목표 삭제
+    @PostMapping("/monthly/{monthlyGoalId}")
+    public ResponseEntity<ResponseDTO> deleteMonthly(@PathVariable Long monthlyGoalId) {
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(monthlyGoalDeleteService.deleteMonthlyGoal(monthlyGoalId))
+                .build());
+    }
+
     // 월간 목표 개수 감소
     @PostMapping("/ajax/minus/monthly")
     public String failMonthlyGoal2(@Login Member member,
@@ -529,26 +547,6 @@ public class GoalController {
         monthlyGoalUpdateService.updateMonthlyGoal(monthlyGoalReqDto);
 
         return "redirect:/goal/main";
-    }
-
-    @GetMapping("/detail/monthly")
-    public String detailMonthly(@Login Member member,
-                                Long monthlyGoalId,
-                                Model model) {
-        if (member == null) {
-            return "/member/login";
-        }
-
-        MonthlyGoalDetailResDto detailGoal
-                = monthlyGoalDetailService.getMonthlyGoalDetail(monthlyGoalId);
-
-
-        model.addAttribute("detailGoal", detailGoal);
-
-        model.addAttribute("year", LocalDate.now().getYear());
-        model.addAttribute("month", LocalDate.now().getMonthValue());
-
-        return "/goal/detailMonthlyGoal :: #monthly-goal-detail";
     }
 
     @PostMapping("/delete/monthly")
