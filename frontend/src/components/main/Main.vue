@@ -27,7 +27,7 @@
     </div>
     <div id="monthly-goals-ajax">
       <ul>
-        <li id="monthly-goals" v-for="(monthlyGoal, index) in monthlyGoals" :key="index">
+        <li id="monthly-goals" v-for="monthlyGoal in monthlyGoals">
           <div id="one-monthly-goal">
             <img class="goal-checkbox-img" v-bind:src="[monthlyGoal.success == true ? successGoalImage : failGoalImage]">
             <span class="monthly-goal-name" @click="detailMonthlyGoal">{{monthlyGoal.name}}</span>
@@ -71,7 +71,6 @@
     <div style="display: flex; justify-content: space-between">
       <div id="daily-goal-title" style="margin-left: 20px" class="main-title">주간 목표</div>
     </div>
-
     <div id="daily-goals-container">
       <div id="monday">
         <div class="day-title" th:classappend="${#strings.equals(dayOfWeek,'MONDAY')} ? 'today' : ''">MON</div>
@@ -85,15 +84,15 @@
                   </div>
                   <div class="daily-goal-name-and-goalType">
                     <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])">{{dailyGoal.name}}</span>
-                    <img class="goal-type-img" v-bind:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + dailyGoal.goalType + '.png'" th:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + ${goal.getGoalType()} + '.png'">
+                    <img class="goal-type-img" v-bind:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + dailyGoal.goalType + '.png'">
                   </div>
                 </div>
                 <div class="daily-goal-count-and-button">
                     <span v-if="dailyGoal.achieveType === 'COUNT'">
                         <div class="daily-count-mon" th:attr="class=${goal.id}">
-                            <button class="goal-minus-button hvr-fade hvr-push" th:onclick="dailyGoalFail([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalCount}]], [[${goal.goalCountQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▼</span></button>
+                            <button @click="dailyGoalMinus(dailyGoal.id)" class="goal-minus-button hvr-fade hvr-push" ><span class="goal-button-text hvr-fade hvr-push">▼</span></button>
                             <span class="goal-quota">{{ dailyGoal.goalCount }} / {{ dailyGoal.goalCountQuota }}</span>
-                            <button class="goal-plus-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalCount}]], [[${goal.goalCountQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
+                            <button @click="dailyGoalPlus(dailyGoal.id)" class="goal-plus-button hvr-fade hvr-push" th:onclick="dailyGoalSuccess([[${goal.id}]], [[${goal.achieveType}]], 'mon', [[${monthlyGoal.id}]], [[${goal.getGoalType}]], [[${goal.goalCount}]], [[${goal.goalCountQuota}]])"><span class="goal-button-text hvr-fade hvr-push">▲</span></button>
                         </div>
                     </span>
                     <span v-if="dailyGoal.achieveType === 'TIME'">
@@ -578,6 +577,29 @@ export default {
             this.monthlyGoals = response.data.data;
           }).catch((error) => {
             alert(error.response.data.message)
+      })
+    },
+    dailyGoalMinus : function (dailyGoalId) {
+      axios.post(this.server + "/api/main/minus/daily/" + dailyGoalId)
+          .then((response) => {
+            console.log("response = " + JSON.stringify(response,null,2))
+            if (response.data.data.monthlyGoals != null) {
+              this.monthlyGoals = response.data.data.monthlyGoals;
+            }
+            this.dailyGoals[response.data.data.dailyGoals[0].dayOfWeek] = response.data.data.dailyGoals;
+          }).catch((error) => {
+            alert(error.response.data.message)
+      })
+    },
+    dailyGoalPlus : function (dailyGoalId) {
+      axios.post(this.server + "/api/main/plus/daily/" + dailyGoalId)
+          .then((response) => {
+          if (response.data.data.monthlyGoals != null) {
+              this.monthlyGoals = response.data.data.monthlyGoals;
+          }
+          this.dailyGoals[response.data.data.dailyGoals[0].dayOfWeek] = response.data.data.dailyGoals;
+          }).catch((error) => {
+            alert(error.response.data.message);
       })
     }
   }
