@@ -6,6 +6,7 @@ import kong.tues.goal.mothlyGoal.domain.repository.MonthlyGoalRepository;
 import kong.tues.goal.mothlyGoal.dto.MonthlyGoalDetailResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -13,6 +14,7 @@ public class MonthlyGoalDetailService {
 
     private final MonthlyGoalRepository monthlyGoalRepository;
 
+    @Transactional(readOnly = true)
     public MonthlyGoalDetailResDto getMonthlyGoalDetail(Long monthlyGoalId) {
         MonthlyGoal monthlyGoal
                 = monthlyGoalRepository.findById(monthlyGoalId).orElseThrow(GoalNotFoundException::new);
