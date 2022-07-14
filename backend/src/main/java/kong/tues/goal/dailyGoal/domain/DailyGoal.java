@@ -2,9 +2,11 @@ package kong.tues.goal.dailyGoal.domain;
 
 import kong.tues.goal.AchieveType;
 import kong.tues.goal.GoalType;
+import kong.tues.goal.dailyGoal.application.dto.DailyGoalMainResDto;
 import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalReqDto;
 import kong.tues.goal.exception.GoalCountOutOfRangeException;
 import kong.tues.goal.exception.GoalTimeOutOfRangeException;
+import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
 import kong.tues.member.domain.Member;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -15,6 +17,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -76,8 +79,13 @@ public class DailyGoal {
     private Boolean success;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_eid")
+    @JoinColumn(name = "member_id")
     private Member member;
+
+    @Nullable
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "monthly_goal_id")
+    private MonthlyGoal monthlyGoal;
 
     public void plusGoalCount() {
         if (this.goalCount >= 100000000) {
@@ -120,6 +128,37 @@ public class DailyGoal {
             case TIME : success = goalTimeQuota <= goalTime; break;
             case BASIC : success = !success;
         }
+    }
+
+    public boolean isCount() {
+        return this.achieveType == AchieveType.COUNT;
+    }
+
+    public boolean isTime() {
+        return this.achieveType == AchieveType.TIME;
+    }
+
+    public boolean isBasic() {
+        return this.achieveType == AchieveType.BASIC;
+    }
+
+    public DayOfWeek getDayOfWeek() {
+        return this.getDate().getDayOfWeek();
+    }
+
+    public DailyGoalMainResDto toDailyGoalMainResDTO() {
+        return DailyGoalMainResDto.builder()
+                .id(this.id)
+                .name(this.name)
+                .goalType(this.goalType)
+                .achieveType(this.achieveType)
+                .goalCountQuota(this.goalCountQuota)
+                .goalCount(this.goalCount)
+                .goalTimeQuota(this.goalTimeQuota)
+                .goalTime(this.goalTime)
+                .success(this.success)
+                .dayOfWeek(this.date.getDayOfWeek().toString().substring(0,3))
+                .build();
     }
 
     public DailyGoal update(DailyGoalReqDto dailyGoalReqDto) {

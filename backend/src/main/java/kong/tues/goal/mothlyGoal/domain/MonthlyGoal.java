@@ -1,7 +1,9 @@
 package kong.tues.goal.mothlyGoal.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import kong.tues.goal.AchieveType;
 import kong.tues.goal.GoalType;
+import kong.tues.goal.dailyGoal.domain.DailyGoal;
 import kong.tues.goal.exception.GoalCountOutOfRangeException;
 import kong.tues.goal.exception.GoalTimeOutOfRangeException;
 import kong.tues.goal.mothlyGoal.dto.MonthlyGoalReqDto;
@@ -18,6 +20,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -74,9 +78,13 @@ public class MonthlyGoal {
     @Column(name = "success")
     private Boolean success;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "monthlyGoal")
+    private List<DailyGoal> dailyGoals = new ArrayList<>();
 
     public void plusGoalCount() {
         if (goalCount >= 100000000) {
