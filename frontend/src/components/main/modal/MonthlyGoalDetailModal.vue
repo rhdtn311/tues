@@ -22,7 +22,7 @@
     <div class="monthly-goal-detail-title">성공 여부</div>
     <div id="detail-success" class="monthly-goal-detail-content"> {{this.detailGoal.success ? "성공" : "진행 중"}}</div>
     <div id="detail-goal-buttons" style="margin-bottom: 12px; text-align: center;">
-      <button id="monthly-goal-update-button" style="margin-right: 25px;" th:onclick="updateMonthlyGoal([[${detailGoal.monthlyGoalId}]], [[${year}]], [[${month}]])">수정</button>
+      <button @click="updateGoal" id="monthly-goal-update-button" style="margin-right: 25px;">수정</button>
       <button @click="deleteGoal" id="monthly-goal-delete-button">삭제</button>
     </div>
   </div>
@@ -39,6 +39,9 @@ export default {
     },
     deleteGoal : function() {
       this.$emit("delete", this.detailGoal.monthlyGoalId)
+    },
+    updateGoal : function() {
+      this.$emit("update", this.detailGoal.monthlyGoalId)
     }
   }
 }
@@ -74,7 +77,18 @@ export default {
   width: 25px;
   position: absolute;
   right: 16px;
-  top: 0px;
   height: 25px;
+  top: 14px
+}
+
+button {
+  border-radius: 5px;
+  border: solid 0px #292C6D;
+  background-color: #292C6D;
+  width: 62px;
+  height: 32px;
+  font-weight: bold;
+  color: #FFF8F3;
+  margin-bottom: 15px;
 }
 </style>

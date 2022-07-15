@@ -406,60 +406,60 @@
       </div>
     </div>
 
-    <div id="monthly-modal" class="modal-overlay">
-      <div class="modal-window">
-        <div class="title">
-          <h2>DATE</h2>
-        </div>
-        <div class="close-area">ⓧ</div>
-        <div class="content">
-          <div>YEAR</div>
-          <label for="year"></label>
-          <input style="width: 194px" type="number" th:min="${year}" th:value="${year}" max="3000"
-                 id="create-monthly-goal-year" name="year"
-                 placeholder="년">
-          <div>MONTH</div>
-          <label for="month"></label>
-          <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" id="create-monthly-goal-month"
-                 name="month" placeholder="월">
-          <br>
-          <div style="padding-top: 15px; text-align: center;">
-            <button id="create-button" class="hvr-fade-create" onclick="createMonthlyGoal()">생성</button>
-          </div>
-        </div>
-      </div>
-    </div>
+<!--    <div id="monthly-modal" class="modal-overlay">-->
+<!--      <div class="modal-window">-->
+<!--        <div class="title">-->
+<!--          <h2>DATE</h2>-->
+<!--        </div>-->
+<!--        <div class="close-area">ⓧ</div>-->
+<!--        <div class="content">-->
+<!--          <div>YEAR</div>-->
+<!--          <label for="year"></label>-->
+<!--          <input style="width: 194px" type="number" th:min="${year}" th:value="${year}" max="3000"-->
+<!--                 id="create-monthly-goal-year" name="year"-->
+<!--                 placeholder="년">-->
+<!--          <div>MONTH</div>-->
+<!--          <label for="month"></label>-->
+<!--          <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" id="create-monthly-goal-month"-->
+<!--                 name="month" placeholder="월">-->
+<!--          <br>-->
+<!--          <div style="padding-top: 15px; text-align: center;">-->
+<!--            <button id="create-button" class="hvr-fade-create" onclick="createMonthlyGoal()">생성</button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
 
-    <div id="daily-modal" class="modal-overlay">
-      <div class="modal-window">
-        <div class="title">
-          <h2>DATE</h2>
-        </div>
-        <div class="close-area">ⓧ</div>
-        <div class="content">
-          <div>YEAR</div>
-          <label for="year"></label>
-          <input style="width: 194px" type="number" th:min="${year}" th:value="${year}" max="3000" id="create-daily-goal-year"
-                 name="year"
-                 placeholder="년">
-          <div>MONTH</div>
-          <label for="month"></label>
-          <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" id="create-daily-goal-month"
-                 name="month" placeholder="월">
-          <div>DAY</div>
-          <label for="day"></label>
-          <input style="width: 194px" type="number" min="1" max="31" th:value="${day}" id="create-daily-goal-day" name="day"
-                 placeholder="일">
-          <br>
-          <div style="padding-top: 15px; text-align: center;">
-            <button th:onclick="createDailyGoal()" id="create-button">생성</button>
-          </div>
-        </div>
-      </div>
-      <div id="hidden" hidden></div>
-      <div id="error" hidden></div>
-      <div id="monthly-goal-success" hidden></div>
-    </div>
+<!--    <div id="daily-modal" class="modal-overlay">-->
+<!--      <div class="modal-window">-->
+<!--        <div class="title">-->
+<!--          <h2>DATE</h2>-->
+<!--        </div>-->
+<!--        <div class="close-area">ⓧ</div>-->
+<!--        <div class="content">-->
+<!--          <div>YEAR</div>-->
+<!--          <label for="year"></label>-->
+<!--          <input style="width: 194px" type="number" th:min="${year}" th:value="${year}" max="3000" id="create-daily-goal-year"-->
+<!--                 name="year"-->
+<!--                 placeholder="년">-->
+<!--          <div>MONTH</div>-->
+<!--          <label for="month"></label>-->
+<!--          <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" id="create-daily-goal-month"-->
+<!--                 name="month" placeholder="월">-->
+<!--          <div>DAY</div>-->
+<!--          <label for="day"></label>-->
+<!--          <input style="width: 194px" type="number" min="1" max="31" th:value="${day}" id="create-daily-goal-day" name="day"-->
+<!--                 placeholder="일">-->
+<!--          <br>-->
+<!--          <div style="padding-top: 15px; text-align: center;">-->
+<!--            <button th:onclick="createDailyGoal()" id="create-button">생성</button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div id="hidden" hidden></div>-->
+<!--      <div id="error" hidden></div>-->
+<!--      <div id="monthly-goal-success" hidden></div>-->
+<!--    </div>-->
 
     <!--    월간 목표 생성 모달-->
     <div id="create-monthly-goal-modal" class="content"></div>
@@ -476,10 +476,16 @@
       <!-- 컴포넌트 MyModal -->
       <MonthlyGoalDetailModal @close="closeMonthlyGoalDetailModal"
                               @delete="deleteMonthlyGoal"
-                              @modify="modifyMonthlyGoal"
+                              @update="modifyMonthlyGoalView"
                               v-if="this.isMonthlyGoalDetailModal"
                               v-bind:detailGoal="detailMonthlyGoal">
       </MonthlyGoalDetailModal>
+    <MonthlyGoalUpdateModal v-if="this.isMonthlyGoalUpdateModal"
+                            @update="modifyMonthlyGoal"
+                            v-bind:createdGoalTypes="createdGoalTypes"
+                            v-bind:updateMonthlyGoal="updateMonthlyGoal"
+    >
+    </MonthlyGoalUpdateModal>
 
     </div>
 
@@ -494,10 +500,11 @@
 <script>
 import axios from "axios";
 import MonthlyGoalDetailModal from "./modal/MonthlyGoalDetailModal.vue";
+import MonthlyGoalUpdateModal from "./modal/MonthlyGoalUpdateModal.vue";
 
 export default {
   name: "Main",
-  components: {MonthlyGoalDetailModal},
+  components: {MonthlyGoalDetailModal, MonthlyGoalUpdateModal},
   data() {
     return {
       date : {
@@ -513,7 +520,10 @@ export default {
 
       ],
       isMonthlyGoalDetailModal : false,
+      isMonthlyGoalUpdateModal : false,
       detailMonthlyGoal : {},
+      createdGoalTypes: [],
+      updateMonthlyGoal: {}
     }
   },
 
@@ -610,7 +620,6 @@ export default {
     monthlyGoalDetail: function (monthlyGoalId) {
       axios.get(this.server + "/api/main/detail/monthly/" + monthlyGoalId)
           .then((response) => {
-            console.log("response = " + JSON.stringify(response,null,2))
             this.detailMonthlyGoal = response.data.data;
             if (!this.isMonthlyGoalDetailModal) {
               this.openMonthlyGoalDetailModal();
@@ -621,7 +630,6 @@ export default {
     },
     openMonthlyGoalDetailModal() {
       this.isMonthlyGoalDetailModal = true;
-      console.log("isMonthlyGoalDetailModal = " + this.isMonthlyGoalDetailModal)
     },
     closeMonthlyGoalDetailModal() {
       this.isMonthlyGoalDetailModal = false;
@@ -630,17 +638,35 @@ export default {
       axios.post(this.server + "/api/main/monthly/delete/" + monthlyGoalId)
           .then((response) => {
             this.isMonthlyGoalDetailModal = false;
-            this.$router.go();
+            // this.$router.go();
           }).catch((error) => {
             alert(error)
       })
     },
-    modifyMonthlyGoal : function (monthlyGoalId) {
-      axios.post(this.server + "/api/main/monthly/" + monthlyGoalId)
+    modifyMonthlyGoalView: function (monthlyGoalId) {
+      axios.get(this.server + "/api/main/monthly/update/" + monthlyGoalId)
           .then((response) => {
-            this.isMonthlyGoalDetailModal = false;
-
-          })
+            console.log("response = " + JSON.stringify(response, null, 2))
+            this.createdGoalTypes = response.data.data.createdGoalTypes
+            this.updateMonthlyGoal = response.data.data.updateMonthlyGoal
+            this.closeMonthlyGoalDetailModal();
+            this.openMonthlyGoalUpdateModal();
+          }).catch((error) => {
+        alert(error)
+      })
+    },
+    openMonthlyGoalUpdateModal() {
+      this.isMonthlyGoalUpdateModal = true;
+    },
+    closeMonthlyGoalUpdateModal() {
+      this.isMonthlyGoalUpdateModal = false;
+    },
+    modifyMonthlyGoal : function (monthlyGoal) {
+      axios.post(this.server + "/api/main/monthly/update", monthlyGoal)
+          .then((response) => {
+          }).error((error) => {
+            alert(error)
+      })
     }
   }
 }
@@ -918,8 +944,8 @@ button {
 
 /*이미지 사진 크기*/
 .goal-type-img {
-  width: 15px;
-  height: 20px;
+  width: 17px;
+  height: 22px;
   margin-left: 4px;
   margin-right: 15px;
 }
