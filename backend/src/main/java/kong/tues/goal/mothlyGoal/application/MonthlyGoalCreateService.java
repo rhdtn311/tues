@@ -1,6 +1,7 @@
 package kong.tues.goal.mothlyGoal.application;
 
 import kong.tues.goal.GoalType;
+import kong.tues.goal.exception.GoalNotFoundException;
 import kong.tues.goal.exception.GoalTypeDupException;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
 import kong.tues.goal.mothlyGoal.domain.repository.MonthlyGoalQueryRepository;
@@ -39,7 +40,20 @@ public class MonthlyGoalCreateService {
     }
 
     @Transactional(readOnly = true)
+    public List<String> findCreatedGoalTypes(Long monthlyGoalId) {
+
+        MonthlyGoal monthlyGoal = monthlyGoalRepository.findById(monthlyGoalId).orElseThrow(GoalNotFoundException::new);
+
+        List<GoalType> createdGoalTypes
+                = monthlyGoalQueryRepository.findCreatedGoalTypes(monthlyGoal.getMember().getId(), monthlyGoal.getDate().getYear()
+                , monthlyGoal.getDate().getMonthValue());
+
+        return getGoalTypes(createdGoalTypes);
+    }
+
+    @Transactional(readOnly = true)
     public List<String> findCreatedGoalTypes(Long memberId, int year, int month) {
+
         // thymeleaf에서 단일 문자열은 list.contains가 동작하지 않기 때문에 리스트를 변형
         List<GoalType> createdGoalTypes
                 = monthlyGoalQueryRepository.findCreatedGoalTypes(memberId, year, month);

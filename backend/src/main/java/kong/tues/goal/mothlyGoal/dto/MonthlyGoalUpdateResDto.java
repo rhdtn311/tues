@@ -41,7 +41,8 @@ public class MonthlyGoalUpdateResDto {
                 .achieveType(monthlyGoal.getAchieveType())
                 .goalCountQuota(monthlyGoal.getGoalCountQuota())
                 .goalCount(monthlyGoal.getGoalCount())
-                .goalTimeQuota(monthlyGoal.getGoalTime())
+                .goalTimeQuota(monthlyGoal.getGoalTimeQuota())
+                .goalTime(monthlyGoal.getGoalTime())
                 .build();
     }
 }

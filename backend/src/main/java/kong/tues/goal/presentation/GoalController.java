@@ -136,7 +136,7 @@ public class GoalController {
         }
 
         List<String> createdGoalTypes
-                = monthlyGoalCreateService.findCreatedGoalTypes(member.getId(), year, month);
+                = monthlyGoalCreateService.findCreatedGoalTypes(member.getId());
 
         model.addAttribute("monthlyGoalReqDto", new MonthlyGoalReqDto());
         model.addAttribute("createdGoalTypes", createdGoalTypes);
@@ -346,6 +346,31 @@ public class GoalController {
 
         return ResponseEntity.ok(ResponseDTO.builder()
                 .data(monthlyGoalDeleteService.deleteMonthlyGoal(monthlyGoalId))
+                .build());
+    }
+
+    // new 월간 목표 수정 화면
+    @GetMapping("/monthly/update/{monthlyGoalId}")
+    public ResponseEntity<ResponseDTO> modifyMonthlyView(@PathVariable Long monthlyGoalId) {
+
+        List<String> createdGoalTypes = monthlyGoalCreateService.findCreatedGoalTypes(monthlyGoalId);
+        MonthlyGoalUpdateResDto updateMonthlyGoal = monthlyGoalUpdateService.getMonthlyGoalUpdate(monthlyGoalId);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("createdGoalTypes", createdGoalTypes);
+        data.put("updateMonthlyGoal", updateMonthlyGoal);
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(data)
+                .build());
+    }
+
+    // new 월간 목표 수정
+    @PostMapping("/monthly/update")
+    public ResponseEntity<ResponseDTO> modifyMonthly(@RequestBody MonthlyGoalReqDto monthlyGoalReqDto) {
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(monthlyGoalUpdateService.updateMonthlyGoal(monthlyGoalReqDto))
                 .build());
     }
 
