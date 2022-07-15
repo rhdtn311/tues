@@ -22,15 +22,13 @@ public class LoginInterceptor implements HandlerInterceptor {
         log.info("로그인 사용자 인증 체크 : {}", requestURI);
 
         HttpSession session = request.getSession(false);
+        if (request.getMethod().equals("OPTIONS")) {
+            return true;
+        }
 
         if (session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
-            log.info("비로그인 사용자 요청");
+            log.info("비로그인 사용자 요청 : {}", requestURI);
 
-            response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-            response.setHeader("Access-Control-Allow-Credentials", "true");
-            response.setHeader("Access-Control-Allow-Methods","*");
-            response.setHeader("Access-Control-Max-Age", "3600");
-            response.setHeader("Access-Control-Allow-Headers", "*");
             response.setCharacterEncoding("utf-8");
             response.setContentType("application/json");
             response.setStatus(406);
