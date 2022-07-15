@@ -476,6 +476,7 @@
       <!-- 컴포넌트 MyModal -->
       <MonthlyGoalDetailModal @close="closeMonthlyGoalDetailModal"
                               @delete="deleteMonthlyGoal"
+                              @modify="modifyMonthlyGoal"
                               v-if="this.isMonthlyGoalDetailModal"
                               v-bind:detailGoal="detailMonthlyGoal">
       </MonthlyGoalDetailModal>
@@ -626,13 +627,20 @@ export default {
       this.isMonthlyGoalDetailModal = false;
     },
     deleteMonthlyGoal : function (monthlyGoalId) {
-      axios.post(this.server + "/api/main/monthly/" + monthlyGoalId)
+      axios.post(this.server + "/api/main/monthly/delete/" + monthlyGoalId)
           .then((response) => {
             this.isMonthlyGoalDetailModal = false;
             this.$router.go();
           }).catch((error) => {
-        console.log("monthlyGoalId = " + monthlyGoalId)
+            alert(error)
       })
+    },
+    modifyMonthlyGoal : function (monthlyGoalId) {
+      axios.post(this.server + "/api/main/monthly/" + monthlyGoalId)
+          .then((response) => {
+            this.isMonthlyGoalDetailModal = false;
+
+          })
     }
   }
 }

@@ -341,7 +341,7 @@ public class GoalController {
     }
 
     // new 월간 목표 삭제
-    @PostMapping("/monthly/{monthlyGoalId}")
+    @PostMapping("/monthly/delete/{monthlyGoalId}")
     public ResponseEntity<ResponseDTO> deleteMonthly(@PathVariable Long monthlyGoalId) {
 
         return ResponseEntity.ok(ResponseDTO.builder()
