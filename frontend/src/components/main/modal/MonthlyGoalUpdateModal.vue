@@ -69,19 +69,7 @@ export default {
   name: "MonthlyGoalUpdateModal",
   data() {
     return {
-      monthlyGoal : {
-        monthlyGoalId: "",
-        name: "",
-        content: "",
-        goalType: "",
-        year: "",
-        month: "",
-        achieveType: "",
-        goalCountQuota: "",
-        goalCount: "",
-        goalTimeQuota: "",
-        goalTime: ""
-      },
+      monthlyGoal : {},
     }
   },
   mounted() {
@@ -95,14 +83,7 @@ export default {
     achieveTypeCOUNT() {this.monthlyGoal.achieveType = "COUNT"},
     achieveTypeTIME() {this.monthlyGoal.achieveType = "TIME"},
     init() {
-      this.monthlyGoal.monthlyGoalId = this.updateMonthlyGoal.monthlyGoalId
-      this.monthlyGoal.achieveType = this.updateMonthlyGoal.achieveType
-      this.monthlyGoal.year = this.updateMonthlyGoal.year
-      this.monthlyGoal.month = this.updateMonthlyGoal.month
-      this.monthlyGoal.name = this.updateMonthlyGoal.name
-      this.monthlyGoal.content = this.updateMonthlyGoal.content
-      this.monthlyGoal.goalCountQuota = this.updateMonthlyGoal.goalCountQuota
-      this.monthlyGoal.goalTimeQuota = this.updateMonthlyGoal.goalTimeQuota
+      this.monthlyGoal = this.updateMonthlyGoal;
     },
     update: function() {
       this.$emit("update", this.monthlyGoal)
