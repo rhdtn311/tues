@@ -406,6 +406,16 @@ public class GoalController {
                 .data(dailyGoalUpdateService.updateDailyGoal(dailyGoalReqDto)).build());
     }
 
+    // new 일간 목표 삭제
+    @DeleteMapping("/daily/{dailyGoalId}")
+    public ResponseEntity<ResponseDTO> deleteDaily(@PathVariable Long dailyGoalId) {
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(dailyGoalDeleteService.deleteDailyGoal(dailyGoalId))
+                .build()
+        );
+    }
+
     // 월간 목표 개수 감소
     @PostMapping("/ajax/minus/monthly")
     public String failMonthlyGoal2(@Login Member member,
@@ -691,7 +701,7 @@ public class GoalController {
             return "/member/login";
         }
 
-        dailyGoalDeleteService.deleteDailyGoal(dailyGoalId, member.getId());
+//        dailyGoalDeleteService.deleteDailyGoal(dailyGoalId, member.getId());
 
         return "redirect:/goal/main";
     }

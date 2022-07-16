@@ -18,19 +18,19 @@ public class DailyGoalDeleteService {
     private final MonthlyGoalQueryRepository monthlyGoalQueryRepository;
 
     @Transactional
-    public void deleteDailyGoal(Long dailyGoalId, Long memberId) {
+    public Long deleteDailyGoal(Long dailyGoalId) {
 
         DailyGoal dailyGoal
                 = dailyGoalRepository.findById(dailyGoalId).orElseThrow(GoalNotFoundException::new);
+        MonthlyGoal monthlyGoal = dailyGoal.getMonthlyGoal();
 
-        MonthlyGoal sameTypeMonthlyGoal = monthlyGoalQueryRepository
-                .findMonthlyGoalByGoalTypeAndAchieveType(memberId, dailyGoal.getDate().getYear(), dailyGoal.getDate().getMonthValue(), dailyGoal.getGoalType(), dailyGoal.getAchieveType());
-
-        if (sameTypeMonthlyGoal != null) {
-            minusMonthlyGoal(sameTypeMonthlyGoal, dailyGoal.getAchieveType(), dailyGoal.getAchieveType() == AchieveType.COUNT ? dailyGoal.getGoalCount() : dailyGoal.getGoalTime());
+        if (monthlyGoal != null) {
+            minusMonthlyGoal(monthlyGoal, dailyGoal.getAchieveType(), dailyGoal.getAchieveType() == AchieveType.COUNT ? dailyGoal.getGoalCount() : dailyGoal.getGoalTime());
         }
 
         dailyGoalRepository.delete(dailyGoal);
+
+        return dailyGoal.getId();
     }
 
     public void minusMonthlyGoal(MonthlyGoal monthlyGoal , AchieveType achieveType, Integer minusValue) {
