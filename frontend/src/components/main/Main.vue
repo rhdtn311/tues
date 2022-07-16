@@ -487,10 +487,18 @@
                             v-bind:updateMonthlyGoal="updateMonthlyGoal">
     </MonthlyGoalUpdateModal>
     <DailyGoalDetailModal v-if="this.isDailyGoalDetailModal"
+                          @update="modifyDailyGoalView"
+                          @close="closeDailyGoalDetailModal"
                           v-bind:detailGoal="detailDailyGoal"
-
     >
     </DailyGoalDetailModal>
+    <DailyGoalUpdateModal v-if="this.isDailyGoalUpdateModal"
+                          @update="modifyDailyGoal"
+                          v-bind:updateDailyGoal="updateDailyGoal"
+                          v-bind:createdMonthlyGoals="createdMonthlyGoals"
+    >
+
+    </DailyGoalUpdateModal>
 
     </div>
 
@@ -507,34 +515,35 @@ import axios from "axios";
 import MonthlyGoalDetailModal from "./modal/MonthlyGoalDetailModal.vue";
 import MonthlyGoalUpdateModal from "./modal/MonthlyGoalUpdateModal.vue";
 import DailyGoalDetailModal from "./modal/DailyGoalDetailModal.vue";
+import DailyGoalUpdateModal from "./modal/DailyGoalUpdateModal.vue";
 
 export default {
   name: "Main",
-  components: {MonthlyGoalDetailModal, MonthlyGoalUpdateModal, DailyGoalDetailModal},
+  components: {MonthlyGoalDetailModal, MonthlyGoalUpdateModal, DailyGoalDetailModal, DailyGoalUpdateModal},
   data() {
     return {
-      date : {
-        year : "",
-        month : "",
-        day : "",
-        dayOfWeek : ""
+      date: {
+        year: "",
+        month: "",
+        day: "",
+        dayOfWeek: ""
       },
-      monthlyGoals: [
-      ],
+      monthlyGoals: [],
       dailyGoals: [],
-      viewMonthlyGoals : [
-
-      ],
-      detailMonthlyGoal : {},
+      viewMonthlyGoals: [],
+      detailMonthlyGoal: {},
       createdGoalTypes: [],
       updateMonthlyGoal: {},
-      detailDailyGoal : {},
+      detailDailyGoal: {},
+      updateDailyGoal: {},
+      createdMonthlyGoals: {},
 
       // Modal
-      isMonthlyGoalDetailModal : false,
-      isMonthlyGoalUpdateModal : false,
-      isDailyGoalDetailModal : false,
-    }
+      isMonthlyGoalDetailModal: false,
+      isMonthlyGoalUpdateModal: false,
+      isDailyGoalDetailModal: false,
+      isDailyGoalUpdateModal: false
+    };
   },
 
   computed: {
@@ -674,7 +683,7 @@ export default {
     modifyMonthlyGoal : function (monthlyGoal) {
       axios.post(this.server + "/api/main/monthly/update", monthlyGoal)
           .then((response) => {
-          }).error((error) => {
+          }).catch((error) => {
             alert(error)
       })
     },
@@ -684,7 +693,28 @@ export default {
             this.isDailyGoalDetailModal = true;
             this.detailDailyGoal = response.data.data
           }))
-    }
+    },
+    closeDailyGoalDetailModal : function () {
+      this.isDailyGoalDetailModal = false;
+    },
+    openDailyGoalUpdateModal : function() {
+      this.isDailyGoalUpdateModal = true;
+    },
+    modifyDailyGoalView: function (dailyGoalId) {
+      axios.get(this.server + "/api/main/daily/update/" + dailyGoalId)
+          .then((response) => {
+            this.isDailyGoalDetailModal = false;
+            this.updateDailyGoal = response.data.data.dailyGoal;
+            this.createdMonthlyGoals = response.data.data.monthlyGoals;
+            this.openDailyGoalUpdateModal();
+          })
+    },
+    modifyDailyGoal: function (dailyGoal) {
+      axios.post(this.server + "/api/main/daily/update", dailyGoal)
+          .then((response) => {
+          }).catch((error) => {
+      })
+    },
   }
 }
 </script>
