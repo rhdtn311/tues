@@ -27,11 +27,12 @@ public class DailyGoalUpdateService {
 
     // 로직
     @Transactional
-    public void updateDailyGoal(DailyGoalReqDto dailyGoalReqDto) {
+    public Long updateDailyGoal(DailyGoalReqDto dailyGoalReqDto) {
         DailyGoal dailyGoal
                 = dailyGoalRepository.findById(dailyGoalReqDto.getDailyGoalId()).orElseThrow(GoalNotFoundException::new);
 
         dailyGoal.update(dailyGoalReqDto);
 
+        return dailyGoal.getId();
     }
 }

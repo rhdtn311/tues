@@ -374,12 +374,43 @@ public class GoalController {
                 .build());
     }
 
+    // new 일간 목표 상세
+    @GetMapping("/daily/detail/{dailyGoalId}")
+    public ResponseEntity<ResponseDTO> detailDaily(@PathVariable Long dailyGoalId) {
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(dailyGoalDetailService.getDailyGoalDetail(dailyGoalId)).build());
+    }
+
+    // new 월간 목표 수정 화면
+    @GetMapping("/daily/update/{dailyGoalId}")
+    public ResponseEntity<ResponseDTO> modifyDailyView(@PathVariable Long dailyGoalId) {
+
+        DailyGoalUpdateResDto dailyGoal = dailyGoalUpdateService.getDailyGoalUpdate(dailyGoalId);
+        List<MonthlyGoalMainResDto> monthlyGoals = monthlyGoalFindService.getMonthlyGoalNames(dailyGoalId);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("dailyGoal", dailyGoal);
+        data.put("monthlyGoals", monthlyGoals);
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(data)
+                .build());
+    }
+
+    // new 일간 목표 수정
+    @PostMapping("/daily/update")
+    public ResponseEntity<ResponseDTO> modifyDaily(@RequestBody DailyGoalReqDto dailyGoalReqDto) {
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(dailyGoalUpdateService.updateDailyGoal(dailyGoalReqDto)).build());
+    }
+
     // 월간 목표 개수 감소
     @PostMapping("/ajax/minus/monthly")
     public String failMonthlyGoal2(@Login Member member,
                                    @ModelAttribute @Validated MonthlyGoalAchieveReqDto monthlyGoalAchieveReqDto,
                                    Model model) {
-
         if (member == null) {
             return "/member/login";
         }
