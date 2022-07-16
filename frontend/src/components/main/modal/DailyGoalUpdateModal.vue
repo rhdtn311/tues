@@ -15,7 +15,6 @@
         </ul>
       </div>
     </div>
-    <div>{{dailyGoal}}</div>
     <form id="create-monthly-goal-form">
       <input id="monthly-goal-id" hidden>
       <div class="buttons">
@@ -102,6 +101,9 @@ export default {
       this.isCreatedMonthlyGoals = !this.isCreatedMonthlyGoals},
     update: function() {
       this.$emit("update", this.dailyGoal)
+    },
+    close : function() {
+      this.$emit("close")
     },
     init() {
       this.monthlyGoals = this.createdMonthlyGoals

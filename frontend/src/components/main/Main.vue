@@ -494,6 +494,7 @@
     </DailyGoalDetailModal>
     <DailyGoalUpdateModal v-if="this.isDailyGoalUpdateModal"
                           @update="modifyDailyGoal"
+                          @close="closeDailyGoalUpdateModal"
                           v-bind:updateDailyGoal="updateDailyGoal"
                           v-bind:createdMonthlyGoals="createdMonthlyGoals"
     >
@@ -699,6 +700,9 @@ export default {
     },
     openDailyGoalUpdateModal : function() {
       this.isDailyGoalUpdateModal = true;
+    },
+    closeDailyGoalUpdateModal: function() {
+      this.isDailyGoalUpdateModal = false;
     },
     modifyDailyGoalView: function (dailyGoalId) {
       axios.get(this.server + "/api/main/daily/update/" + dailyGoalId)
