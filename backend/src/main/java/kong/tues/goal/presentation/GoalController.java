@@ -4,10 +4,7 @@ import kong.tues.commons.argumentresolver.Login;
 import kong.tues.commons.dto.ResponseDTO;
 import kong.tues.goal.AchieveType;
 import kong.tues.goal.dailyGoal.application.*;
-import kong.tues.goal.dailyGoal.application.dto.DailyGoalDetailResDto;
-import kong.tues.goal.dailyGoal.application.dto.DailyGoalMainResDto;
-import kong.tues.goal.dailyGoal.application.dto.DailyGoalUpdateResDto;
-import kong.tues.goal.dailyGoal.application.dto.GoalAchieveResDto;
+import kong.tues.goal.dailyGoal.application.dto.*;
 import kong.tues.goal.dailyGoal.domain.DailyGoal;
 import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalAchieveReqDto;
 import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalAchieveResDto;
@@ -27,23 +24,20 @@ import kong.tues.goal.mothlyGoal.presentation.validator.MonthlyGoalReqDtoValidat
 import kong.tues.goal.mothlyGoal.presentation.validator.MonthlyGoalSuccessValidator;
 import kong.tues.goal.presentation.dto.DateResponse;
 import kong.tues.goal.presentation.dto.MainResponse;
+import kong.tues.member.SessionConst;
 import kong.tues.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.constraints.Null;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -89,7 +83,6 @@ public class GoalController {
         //에러가 있을 경우
 //        model.addAttribute("error", error);
 
-        System.out.println("-------1---------------");
         // 월간 목표 생성, 일간 목표 생성을 위한 데이터 (모달 창)
         model.addAttribute("year", LocalDate.now().getYear());
         model.addAttribute("month", LocalDate.now().getMonthValue());
@@ -119,7 +112,6 @@ public class GoalController {
 
         // dailymodal
 //        model.addAttribute("createdGoalsMap", new HashMap<>());
-        System.out.println("-------2---------------");
 
         return ResponseEntity.ok(ResponseDTO.builder()
                 .data(MainResponse.builder().dateResponse(new DateResponse()).monthlyGoals(monthlyGoals).dailyGoals(dailyGoals).build())
@@ -416,6 +408,40 @@ public class GoalController {
         );
     }
 
+    // new 월간 목표 생성 날짜 지정
+    @GetMapping("/monthly/view/{year}/{month}")
+    public ResponseEntity<ResponseDTO> createMonthlyGoalView(@PathVariable Integer year,
+                                                             @PathVariable Integer month,
+                                                             HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+        Member member = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(monthlyGoalCreateService.findCreatedGoalTypes(member.getId(), year, month)).build());
+    }
+
+    // new 월간 목표 생성 화면
+    @GetMapping("/daily/{dailyGoalId}")
+    public ResponseEntity<ResponseDTO> createDailyGoal(@PathVariable Long memberId) {
+
+        return ResponseEntity.ok(ResponseDTO.builder().data(null).build());
+    }
+
+    // new 월간 목표 생성
+    @PostMapping("/monthly")
+    public ResponseEntity<ResponseDTO> createMonthlyGoal(@RequestBody MonthlyGoalReqDto monthlyGoalReqDto,
+                                                         HttpServletRequest request) {
+
+        System.out.println("monthlyGoal = " + monthlyGoalReqDto);
+        HttpSession session = request.getSession(false);
+        Member member = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(monthlyGoalCreateService.save(monthlyGoalReqDto, member.getId())).build());
+    }
+
+
     // 월간 목표 개수 감소
     @PostMapping("/ajax/minus/monthly")
     public String failMonthlyGoal2(@Login Member member,
@@ -574,25 +600,25 @@ public class GoalController {
     public String getUpdateMonthlyGoal(@Login Member member,
                                        MonthlyGoalUpdateReqDto monthlyGoalUpdateReqDto,
                                        Model model) {
-
-        log.info("update Monthly = {}", monthlyGoalUpdateReqDto);
-        if (member == null) {
-            return "/member/login";
-        }
-        List<String> createdGoalTypes
-                = monthlyGoalCreateService.findCreatedGoalTypes(member.getId(), monthlyGoalUpdateReqDto.getYear(), monthlyGoalUpdateReqDto.getMonth());
-
-        model.addAttribute("monthlyGoalReqDto", new MonthlyGoalReqDto());
-        model.addAttribute("createdGoalTypes", createdGoalTypes);
-        model.addAttribute("year", monthlyGoalUpdateReqDto.getYear());
-        model.addAttribute("month", monthlyGoalUpdateReqDto.getMonth());
-
-        MonthlyGoalUpdateResDto updateMonthlyGoal
-                = monthlyGoalUpdateService.getMonthlyGoalUpdate(monthlyGoalUpdateReqDto.getMonthlyGoalId());
-
-        model.addAttribute("updateMonthlyGoal", updateMonthlyGoal);
-        log.info("updateMonthlyGoal = {}", updateMonthlyGoal);
-
+//
+//        log.info("update Monthly = {}", monthlyGoalUpdateReqDto);
+//        if (member == null) {
+//            return "/member/login";
+//        }
+//        List<String> createdGoalTypes
+//                = monthlyGoalCreateService.findCreatedGoalTypes(member.getId(), monthlyGoalUpdateReqDto.getYear(), monthlyGoalUpdateReqDto.getMonth());
+//
+//        model.addAttribute("monthlyGoalReqDto", new MonthlyGoalReqDto());
+//        model.addAttribute("createdGoalTypes", createdGoalTypes);
+//        model.addAttribute("year", monthlyGoalUpdateReqDto.getYear());
+//        model.addAttribute("month", monthlyGoalUpdateReqDto.getMonth());
+//
+//        MonthlyGoalUpdateResDto updateMonthlyGoal
+//                = monthlyGoalUpdateService.getMonthlyGoalUpdate(monthlyGoalUpdateReqDto.getMonthlyGoalId());
+//
+//        model.addAttribute("updateMonthlyGoal", updateMonthlyGoal);
+//        log.info("updateMonthlyGoal = {}", updateMonthlyGoal);
+//
         return "/goal/updateMonthlyGoal :: #update-monthly-goal-modal";
     }
 
