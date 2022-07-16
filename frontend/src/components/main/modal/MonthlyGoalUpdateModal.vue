@@ -5,7 +5,7 @@
       <h1 id="create-monthly-goal-title">월간 목표 수정</h1>
     </div>
     <form id="create-monthly-goal-form">
-      <input id="monthly-goal-id" th:name="monthlyGoalId" th:value="${updateMonthlyGoal.monthlyGoalId}" hidden>
+      <input id="monthly-goal-id" hidden>
       <div class="buttons">
         <ul class="goal-types" style = "margin-left: 18px; padding-bottom: 10px">
           <li><img class="goal-type-img" :src="goalTypeImage('A')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('A', 0)" :checked="isChecked('A')" type="radio" name="goalType" id="goalTypeA" value="A"><label for="goalTypeA"></label></li>
@@ -57,7 +57,7 @@
       </div>
       <div id="create-buttons">
         <button @click="update" type="submit" class="create-button hvr-fade-create" style="margin-right: 100px;">확인</button>
-        <button type="button" id="create-monthly-goal-cancel" class="create-button hvr-fade-create">취소</button>
+        <button @click="close" type="button" id="create-monthly-goal-cancel" class="create-button hvr-fade-create">취소</button>
       </div>
     </form>
   </div>
@@ -104,9 +104,11 @@ export default {
       this.monthlyGoal.goalCountQuota = this.updateMonthlyGoal.goalCountQuota
       this.monthlyGoal.goalTimeQuota = this.updateMonthlyGoal.goalTimeQuota
     },
-    update: function(e) {
-      // e.preventDefault();
+    update: function() {
       this.$emit("update", this.monthlyGoal)
+    },
+    close : function() {
+      this.$emit("close")
     }
   }
   ,
