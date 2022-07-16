@@ -76,10 +76,10 @@
               <div class="daily-goal-without-success-box-image">
                 <div class="image-and-name-goaltype">
                   <div class="daily-goal-check-image">
-                    <img style="display: inline-block" th:attr="id='check-'+${goal.id}"  v-bind:src="[dailyGoal.success === true ? 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png' : 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png']" class="daily-goal-check">
+                    <img style="display: inline-block" v-bind:src="[dailyGoal.success === true ? 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-success.png' : 'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/check-fail.png']" class="daily-goal-check">
                   </div>
                   <div class="daily-goal-name-and-goalType">
-                    <span class="daily-goal-name" th:text="${goal.name}" th:onclick="detailDailyGoal([[${goal.id}]])">{{dailyGoal.name}}</span>
+                    <span @click="dailyGoalDetail(dailyGoal.id)" class="daily-goal-name">{{dailyGoal.name}}</span>
                     <img class="goal-type-img" v-bind:src="'https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-' + dailyGoal.goalType + '.png'">
                   </div>
                 </div>
@@ -482,10 +482,15 @@
       </MonthlyGoalDetailModal>
     <MonthlyGoalUpdateModal v-if="this.isMonthlyGoalUpdateModal"
                             @update="modifyMonthlyGoal"
+                            @close="closeMonthlyGoalUpdateModal"
                             v-bind:createdGoalTypes="createdGoalTypes"
-                            v-bind:updateMonthlyGoal="updateMonthlyGoal"
-    >
+                            v-bind:updateMonthlyGoal="updateMonthlyGoal">
     </MonthlyGoalUpdateModal>
+    <DailyGoalDetailModal v-if="this.isDailyGoalDetailModal"
+                          v-bind:detailGoal="detailDailyGoal"
+
+    >
+    </DailyGoalDetailModal>
 
     </div>
 
@@ -501,10 +506,11 @@
 import axios from "axios";
 import MonthlyGoalDetailModal from "./modal/MonthlyGoalDetailModal.vue";
 import MonthlyGoalUpdateModal from "./modal/MonthlyGoalUpdateModal.vue";
+import DailyGoalDetailModal from "./modal/DailyGoalDetailModal.vue";
 
 export default {
   name: "Main",
-  components: {MonthlyGoalDetailModal, MonthlyGoalUpdateModal},
+  components: {MonthlyGoalDetailModal, MonthlyGoalUpdateModal, DailyGoalDetailModal},
   data() {
     return {
       date : {
@@ -519,11 +525,15 @@ export default {
       viewMonthlyGoals : [
 
       ],
-      isMonthlyGoalDetailModal : false,
-      isMonthlyGoalUpdateModal : false,
       detailMonthlyGoal : {},
       createdGoalTypes: [],
-      updateMonthlyGoal: {}
+      updateMonthlyGoal: {},
+      detailDailyGoal : {},
+
+      // Modal
+      isMonthlyGoalDetailModal : false,
+      isMonthlyGoalUpdateModal : false,
+      isDailyGoalDetailModal : false,
     }
   },
 
@@ -667,6 +677,13 @@ export default {
           }).error((error) => {
             alert(error)
       })
+    },
+    dailyGoalDetail : function (dailyGoalId) {
+      axios.get(this.server + "/api/main/daily/detail/" + dailyGoalId)
+          .then((response => {
+            this.isDailyGoalDetailModal = true;
+            this.detailDailyGoal = response.data.data
+          }))
     }
   }
 }
