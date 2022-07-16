@@ -23,7 +23,7 @@
     <div id="detail-success" class="daily-goal-detail-content"> {{this.detailGoal.success === true ? '성공' : '진행 중'}}</div>
     <div id="detail-goal-buttons" style="margin-bottom: 12px; text-align: center;">
       <button @click="updateGoal(detailGoal.dailyGoalId)" id="daily-goal-update-button" style="margin-right: 25px;" >수정</button>
-      <button id="daily-goal-delete-button" th:onclick="deleteDailyGoal([[${detailDailyGoal.dailyGoalId}]])">삭제</button>
+      <button @click="deleteGoal(detailGoal.dailyGoalId)" id="daily-goal-delete-button">삭제</button>
     </div>
   </div>
 
@@ -41,6 +41,9 @@ export default {
     },
     updateGoal(dailyGoalId) {
       this.$emit("update", dailyGoalId);
+    },
+    deleteGoal(dailyGoalId) {
+      this.$emit("delete", dailyGoalId);
     }
   }
 }

@@ -488,6 +488,7 @@
     </MonthlyGoalUpdateModal>
     <DailyGoalDetailModal v-if="this.isDailyGoalDetailModal"
                           @update="modifyDailyGoalView"
+                          @delete="deleteDailyGoal"
                           @close="closeDailyGoalDetailModal"
                           v-bind:detailGoal="detailDailyGoal"
     >
@@ -658,7 +659,7 @@ export default {
       axios.post(this.server + "/api/main/monthly/delete/" + monthlyGoalId)
           .then((response) => {
             this.isMonthlyGoalDetailModal = false;
-            // this.$router.go();
+            this.$router.go();
           }).catch((error) => {
             alert(error)
       })
@@ -719,6 +720,13 @@ export default {
           }).catch((error) => {
       })
     },
+    deleteDailyGoal: function (dailyGoalId) {
+      axios.delete(this.server + "/api/main/daily/" + dailyGoalId)
+          .then((response) => {
+            this.$router.go();
+          })
+          .catch((error) => {})
+    }
   }
 }
 </script>
