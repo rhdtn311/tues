@@ -118,24 +118,6 @@ export default {
   cursor: pointer;
 }
 
-#update-monthly-goal-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  background-color: #F5F5F5;
-  height: fit-content;
-  width: 650px;
-  border-radius: 20px;
-  border: solid 4px #325288;
-}
-
-#create-monthly-goal-title {
-  text-align: center;
-  display: inline-block;
-  position: relative;
-}
-
 #date, #input-name, #input-content, #input-type {
   margin-left: 30px;
   margin-top: 20px;
@@ -143,6 +125,18 @@ export default {
 
 #head {
   text-align: center;
+}
+
+#all-monthly-goals {
+  left: 104%;
+  position: fixed;
+  top: 7%;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  background-color: #F5F5F5;
+  border-radius: 20px;
+  border: solid 4px #325288;
 }
 
 #create-goal-year, #create-goal-month, #create-goal-day {
@@ -232,6 +226,18 @@ input:focus {
 
 /*==========================================*/
 /*월간 목표 생성창 년도, 월 보내기 모달창*/
+
+#update-daily-goal-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background-color: #F5F5F5;
+  height: fit-content;
+  width: 650px;
+  border-radius: 20px;
+  border: solid 4px #325288;
+}
 
 #monthly-modal  {
   background: #FFF8F3;
@@ -354,23 +360,20 @@ input::-webkit-inner-spin-button {
 }
 
 /* 일간 목표 생성- 년도, 월, 일 보내기 모달창 */
-#daily-modal.modal-overlay {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(1.5px);
-  -webkit-backdrop-filter: blur(1.5px);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+#check-monthly-goals-btn {
+  border: solid 3px #FEF9EF;
+  height: 27px;
+  background-color: #172774;
+  border-radius: 15px;
+  font-weight: bold;
+  font-style: oblique;
+  color: #FEF9EF;
+  display: inline;
+  position: relative;
+  left: 250px;
 }
+
+
 #daily-modal .modal-window {
   background: #FFF8F3;
   box-shadow: 0 8px 32px 0 rgb(31 38 135 / 37%);
