@@ -21,7 +21,7 @@
         </div>
       </div>
       <div id="make-goal-button">
-        <button id="btn-monthly-modal" class="hvr-back-pulse">월간 목표 생성 ＋</button>
+        <button @click="createMonthlyGoalView" id="btn-monthly-modal" class="hvr-back-pulse">월간 목표 생성 ＋</button>
         <button id="btn-daily-modal" class="hvr-back-pulse"> 일일 목표 생성 ＋</button>
       </div>
     </div>
@@ -473,13 +473,13 @@
     <!--    일간 목표 수정 모달-->
     <div id="update-daily-goal-modal"> </div>
 
-      <!-- 컴포넌트 MyModal -->
-      <MonthlyGoalDetailModal @close="closeMonthlyGoalDetailModal"
-                              @delete="deleteMonthlyGoal"
-                              @update="modifyMonthlyGoalView"
-                              v-if="this.isMonthlyGoalDetailModal"
-                              v-bind:detailGoal="detailMonthlyGoal">
-      </MonthlyGoalDetailModal>
+    <!-- 컴포넌트 MyModal -->
+    <MonthlyGoalDetailModal @close="closeMonthlyGoalDetailModal"
+                            @delete="deleteMonthlyGoal"
+                            @update="modifyMonthlyGoalView"
+                            v-if="this.isMonthlyGoalDetailModal"
+                            v-bind:detailGoal="detailMonthlyGoal">
+    </MonthlyGoalDetailModal>
     <MonthlyGoalUpdateModal v-if="this.isMonthlyGoalUpdateModal"
                             @update="modifyMonthlyGoal"
                             @close="closeMonthlyGoalUpdateModal"
@@ -497,10 +497,12 @@
                           @update="modifyDailyGoal"
                           @close="closeDailyGoalUpdateModal"
                           v-bind:updateDailyGoal="updateDailyGoal"
-                          v-bind:createdMonthlyGoals="createdMonthlyGoals"
-    >
-
+                          v-bind:createdMonthlyGoals="createdMonthlyGoals">
     </DailyGoalUpdateModal>
+    <MonthlyGoalCreateModal v-if="this.isMonthlyGoalCreateModal"
+                            @create="createMonthlyGoal"
+    >
+    </MonthlyGoalCreateModal>
 
     </div>
 
@@ -518,10 +520,11 @@ import MonthlyGoalDetailModal from "./modal/MonthlyGoalDetailModal.vue";
 import MonthlyGoalUpdateModal from "./modal/MonthlyGoalUpdateModal.vue";
 import DailyGoalDetailModal from "./modal/DailyGoalDetailModal.vue";
 import DailyGoalUpdateModal from "./modal/DailyGoalUpdateModal.vue";
+import MonthlyGoalCreateModal from "./modal/MonthlyGoalCreateModal.vue";
 
 export default {
   name: "Main",
-  components: {MonthlyGoalDetailModal, MonthlyGoalUpdateModal, DailyGoalDetailModal, DailyGoalUpdateModal},
+  components: {MonthlyGoalDetailModal, MonthlyGoalUpdateModal, DailyGoalDetailModal, DailyGoalUpdateModal, MonthlyGoalCreateModal},
   data() {
     return {
       date: {
@@ -530,6 +533,7 @@ export default {
         day: "",
         dayOfWeek: ""
       },
+      loginId:"",
       monthlyGoals: [],
       dailyGoals: [],
       viewMonthlyGoals: [],
@@ -544,7 +548,9 @@ export default {
       isMonthlyGoalDetailModal: false,
       isMonthlyGoalUpdateModal: false,
       isDailyGoalDetailModal: false,
-      isDailyGoalUpdateModal: false
+      isDailyGoalUpdateModal: false,
+      isMonthlyGoalCreateModal: false,
+      isDailyGoalCreateModal : false
     };
   },
 
@@ -566,7 +572,6 @@ export default {
     init: function () {
       axios.get(this.server + "/api/main")
           .then((response) => {
-            console.log("response = " + JSON.stringify(response, null, 2));
 
             // 날짜 초기화
             this.date.year = response.data.data.dateResponse.year;
@@ -581,6 +586,7 @@ export default {
 
             // dailyGoals 초기화
             this.dailyGoals = response.data.data.dailyGoals;
+
           }).catch((error) => {
         console.log("error = " + error);
       })
@@ -726,6 +732,17 @@ export default {
             this.$router.go();
           })
           .catch((error) => {})
+    },
+    createMonthlyGoalView: function() {
+      this.openMonthlyGoalCreate();
+    },
+    openMonthlyGoalCreate: function() {
+      this.isMonthlyGoalCreateModal = true;
+    },
+    createMonthlyGoal: function(monthlyGoal) {
+      axios.post(this.server + "/api/main/monthly", monthlyGoal)
+          .then((response) => {})
+          .catch((error) => {alert(error)})
     }
   }
 }
@@ -998,7 +1015,7 @@ button {
 }
 
 #monthly-goals {
-  margin-bottom: -10px;
+  margin-bottom: 10px;
 }
 
 /*이미지 사진 크기*/
