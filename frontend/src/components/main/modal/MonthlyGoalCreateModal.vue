@@ -56,17 +56,22 @@
       </div>
       <div id="create-buttons">
         <button @click="createMonthlyGoal" type="submit" class="create-button hvr-fade-create" style="margin-right: 100px;">확인</button>
-        <button type="button" id="create-monthly-goal-cancel" class="create-button hvr-fade-create">취소</button>
+        <button @click="close" type="button" id="create-monthly-goal-cancel" class="create-button hvr-fade-create">취소</button>
       </div>
     </form>
   </div>
   </body>
 
   <div v-if="isDateModal" id="date-modal">
-    <form>
-      <input type="number" v-model="this.monthlyGoal.year">
-      <input type="number" v-model="this.monthlyGoal.month">
-      <button @click="getCreatedMonthlyGoals">확인</button>
+    <form class="date-form">
+      <span>년</span>
+      <input class="date-input" type="number" placeholder="YEAR" v-model="this.monthlyGoal.year">
+      <span>월</span>
+      <input class="date-input" type="number" placeholder="MONTH" v-model="this.monthlyGoal.month">
+      <div id="date-created-buttons">
+        <button @click="getCreatedMonthlyGoals" class="create-button">확인</button>
+        <button @click="close" class="create-button">취소</button>
+      </div>
     </form>
   </div>
 </template>
@@ -120,18 +125,75 @@ export default {
     achieveTypeTIME() {this.monthlyGoal.achieveType = "TIME"},
     createMonthlyGoal() {
       this.$emit("create", this.monthlyGoal)
+    },
+    close : function () {
+      this.$emit("close")
     }
   },
 }
 </script>
 
 <style scoped>
+
+#date-created-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-right: 30px;
+}
+
+.create-button {
+  border-radius: 5px;
+  border: solid 0px #292C6D;
+  background-color: #292C6D;
+  width: 62px;
+  height: 32px;
+  font-weight: bold;
+  color: #FFF8F3;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
 .goal-type-select:hover {
   cursor: pointer;
 }
 
+.date-form {
+  margin-top: 25px;
+  margin-left: 25px;
+}
+
+.date-input {
+  width: 128px;
+  height: 32px;
+  font-size: 15px;
+  border: 0;
+  border-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: rgb(233, 233, 233);
+  display: block;
+  margin-bottom: 15px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#date-modal {
+  position: absolute;
+  top: 28%;
+  left: 45%;
+  border: solid 2px #325288;
+  width: 200px;
+  height: 245px;
+  background-color: #F5F5F5;
+  border-radius: 20px;
+}
+
 #create-monthly-goal-modal {
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
