@@ -439,6 +439,7 @@
     </MonthlyGoalCreateModal>
     <DailyGoalCreateModal v-if="this.isDailyGoalCreateModal"
                           @create="createDailyGoal"
+                          @close="closeDailyGoalCreateModal"
     >
 
     </DailyGoalCreateModal>
@@ -693,6 +694,9 @@ export default {
     },
     openDailyGoalCreate: function() {
       this.isDailyGoalCreateModal = true;
+    },
+    closeDailyGoalCreateModal: function () {
+      this.isDailyGoalCreateModal = false;
     },
     createDailyGoal: function(dailyGoal) {
       axios.post(this.server + "/api/main/daily", dailyGoal)

@@ -75,7 +75,7 @@
       </div>
       <div id="create-buttons">
         <button @click="create" type="submit" class="create-button hvr-fade-create" style="margin-right: 100px;">확인</button>
-        <button type="button" class="create-button hvr-fade-create">취소</button>
+        <button @click="close" type="button" class="create-button hvr-fade-create">취소</button>
       </div>
     </form>
   </div>
@@ -143,6 +143,9 @@ export default {
     },
     create: function() {
       this.$emit("create", this.dailyGoal);
+    },
+    close : function() {
+      this.$emit("close")
     }
   }
 
