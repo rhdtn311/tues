@@ -31,6 +31,36 @@ public class MonthlyGoalUpdateService {
         MonthlyGoal updateMonthlyGoal
                 = monthlyGoalRepository.findById(monthlyGoalReqDto.getMonthlyGoalId()).orElseThrow(GoalNotFoundException::new);
 
+        removeDailyGoalRelative(updateMonthlyGoal, monthlyGoalReqDto);
+        createDailyGoalRelative(updateMonthlyGoal, monthlyGoalReqDto);
+
         return updateMonthlyGoal.update(monthlyGoalReqDto).getId();
+    }
+
+    private void removeDailyGoalRelative(MonthlyGoal monthlyGoal, MonthlyGoalReqDto monthlyGoalReqDto) {
+        monthlyGoal.getDailyGoals()
+                .stream()
+                .filter(dailyGoal -> {
+                    return dailyGoal.getDate().getYear() == monthlyGoal.getDate().getYear() &&
+                            dailyGoal.getDate().getMonth() == monthlyGoal.getDate().getMonth() &&
+                            dailyGoal.getGoalType() == monthlyGoal.getGoalType();
+                })
+                .forEach(dailyGoal -> {
+                    if (dailyGoal.getDate().getYear() != monthlyGoalReqDto.getYear() ||
+                            dailyGoal.getDate().getMonthValue() != monthlyGoalReqDto.getMonth() ||
+                            dailyGoal.getGoalType() != monthlyGoalReqDto.getGoalType()) {
+                        dailyGoal.setMonthlyGoal(null);
+                    }
+                });
+    }
+
+    private void createDailyGoalRelative(MonthlyGoal monthlyGoal, MonthlyGoalReqDto monthlyGoalReqDto) {
+        monthlyGoal.getMember().getDailyGoal()
+                .stream()
+                .filter(dailyGoal -> {
+                    return dailyGoal.getDate().getYear() == monthlyGoalReqDto.getYear() &&
+                            dailyGoal.getDate().getMonthValue() == monthlyGoalReqDto.getMonth() &&
+                            dailyGoal.getGoalType() == monthlyGoalReqDto.getGoalType();
+                }).forEach(dailyGoal -> dailyGoal.setMonthlyGoal(monthlyGoal));
     }
 }

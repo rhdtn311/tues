@@ -161,6 +161,7 @@ public class MonthlyGoal {
         this.setAchieveType(monthlyGoalReqDto.getAchieveType());
         this.setGoalCountQuota(monthlyGoalReqDto.getGoalCountQuota());
         this.setGoalTimeQuota(monthlyGoalReqDto.getGoalTimeQuota());
+        this.setDate(LocalDate.of(monthlyGoalReqDto.getYear(), monthlyGoalReqDto.getMonth(), 1));
 
         if (monthlyGoalReqDto.getAchieveType() == AchieveType.BASIC) {
             this.success = false;
