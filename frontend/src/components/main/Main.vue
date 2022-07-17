@@ -21,8 +21,8 @@
         </div>
       </div>
       <div id="make-goal-button">
-        <button @click="createMonthlyGoalView" id="btn-monthly-modal" class="hvr-back-pulse">월간 목표 생성 ＋</button>
-        <button id="btn-daily-modal" class="hvr-back-pulse"> 일일 목표 생성 ＋</button>
+        <button @click="openMonthlyGoalCreate" id="btn-monthly-modal" class="hvr-back-pulse">월간 목표 생성 ＋</button>
+        <button @click="openDailyGoalCreate" id="btn-daily-modal" class="hvr-back-pulse"> 일일 목표 생성 ＋</button>
       </div>
     </div>
     <div id="monthly-goals-ajax">
@@ -406,73 +406,6 @@
       </div>
     </div>
 
-<!--    <div id="monthly-modal" class="modal-overlay">-->
-<!--      <div class="modal-window">-->
-<!--        <div class="title">-->
-<!--          <h2>DATE</h2>-->
-<!--        </div>-->
-<!--        <div class="close-area">ⓧ</div>-->
-<!--        <div class="content">-->
-<!--          <div>YEAR</div>-->
-<!--          <label for="year"></label>-->
-<!--          <input style="width: 194px" type="number" th:min="${year}" th:value="${year}" max="3000"-->
-<!--                 id="create-monthly-goal-year" name="year"-->
-<!--                 placeholder="년">-->
-<!--          <div>MONTH</div>-->
-<!--          <label for="month"></label>-->
-<!--          <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" id="create-monthly-goal-month"-->
-<!--                 name="month" placeholder="월">-->
-<!--          <br>-->
-<!--          <div style="padding-top: 15px; text-align: center;">-->
-<!--            <button id="create-button" class="hvr-fade-create" onclick="createMonthlyGoal()">생성</button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div id="daily-modal" class="modal-overlay">-->
-<!--      <div class="modal-window">-->
-<!--        <div class="title">-->
-<!--          <h2>DATE</h2>-->
-<!--        </div>-->
-<!--        <div class="close-area">ⓧ</div>-->
-<!--        <div class="content">-->
-<!--          <div>YEAR</div>-->
-<!--          <label for="year"></label>-->
-<!--          <input style="width: 194px" type="number" th:min="${year}" th:value="${year}" max="3000" id="create-daily-goal-year"-->
-<!--                 name="year"-->
-<!--                 placeholder="년">-->
-<!--          <div>MONTH</div>-->
-<!--          <label for="month"></label>-->
-<!--          <input style="width: 194px" type="number" min="1" max="12" th:value="${month}" id="create-daily-goal-month"-->
-<!--                 name="month" placeholder="월">-->
-<!--          <div>DAY</div>-->
-<!--          <label for="day"></label>-->
-<!--          <input style="width: 194px" type="number" min="1" max="31" th:value="${day}" id="create-daily-goal-day" name="day"-->
-<!--                 placeholder="일">-->
-<!--          <br>-->
-<!--          <div style="padding-top: 15px; text-align: center;">-->
-<!--            <button th:onclick="createDailyGoal()" id="create-button">생성</button>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div id="hidden" hidden></div>-->
-<!--      <div id="error" hidden></div>-->
-<!--      <div id="monthly-goal-success" hidden></div>-->
-<!--    </div>-->
-
-    <!--    월간 목표 생성 모달-->
-    <div id="create-monthly-goal-modal" class="content"></div>
-
-    <!--    일간 목표 생성 모달-->
-    <div id="create-daily-goal-modal" class="content"></div>
-
-    <!--    월간 목표 수정 모달-->
-    <div id="update-monthly-goal-modal"> </div>
-
-    <!--    일간 목표 수정 모달-->
-    <div id="update-daily-goal-modal"> </div>
-
     <!-- 컴포넌트 MyModal -->
     <MonthlyGoalDetailModal @close="closeMonthlyGoalDetailModal"
                             @delete="deleteMonthlyGoal"
@@ -504,6 +437,11 @@
                             @close="closeMonthlyGoalCreateModal"
     >
     </MonthlyGoalCreateModal>
+    <DailyGoalCreateModal v-if="this.isDailyGoalCreateModal"
+                          @create="createDailyGoal"
+    >
+
+    </DailyGoalCreateModal>
 
     </div>
 
@@ -522,10 +460,18 @@ import MonthlyGoalUpdateModal from "./modal/MonthlyGoalUpdateModal.vue";
 import DailyGoalDetailModal from "./modal/DailyGoalDetailModal.vue";
 import DailyGoalUpdateModal from "./modal/DailyGoalUpdateModal.vue";
 import MonthlyGoalCreateModal from "./modal/MonthlyGoalCreateModal.vue";
+import DailyGoalCreateModal from "./modal/DailyGoalCreateModal.vue";
 
 export default {
   name: "Main",
-  components: {MonthlyGoalDetailModal, MonthlyGoalUpdateModal, DailyGoalDetailModal, DailyGoalUpdateModal, MonthlyGoalCreateModal},
+  components: {
+    MonthlyGoalDetailModal,
+    MonthlyGoalUpdateModal,
+    DailyGoalDetailModal,
+    DailyGoalUpdateModal,
+    MonthlyGoalCreateModal,
+    DailyGoalCreateModal,
+  },
   data() {
     return {
       date: {
@@ -551,7 +497,7 @@ export default {
       isDailyGoalDetailModal: false,
       isDailyGoalUpdateModal: false,
       isMonthlyGoalCreateModal: false,
-      isDailyGoalCreateModal : false
+      isDailyGoalCreateModal : false,
     };
   },
 
@@ -734,9 +680,6 @@ export default {
           })
           .catch((error) => {})
     },
-    createMonthlyGoalView: function() {
-      this.openMonthlyGoalCreate();
-    },
     openMonthlyGoalCreate: function() {
       this.isMonthlyGoalCreateModal = true;
     },
@@ -747,6 +690,14 @@ export default {
     },
     closeMonthlyGoalCreateModal : function() {
       this.isMonthlyGoalCreateModal = false;
+    },
+    openDailyGoalCreate: function() {
+      this.isDailyGoalCreateModal = true;
+    },
+    createDailyGoal: function(dailyGoal) {
+      axios.post(this.server + "/api/main/daily", dailyGoal)
+          .then((response) => {})
+          .chtch((error) => {alert(error)})
     }
   }
 }
