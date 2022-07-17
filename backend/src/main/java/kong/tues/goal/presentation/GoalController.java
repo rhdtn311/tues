@@ -421,19 +421,11 @@ public class GoalController {
                 .data(monthlyGoalCreateService.findCreatedGoalTypes(member.getId(), year, month)).build());
     }
 
-    // new 월간 목표 생성 화면
-    @GetMapping("/daily/{dailyGoalId}")
-    public ResponseEntity<ResponseDTO> createDailyGoal(@PathVariable Long memberId) {
-
-        return ResponseEntity.ok(ResponseDTO.builder().data(null).build());
-    }
-
     // new 월간 목표 생성
     @PostMapping("/monthly")
     public ResponseEntity<ResponseDTO> createMonthlyGoal(@RequestBody MonthlyGoalReqDto monthlyGoalReqDto,
                                                          HttpServletRequest request) {
 
-        System.out.println("monthlyGoal = " + monthlyGoalReqDto);
         HttpSession session = request.getSession(false);
         Member member = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
 
@@ -441,6 +433,30 @@ public class GoalController {
                 .data(monthlyGoalCreateService.save(monthlyGoalReqDto, member.getId())).build());
     }
 
+    // new 일간 목표 생성 화면
+    @GetMapping("/daily/view/{year}/{month}")
+    public ResponseEntity<ResponseDTO> createDailyGoalView(@PathVariable Integer year,
+                                                           @PathVariable Integer month,
+                                                           HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+        Member member = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(dailyGoalCreateService.findCreatedGoal(member.getId(), year, month)).build());
+    }
+
+    // new 월간 목표 생성
+    @PostMapping("/daily")
+    public ResponseEntity<ResponseDTO> createDailyGoal(@RequestBody DailyGoalReqDto dailyGoalReqDto,
+                                                       HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+        Member member = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(dailyGoalCreateService.save(dailyGoalReqDto, member.getId())).build());
+    }
 
     // 월간 목표 개수 감소
     @PostMapping("/ajax/minus/monthly")

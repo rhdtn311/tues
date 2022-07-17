@@ -68,7 +68,9 @@ public class DailyGoalReqDto {
 
     private Boolean success;
 
-    public DailyGoal toDailyGoal(Member member) {
+    private MonthlyGoal monthlyGoal;
+
+    public DailyGoal toDailyGoal(Member member, MonthlyGoal monthlyGoal) {
         DailyGoal dailyGoal = DailyGoal.builder()
                 .member(member)
                 .name(name)
@@ -81,6 +83,7 @@ public class DailyGoalReqDto {
                 .goalTime(0)
                 .date(LocalDate.of(year, month, day))
                 .success(false)
+                .monthlyGoal(monthlyGoal)
                 .build();
 
         return dailyGoal;
