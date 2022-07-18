@@ -80,4 +80,16 @@ button {
   -webkit-animation-iteration-count: 1;
   animation-iteration-count: 1;
 }
+
+/*예외*/
+.field-error {
+  border-color: #ffab8a;
+  font-style : italic;
+  font-size: 14px;
+}
+
+.field-error-color {
+  color: #FF6666;
+}
+
 </style>
