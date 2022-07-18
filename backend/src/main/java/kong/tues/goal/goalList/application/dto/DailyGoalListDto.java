@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 
 @Builder
-@AllArgsConstructor
 @Data
 public class DailyGoalListDto {
 
@@ -18,10 +17,10 @@ public class DailyGoalListDto {
     Boolean success;
     AchieveType achieveType;
     Integer day;
-    String dayOfWeek;
-    boolean hasGoal;
+//    String dayOfWeek;
+//    String[] dayOfWeekArr = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
 
-    public DailyGoalListDto(String goalName, Integer goalCountQuota, Integer goalCount, Integer goalTimeQuota, Integer goalTime, Boolean success, AchieveType achieveType, Integer day) {
+    public DailyGoalListDto(String goalName, Integer goalCountQuota, Integer goalCount, Integer goalTimeQuota, Integer goalTime, Boolean success, AchieveType achieveType, int day) {
         this.goalName = goalName;
         this.goalCountQuota = goalCountQuota;
         this.goalCount = goalCount;
@@ -30,6 +29,7 @@ public class DailyGoalListDto {
         this.success = success;
         this.achieveType = achieveType;
         this.day = day;
+//        this.dayOfWeek = dayOfWeekArr[dayOfWeek];
     }
 
     public String getGoalName() {
@@ -88,27 +88,27 @@ public class DailyGoalListDto {
         this.achieveType = achieveType;
     }
 
-    public String getDayOfWeek() {
-        return dayOfWeek;
-    }
-
-    public void setDayOfWeek(String dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
-    }
-
+//    public String getDayOfWeek() {
+//        return dayOfWeek;
+//    }
+//
+//    public void setDayOfWeek(String dayOfWeek) {
+//        this.dayOfWeek = dayOfWeek;
+//    }
+//
     public Integer getDay() {
         return day;
     }
-
+//
     public void setDay(Integer day) {
         this.day = day;
     }
-
-    public boolean isHasGoal() {
-        return hasGoal;
-    }
-
-    public void setHasGoal(boolean hasGoal) {
-        this.hasGoal = hasGoal;
-    }
+//
+//    public boolean isHasGoal() {
+//        return hasGoal;
+//    }
+//
+//    public void setHasGoal(boolean hasGoal) {
+//        this.hasGoal = hasGoal;
+//    }
 }

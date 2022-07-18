@@ -458,6 +458,23 @@ public class GoalController {
                 .data(dailyGoalCreateService.save(dailyGoalReqDto, member.getId())).build());
     }
 
+    // new 목표 리스트 불러오기
+    @GetMapping("/list/{year}/{month}")
+    public ResponseEntity<ResponseDTO> getGoalList(@PathVariable Integer year,
+                                                   @PathVariable Integer month,
+                                                   HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        Member member = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+
+        Map<String, List> data = new HashMap<>();
+        data.put("goalList", goalListService.getGoalList(year, month, member.getId()));
+        data.put("days", goalListService.getDays(year, month));
+        data.put("monthlyGoals", monthlyGoalFindService.findMonthlyGoals(member.getId(), year, month));
+
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .data(data).build());
+    }
+
     // 월간 목표 개수 감소
     @PostMapping("/ajax/minus/monthly")
     public String failMonthlyGoal2(@Login Member member,
@@ -770,13 +787,13 @@ public class GoalController {
         model.addAttribute("months", IntStream.rangeClosed(1, 12).toArray());
 
         // 일간 목표 리스트
-        List<List<DailyGoalListDto>> dailyGoalList
-                = goalListService.getDailyGoalList(member.getId(), year, month, getLastDay(year, month));
-
-        List<List<List<DailyGoalListDto>>> dailyGoals = getDailyGoalList(dailyGoalList);
-        addBlankDay(dailyGoals);
-
-        model.addAttribute("dailyGoalList", dailyGoals);
+//        List<List<DailyGoalListDto>> dailyGoalList
+//                = goalListService.getDailyGoalList(member.getId(), year, month, getLastDay(year, month));
+//
+//        List<List<List<DailyGoalListDto>>> dailyGoals = getDailyGoalList(dailyGoalList);
+//        addBlankDay(dailyGoals);
+//
+//        model.addAttribute("dailyGoalList", dailyGoals);
 
         // 월간 목표 리스트
         List<MonthlyGoalListDto> monthlyGoalList = goalListService.getMonthlyGoalList(member.getId(), year, month);
@@ -806,9 +823,9 @@ public class GoalController {
         for (int i = 1; i < dailyGoalList.size(); i++) {
             List<DailyGoalListDto> dailyGoalDto = dailyGoalList.get(i);
 
-            if (i != 1 && dailyGoalDto.get(0).getDayOfWeek().equals("MONDAY")) {
-                index++;
-            }
+//            if (i != 1 && dailyGoalDto.get(0).getDayOfWeek().equals("MONDAY")) {
+//                index++;
+//            }
 
             if (resultList.size() <= index) {
                 resultList.add(new ArrayList<>());
