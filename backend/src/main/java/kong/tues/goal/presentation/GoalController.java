@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.IntStream;
@@ -423,7 +424,7 @@ public class GoalController {
 
     // new 월간 목표 생성
     @PostMapping("/monthly")
-    public ResponseEntity<ResponseDTO> createMonthlyGoal(@RequestBody MonthlyGoalReqDto monthlyGoalReqDto,
+    public ResponseEntity<ResponseDTO> createMonthlyGoal(@RequestBody @Valid MonthlyGoalReqDto monthlyGoalReqDto,
                                                          HttpServletRequest request) {
 
         HttpSession session = request.getSession(false);
@@ -446,7 +447,7 @@ public class GoalController {
                 .data(dailyGoalCreateService.findCreatedGoal(member.getId(), year, month)).build());
     }
 
-    // new 월간 목표 생성
+    // new 일간 목표 생성
     @PostMapping("/daily")
     public ResponseEntity<ResponseDTO> createDailyGoal(@RequestBody DailyGoalReqDto dailyGoalReqDto,
                                                        HttpServletRequest request) {

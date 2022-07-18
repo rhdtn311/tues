@@ -6,16 +6,13 @@ import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
 import kong.tues.member.domain.Member;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.lang.Nullable;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -26,18 +23,16 @@ public class MonthlyGoalReqDto {
     @Nullable
     private Long monthlyGoalId;
 
-    @NotEmpty(message = "값을 입력해주세요.")
-    @NotNull(message = "값을 입력해주세요.")
+    @NotBlank(message = "목표의 제목을 입력해주세요.")
     @Length(max = 50)
     private String name;
 
     @Nullable
     private String content;
 
-    @NotNull(message = "값을 입력해주세요.")
+    @NotNull(message = "목표의 타입을 설정해주세요.")
     private GoalType goalType;
-
-    @NotNull(message = "값을 입력해주세요.")
+    @NotNull(message = "목표의 종류를 입력해주세요.")
     private AchieveType achieveType;
 
     @Nullable
@@ -56,8 +51,10 @@ public class MonthlyGoalReqDto {
     @Min(value = 0, message = "0이상") @Max(value = 1000,message = "1000미만")
     private Integer goalTime;
 
+    @Range(min = 0, max=3000, message="0년에서 3000년 사이여야 합니다.")
     private Integer year;
 
+    @Range(min = 1, max = 12, message="1월에서 12월 사이여야 합니다.")
     private Integer month;
 
     private Boolean success;

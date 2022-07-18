@@ -26,11 +26,11 @@ public class MonthlyGoalReqDtoValidator implements Validator {
 
         if (monthlyGoalReqDto.getAchieveType() == AchieveType.COUNT) {
             if (monthlyGoalReqDto.getGoalCountQuota() == null) {
-                errors.reject("NoValue");
+                errors.reject("NoValue", "값을 입력해주세요.");
             }
         } else if (monthlyGoalReqDto.getAchieveType() == AchieveType.TIME) {
             if (monthlyGoalReqDto.getGoalTimeQuota() == null) {
-                errors.reject("NoValue");
+                errors.reject("NoValue", "값을 입력해주세요.");
             }
         }
     }
