@@ -433,7 +433,6 @@
                           v-bind:createdMonthlyGoals="createdMonthlyGoals">
     </DailyGoalUpdateModal>
     <MonthlyGoalCreateModal v-if="this.isMonthlyGoalCreateModal"
-                            @create="createMonthlyGoal"
                             @close="closeMonthlyGoalCreateModal"
     >
     </MonthlyGoalCreateModal>
@@ -686,8 +685,10 @@ export default {
     },
     createMonthlyGoal: function(monthlyGoal) {
       axios.post(this.server + "/api/main/monthly", monthlyGoal)
-          .then((response) => {})
-          .catch((error) => {alert(error)})
+          .then((response) => {console.log(response)})
+          .catch((error) => {
+            console.log(JSON.stringify(error, null, 2))
+          })
     },
     closeMonthlyGoalCreateModal : function() {
       this.isMonthlyGoalCreateModal = false;
@@ -701,7 +702,7 @@ export default {
     createDailyGoal: function(dailyGoal) {
       axios.post(this.server + "/api/main/daily", dailyGoal)
           .then((response) => {})
-          .chtch((error) => {alert(error)})
+          .chtch((error) => {alert(error.data)})
     },
     goToGoalList: function() {
       this.$router.push("/goalList");
