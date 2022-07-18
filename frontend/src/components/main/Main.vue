@@ -414,7 +414,6 @@
                             v-bind:detailGoal="detailMonthlyGoal">
     </MonthlyGoalDetailModal>
     <MonthlyGoalUpdateModal v-if="this.isMonthlyGoalUpdateModal"
-                            @update="modifyMonthlyGoal"
                             @close="closeMonthlyGoalUpdateModal"
                             v-bind:createdGoalTypes="createdGoalTypes"
                             v-bind:updateMonthlyGoal="updateMonthlyGoal">
@@ -634,13 +633,6 @@ export default {
     },
     closeMonthlyGoalUpdateModal() {
       this.isMonthlyGoalUpdateModal = false;
-    },
-    modifyMonthlyGoal : function (monthlyGoal) {
-      axios.post(this.server + "/api/main/monthly/update", monthlyGoal)
-          .then((response) => {
-          }).catch((error) => {
-            alert(error)
-      })
     },
     dailyGoalDetail : function (dailyGoalId) {
       axios.get(this.server + "/api/main/daily/detail/" + dailyGoalId)

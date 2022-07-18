@@ -4,6 +4,7 @@
     <div id="head">
       <h1 id="create-monthly-goal-title">월간 목표 수정</h1>
     </div>
+    <div v-if="isVerifyError.goalType" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.goalType}}</div>
     <form id="create-monthly-goal-form">
       <input id="monthly-goal-id" hidden>
       <div class="buttons">
@@ -22,24 +23,30 @@
       </div>
       <br>
       <div id="date">
-        <div style="font-size: 18px; font-weight: bold;" >날짜</div>
+        <span style="font-size: 18px; font-weight: bold;" >날짜</span>
+        <span v-if="isVerifyError.year" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.year}}</span>
+        <span v-if="isVerifyError.month" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.month}}</span>
+        <br>
         <label for="create-goal-year"></label>
         <input v-model="monthlyGoal.year" type="text" id="create-goal-year" name="year" placeholder="YEAR">
         <label for="create-goal-month"></label>
         <input v-model="monthlyGoal.month" type="text" min="1" max="12" id="create-goal-month" name="month" th:value="${month}" placeholder="MONTH">
       </div>
       <div id="input-name">
-        <div style="font-size: 18px; font-weight: bold;">이름</div>
+        <span style="font-size: 18px; font-weight: bold;">이름</span>
+        <span v-if="isVerifyError.name" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.name}}</span>
         <label for="create-goal-name"></label>
-        <input v-model="monthlyGoal.name" type="text" id="create-goal-name" name="name" th:value="${updateMonthlyGoal.name}">
+        <input v-model="monthlyGoal.name" class="form-input" type="text" id="create-goal-name" name="name" th:value="${updateMonthlyGoal.name}">
       </div>
       <div id="input-content">
         <div style="font-size: 18px; font-weight: bold;">내용</div>
         <label for="create-goal-content"></label>
-        <input v-model="monthlyGoal.content" type="text" name="content" id="create-goal-content" th:value="${updateMonthlyGoal.content}">
+        <input v-model="monthlyGoal.content" class="form-input" type="text" name="content" id="create-goal-content" th:value="${updateMonthlyGoal.content}">
       </div>
       <div id="input-type">
         <div style="font-size: 18px; font-weight: bold;">타입</div>
+        <span v-if="isVerifyError.achieveType" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.achieveType}}</span>
+        <span v-if="isVerifyError.NoValue" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.NoValue}}</span>
         <div>
           <div class="goal-types">
             <button type="button" @click="achieveTypeBASIC" class="goal-type-select btn-red" >기본</button>
@@ -56,7 +63,7 @@
         <p id="input_out"></p>
       </div>
       <div id="create-buttons">
-        <button @click="update" type="submit" class="create-button hvr-fade-create" style="margin-right: 100px;">확인</button>
+        <button @click="modifyMonthlyGoal" type="button" class="create-button hvr-fade-create" style="margin-right: 100px;">확인</button>
         <button @click="close" type="button" id="create-monthly-goal-cancel" class="create-button hvr-fade-create">취소</button>
       </div>
     </form>
@@ -65,17 +72,47 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "MonthlyGoalUpdateModal",
   data() {
     return {
       monthlyGoal : {},
+      error : "",
+      isError:false,
+      isVerifyError : {name: false, goalType: false, achieveType:false, NoValue:false, month: false, year: false},
+      verifyCode: [],
     }
   },
   mounted() {
     this.init()
   },
   methods : {
+    modifyMonthlyGoal : function () {
+      axios.post(this.server + "/api/main/monthly/update", this.monthlyGoal)
+          .then((response) => {
+            this.$router.go();
+          }).catch((error) => {
+        this.errorCode = []
+        this.isVerifyError = {name: false, goalType: false, achieveType: false, NoValue:false, year: false}
+        if (Array.isArray(error.response.data)) {
+          this.isError = false;
+          for (var field of error.response.data) {
+            this.verifyCode[field.code] = field.message;
+            if (field.code === "name") this.isVerifyError.name = true;
+            if (field.code === "goalType") this.isVerifyError.goalType = true;
+            if (field.code === "achieveType") this.isVerifyError.achieveType = true;
+            if (field.code === "NoValue") this.isVerifyError.NoValue = true;
+            if (field.code === "month") this.isVerifyError.month = true;
+            if (field.code === "year") this.isVerifyError.year = true;
+          }
+        } else {
+          this.isError = true;
+          this.errorMessage = error.response.data.message;
+        }
+      })
+    },
     goalTypeImage(goalType) {return "https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-" + goalType + ".png"},
     isDisabled(goalType, index) {return this.createdGoalTypes[index] === goalType && this.updateMonthlyGoal.goalType !== goalType},
     isChecked(goalType) {return this.updateMonthlyGoal.goalType === goalType},
@@ -98,6 +135,11 @@ export default {
 </script>
 
 <style scoped>
+
+.form-input {
+  display: block;
+}
+
 .goal-type-select:hover {
   cursor: pointer;
 }

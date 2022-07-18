@@ -114,7 +114,7 @@ export default {
   methods: {
     createMonthlyGoal: function(monthlyGoal) {
       axios.post(this.server + "/api/main/monthly", monthlyGoal)
-          .then((response) => {console.log(response)})
+          .then((response) => this.$router.go())
           .catch((error) => {
             this.errorCode = []
             this.isVerifyError = {name: false, goalType: false, achieveType: false, NoValue:false, year: false}
