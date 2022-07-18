@@ -19,6 +19,9 @@ public class MonthlyGoalDeleteService {
         MonthlyGoal monthlyGoal
                 = monthlyGoalRepository.findById(monthlyGoalId).orElseThrow(GoalNotFoundException::new);
 
+        monthlyGoal.getDailyGoals().stream()
+                        .forEach(dailyGoal -> dailyGoal.setMonthlyGoal(null));
+
         monthlyGoalRepository.delete(monthlyGoal);
 
         return monthlyGoalId;
