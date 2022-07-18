@@ -78,7 +78,6 @@ public class MonthlyGoal {
     @Column(name = "success")
     private Boolean success;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
