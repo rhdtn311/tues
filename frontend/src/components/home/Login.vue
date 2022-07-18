@@ -105,11 +105,13 @@ body {
 }
 
 .container {
-  height: 100%;
+  height: 99%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  left: 43%;
 }
 
 .inputs-and-button {
