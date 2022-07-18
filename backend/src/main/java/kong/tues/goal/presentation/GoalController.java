@@ -360,7 +360,7 @@ public class GoalController {
 
     // new 월간 목표 수정
     @PostMapping("/monthly/update")
-    public ResponseEntity<ResponseDTO> modifyMonthly(@RequestBody MonthlyGoalReqDto monthlyGoalReqDto) {
+    public ResponseEntity<ResponseDTO> modifyMonthly(@RequestBody @Valid MonthlyGoalReqDto monthlyGoalReqDto) {
 
         return ResponseEntity.ok(ResponseDTO.builder()
                 .data(monthlyGoalUpdateService.updateMonthlyGoal(monthlyGoalReqDto))
