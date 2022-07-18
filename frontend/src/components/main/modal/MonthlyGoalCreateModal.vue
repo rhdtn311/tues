@@ -4,6 +4,7 @@
     <div id="head">
       <h1 id="create-monthly-goal-title">월간 목표 생성</h1>
     </div>
+    <div v-if="isVerifyError.goalType" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.goalType}}</div>
     <form id="create-monthly-goal-form">
       <div class="buttons">
         <ul style = "margin-left: 18px; padding-bottom: 10px">
@@ -21,24 +22,30 @@
       </div>
       <br>
       <div id="date">
-        <div style="font-size: 18px; font-weight: bold;" >날짜</div>
+        <span style="font-size: 18px; font-weight: bold;" >날짜</span>
+        <span v-if="isVerifyError.year" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.year}}</span>
+        <span v-if="isVerifyError.month" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.month}}</span>
+        <br>
         <label for="create-goal-year"></label>
-        <input v-model="this.monthlyGoal.year" type="text" id="create-goal-year" name="year" readonly placeholder="YEAR">
+        <input v-model="this.monthlyGoal.year" type="text" id="create-goal-year" name="year" placeholder="YEAR">
         <label for="create-goal-month"></label>
-        <input v-model="this.monthlyGoal.month" type="text" min="1" max="12" id="create-goal-month" name="month" readonly th:value="${month}" placeholder="MONTH">
+        <input v-model="this.monthlyGoal.month" type="text" min="1" max="12" id="create-goal-month" name="month" th:value="${month}" placeholder="MONTH">
       </div>
       <div id="input-name">
-        <div style="font-size: 18px; font-weight: bold;">이름</div>
+        <span style="font-size: 18px; font-weight: bold;">이름</span>
+        <span v-if="isVerifyError.name" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.name}}</span>
         <label for="create-goal-name"></label>
-        <input v-model="this.monthlyGoal.name" type="text" name="name" id="create-goal-name">
+        <input v-model="this.monthlyGoal.name" class="form-input" type="text" name="name" id="create-goal-name">
       </div>
       <div id="input-content">
         <div style="font-size: 18px; font-weight: bold;">내용</div>
         <label for="create-goal-content"></label>
-        <input v-model="this.monthlyGoal.content" type="text" name="content" id="create-goal-content">
+        <input v-model="this.monthlyGoal.content" class="form-input" type="text" name="content" id="create-goal-content">
       </div>
       <div id="input-type">
-        <div style="font-size: 18px; font-weight: bold;">타입</div>
+        <span style="font-size: 18px; font-weight: bold;">타입</span>
+        <span v-if="isVerifyError.achieveType" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.achieveType}}</span>
+        <span v-if="isVerifyError.NoValue" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.NoValue}}</span>
         <div>
           <div class="goal-types">
             <button type="button" @click="achieveTypeBASIC" class="goal-type-select btn-red" >기본</button>
@@ -55,7 +62,7 @@
         <p id="input_out"></p>
       </div>
       <div id="create-buttons">
-        <button @click="createMonthlyGoal" type="submit" class="create-button hvr-fade-create" style="margin-right: 100px;">확인</button>
+        <button @click="createMonthlyGoal(monthlyGoal)" type="button" class="create-button hvr-fade-create" style="margin-right: 100px;">확인</button>
         <button @click="close" type="button" id="create-monthly-goal-cancel" class="create-button hvr-fade-create">취소</button>
       </div>
     </form>
@@ -82,29 +89,52 @@ export default {
   name: "MonthlyGoalCreateModal",
   data() {
     return {
-      date: {
-        year: new Date().getFullYear(),
-        month: new Date().getMonth() + 1
-      },
       createdMonthlyGoals: [],
       isInputDate: false,
       isDateModal: true,
       monthlyGoal : {
         name:"",
         content:"",
-        goalType:"",
-        achieveType:"BASIC",
+        goalType:null,
+        achieveType:null,
         goalCountQuota:"",
         goalCount:"",
         goalTimeQuota:"",
         goalTime:"",
         year: new Date().getFullYear(),
         month: new Date().getMonth() + 1
-      }
+      },
+      error : "",
+      isError:false,
+      isVerifyError : {name: false, goalType: false, achieveType:false, NoValue:false, month: false, year: false},
+      verifyCode: [],
     }
   },
   props: ["createdGoalTypes"],
   methods: {
+    createMonthlyGoal: function(monthlyGoal) {
+      axios.post(this.server + "/api/main/monthly", monthlyGoal)
+          .then((response) => {console.log(response)})
+          .catch((error) => {
+            this.errorCode = []
+            this.isVerifyError = {name: false, goalType: false, achieveType: false, NoValue:false, year: false}
+            if (Array.isArray(error.response.data)) {
+              this.isError = false;
+              for (var field of error.response.data) {
+                this.verifyCode[field.code] = field.message;
+                if (field.code === "name") this.isVerifyError.name = true;
+                if (field.code === "goalType") this.isVerifyError.goalType = true;
+                if (field.code === "achieveType") this.isVerifyError.achieveType = true;
+                if (field.code === "NoValue") this.isVerifyError.NoValue = true;
+                if (field.code === "month") this.isVerifyError.month = true;
+                if (field.code === "year") this.isVerifyError.year = true;
+              }
+            } else {
+              this.isError = true;
+              this.errorMessage = error.response.data.message;
+            }
+          })
+    },
     getCreatedMonthlyGoals : function(e) {
       e.preventDefault();
       axios.get(this.server + "/api/main/monthly/view/" + this.monthlyGoal.year + "/" + this.monthlyGoal.month)
@@ -123,17 +153,18 @@ export default {
     achieveTypeBASIC() {this.monthlyGoal.achieveType = "BASIC"},
     achieveTypeCOUNT() {this.monthlyGoal.achieveType = "COUNT"},
     achieveTypeTIME() {this.monthlyGoal.achieveType = "TIME"},
-    createMonthlyGoal() {
-      this.$emit("create", this.monthlyGoal)
-    },
     close : function () {
       this.$emit("close")
-    }
+    },
   },
 }
 </script>
 
 <style scoped>
+
+.form-input {
+  display: block;
+}
 
 #date-created-buttons {
   display: flex;
