@@ -5,6 +5,7 @@
       <h1 id="title">일간 목표 생성</h1>
       <button @click="openCreatedMonthlyGoals" id="check-monthly-goals-btn"> 월간 목표 확인 ▶</button>
     </div>
+    <div v-if="isVerifyError.goalType" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.goalType}}</div>
     <div v-if="isCreatedMonthlyGoals" id="check-monthly-goals" style= "background-color: #ffcf93">
       <div id="all-monthly-goals">
         <ul v-for="(goalName,type) in createdMonthlyGoals" style="padding-left: 27px; padding-right: 40px;" >
@@ -36,28 +37,33 @@
       <div id="addDiv"></div>
       <br>
       <div id="date">
-        <div style="font-size: 18px; font-weight: bold">날짜</div>
+        <span style="font-size: 18px; font-weight: bold">날짜</span>
+        <span v-if="isVerifyError.year" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.year}}</span>
+        <span v-if="isVerifyError.month" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.month}}</span>
+        <span v-if="isVerifyError.day" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.day}}</span>
+        <br>
         <label for="create-goal-year"></label>
-        <input v-model="dailyGoal.year" type="text" id="create-goal-year" name="year" placeholder="YEAR" readonly>
+        <input v-model="dailyGoal.year" type="text" id="create-goal-year" name="year" placeholder="YEAR">
         <label for="create-goal-month"></label>
-        <input v-model="dailyGoal.month" type="text" id="create-goal-month" name="month" placeholder="MONTH" readonly>
+        <input v-model="dailyGoal.month" type="text" id="create-goal-month" name="month" placeholder="MONTH">
         <label for="create-goal-day"></label>
-        <input v-model="dailyGoal.day" type="text" id="create-goal-day" name="day" placeholder="DAY" readonly>
+        <input v-model="dailyGoal.day" type="text" id="create-goal-day" name="day" placeholder="DAY">
       </div>
       <div id="input-name">
-        <div style="font-size: 18px; font-weight: bold">이름</div>
-        <div th:errors="*{name}"></div>
+        <span style="font-size: 18px; font-weight: bold">이름</span>
+        <span v-if="isVerifyError.name" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.name}}</span>
         <label for="create-goal-name"></label>
-        <input v-model="dailyGoal.name" type="text" id="create-goal-name" name="name">
+        <input v-model="dailyGoal.name" class="form-input" type="text" id="create-goal-name" name="name">
       </div>
       <div id="input-content">
         <div style="font-size: 18px; font-weight: bold" >내용</div>
-        <div th:errors="*{content}"></div>
         <label for="create-goal-content"></label>
         <input v-model="dailyGoal.content" type="text" id="create-goal-content" name="content">
       </div>
       <div id="input-type">
-        <div style="font-size: 18px; font-weight: bold">타입</div>
+        <span style="font-size: 18px; font-weight: bold">타입</span>
+        <span v-if="isVerifyError.achieveType" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.achieveType}}</span>
+        <span v-if="isVerifyError.NoValue" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.NoValue}}</span>
         <div>
           <div class="goal-types">
             <button type="button" @click="achieveTypeBASIC" class="goal-type-select btn-red" >기본</button>
@@ -74,7 +80,7 @@
         <p id="input_out"></p>
       </div>
       <div id="create-buttons">
-        <button @click="create" type="submit" class="create-button hvr-fade-create" style="margin-right: 100px;">확인</button>
+        <button @click="createDailyGoal" type="button" class="create-button hvr-fade-create" style="margin-right: 100px;">확인</button>
         <button @click="close" type="button" class="create-button hvr-fade-create">취소</button>
       </div>
     </form>
@@ -107,8 +113,8 @@ export default {
       dailyGoal : {
         name:"",
         content:"",
-        goalType:"",
-        achieveType:"BASIC",
+        goalType: null,
+        achieveType: null,
         goalCountQuota:"",
         goalCount:"",
         goalTimeQuota:"",
@@ -121,9 +127,35 @@ export default {
       isDateModal : true,
       isInputDate : false,
       isCreatedMonthlyGoals: false,
+      isVerifyError : {name: false, goalType: false, achieveType:false, NoValue:false, month: false, year: false, day:false},
+      verifyCode: [],
     }
   },
   methods : {
+    createDailyGoal: function(dailyGoal) {
+      axios.post(this.server + "/api/main/daily", this.dailyGoal)
+          .then((response) => {this.$router.go()})
+          .catch((error) => {
+            this.errorCode = []
+            this.isVerifyError = {name: false, goalType: false, achieveType: false, NoValue:false, year: false}
+            if (Array.isArray(error.response.data)) {
+              this.isError = false;
+              for (var field of error.response.data) {
+                this.verifyCode[field.code] = field.message;
+                if (field.code === "name") this.isVerifyError.name = true;
+                if (field.code === "goalType") this.isVerifyError.goalType = true;
+                if (field.code === "achieveType") this.isVerifyError.achieveType = true;
+                if (field.code === "NoValue") this.isVerifyError.NoValue = true;
+                if (field.code === "month") this.isVerifyError.month = true;
+                if (field.code === "year") this.isVerifyError.year = true;
+                if (field.code === "day") this.isVerifyError.day = true;
+              }
+            } else {
+              this.isError = true;
+              this.errorMessage = error.response.data.message;
+            }
+          })
+    },
     goalTypeImage(goalType) {
       return "https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-" + goalType + ".png";
     },
@@ -153,6 +185,11 @@ export default {
 </script>
 
 <style scoped>
+
+.form-input {
+  display: block;
+}
+
 #date-modal {
   position: absolute;
   top: 28%;
