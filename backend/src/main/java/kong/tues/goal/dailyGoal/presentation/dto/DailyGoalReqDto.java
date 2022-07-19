@@ -13,10 +13,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.lang.Nullable;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -31,17 +28,17 @@ public class DailyGoalReqDto {
     @Nullable
     private Long dailyGoalId;
 
-    @NotEmpty
+    @NotBlank(message = "목표의 제목을 입력해주세요.")
     @Length(max = 50)
     private String name;
 
     @Nullable
     private String content;
 
-    @NotNull
+    @NotNull(message = "목표의 타입을 설정해주세요.")
     private GoalType goalType;
 
-    @NotNull
+    @NotNull(message = "목표의 종류를 입력해주세요.")
     private AchieveType achieveType;
 
     @Nullable
@@ -60,8 +57,10 @@ public class DailyGoalReqDto {
     @Min(0) @Max(24)
     private Integer goalTime;
 
+    @Range(min = 0, max=3000, message="0년에서 3000년 사이여야 합니다.")
     private Integer year;
 
+    @Range(min = 1, max = 12, message="1월에서 12월 사이여야 합니다.")
     private Integer month;
 
     private Integer day;

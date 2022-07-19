@@ -449,7 +449,7 @@ public class GoalController {
 
     // new 일간 목표 생성
     @PostMapping("/daily")
-    public ResponseEntity<ResponseDTO> createDailyGoal(@RequestBody DailyGoalReqDto dailyGoalReqDto,
+    public ResponseEntity<ResponseDTO> createDailyGoal(@RequestBody @Valid DailyGoalReqDto dailyGoalReqDto,
                                                        HttpServletRequest request) {
 
         HttpSession session = request.getSession(false);
