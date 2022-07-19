@@ -30,12 +30,12 @@ public class DailyGoalCreateService {
     private final MonthlyGoalQueryRepository monthlyGoalQueryRepository;
 
     @Transactional
-    public DailyGoal save(DailyGoalReqDto dailyGoalReqDto, Long memberId) {
+    public Long save(DailyGoalReqDto dailyGoalReqDto, Long memberId) {
 
         Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
         MonthlyGoal findMonthlyGoal = findDailyGoalRelative(member, dailyGoalReqDto);
 
-        return dailyGoalRepository.save(dailyGoalReqDto.toDailyGoal(member, findMonthlyGoal));
+        return dailyGoalRepository.save(dailyGoalReqDto.toDailyGoal(member, findMonthlyGoal)).getId();
     }
 
     @Transactional(readOnly = true)
@@ -52,7 +52,7 @@ public class DailyGoalCreateService {
                             monthlyGoal.getDate().getMonthValue() == dailyGoalReqDto.getMonth() &&
                             monthlyGoal.getGoalType() == dailyGoalReqDto.getGoalType();
                 }).findAny()
-                .get();
+                .orElse(null);
     }
 
     public Map<String, String> monthlyGoalsToMap(List<CreatedMonthlyGoalResDto> createdGoalList) {
