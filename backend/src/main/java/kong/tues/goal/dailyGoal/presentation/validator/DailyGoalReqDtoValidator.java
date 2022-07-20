@@ -38,8 +38,10 @@ public class DailyGoalReqDtoValidator implements Validator {
             }
         }
 
-        if (!isCorrectDay(dailyGoalReqDto.getYear(), dailyGoalReqDto.getMonth(), dailyGoalReqDto.getDay())) {
-            errors.reject("day", "해당 년, 월에 없는 날짜입니다.");
+        if (dailyGoalReqDto.getMonth() >= 1 && dailyGoalReqDto.getMonth() <= 12) {
+            if (!isCorrectDay(dailyGoalReqDto.getYear(), dailyGoalReqDto.getMonth(), dailyGoalReqDto.getDay())) {
+                errors.reject("day", "해당 년, 월에 없는 날짜입니다.");
+            }
         }
     }
 
