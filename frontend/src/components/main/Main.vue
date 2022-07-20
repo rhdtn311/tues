@@ -117,7 +117,7 @@
         </div>
       </div>
       <div id="tuesday">
-        <div class="day-title">MON</div>
+        <div class="day-title">TUE</div>
         <div class="day-content">
           <div v-if="this.dailyGoals.TUE != []" v-for="dailyGoal in this.dailyGoals.TUE">
             <div id="one-daily-goal" class="one-daily-goal">
@@ -426,18 +426,15 @@
     >
     </DailyGoalDetailModal>
     <DailyGoalUpdateModal v-if="this.isDailyGoalUpdateModal"
-                          @update="modifyDailyGoal"
                           @close="closeDailyGoalUpdateModal"
                           v-bind:updateDailyGoal="updateDailyGoal"
                           v-bind:createdMonthlyGoals="createdMonthlyGoals">
     </DailyGoalUpdateModal>
     <MonthlyGoalCreateModal v-if="this.isMonthlyGoalCreateModal"
-                            @close="closeMonthlyGoalCreateModal"
-    >
+                            @close="closeMonthlyGoalCreateModal">
     </MonthlyGoalCreateModal>
     <DailyGoalCreateModal v-if="this.isDailyGoalCreateModal"
-                          @close="closeDailyGoalCreateModal"
-    >
+                          @close="closeDailyGoalCreateModal">
     </DailyGoalCreateModal>
 
     </div>
@@ -656,12 +653,6 @@ export default {
             this.createdMonthlyGoals = response.data.data.monthlyGoals;
             this.openDailyGoalUpdateModal();
           })
-    },
-    modifyDailyGoal: function (dailyGoal) {
-      axios.post(this.server + "/api/main/daily/update", dailyGoal)
-          .then((response) => {
-          }).catch((error) => {
-      })
     },
     deleteDailyGoal: function (dailyGoalId) {
       axios.delete(this.server + "/api/main/daily/" + dailyGoalId)
