@@ -8,16 +8,16 @@
     <form id="create-monthly-goal-form">
       <div class="buttons">
         <ul style = "margin-left: 18px; padding-bottom: 10px">
-          <li><img style="width: 20px" :src="goalTypeImage('A')"><input v-model="this.monthlyGoal.goalType" value="A"  class="goalType" :disabled="isDisabled(0,'A')" type="radio" name="goalType" id="goalTypeA"><label for="goalTypeA"></label></li>
-          <li><img style="width: 20px" :src="goalTypeImage('B')"><input v-model="this.monthlyGoal.goalType"  value="B" class="goalType" :disabled="isDisabled(1,'B')" type="radio" name="goalType" id="goalTypeB"><label for="goalTypeB"></label></li>
-          <li><img style="width: 20px" :src="goalTypeImage('C')"><input v-model="this.monthlyGoal.goalType" value="C" class="goalType" :disabled="isDisabled(2,'C')" type="radio" name="goalType" id="goalTypeC"><label for="goalTypeC"></label></li>
-          <li><img style="width: 20px" :src="goalTypeImage('D')"><input v-model="this.monthlyGoal.goalType" value="D" class="goalType" :disabled="isDisabled(3,'D')" type="radio" name="goalType" id="goalTypeD"><label for="goalTypeD"></label></li>
-          <li><img style="width: 20px" :src="goalTypeImage('E')"><input v-model="this.monthlyGoal.goalType" value="E" class="goalType" :disabled="isDisabled(4,'E')" type="radio" name="goalType" id="goalTypeE"><label for="goalTypeE"></label></li>
-          <li><img style="width: 20px" :src="goalTypeImage('F')"><input v-model="this.monthlyGoal.goalType" value="F" class="goalType" :disabled="isDisabled(5,'F')" type="radio" name="goalType" id="goalTypeF"><label for="goalTypeF"></label></li>
-          <li><img style="width: 20px" :src="goalTypeImage('G')"><input v-model="this.monthlyGoal.goalType" value="G" class="goalType" :disabled="isDisabled(6,'G')" type="radio" name="goalType" id="goalTypeG"><label for="goalTypeG"></label></li>
-          <li><img style="width: 20px" :src="goalTypeImage('H')"><input v-model="this.monthlyGoal.goalType" value="H" class="goalType" :disabled="isDisabled(7,'H')" type="radio" name="goalType" id="goalTypeH"><label for="goalTypeH"></label></li>
-          <li><img style="width: 20px" :src="goalTypeImage('I')"><input v-model="this.monthlyGoal.goalType" value="I" class="goalType" :disabled="isDisabled(8,'I')" type="radio" name="goalType" id="goalTypeI"><label for="goalTypeI"></label></li>
-          <li><img style="width: 20px" :src="goalTypeImage('J')"><input v-model="this.monthlyGoal.goalType" value="J" class="goalType" :disabled="isDisabled(9,'J')" type="radio" name="goalType" id="goalTypeJ"><label for="goalTypeJ"></label></li>
+          <li><img style="width: 20px" :src="goalTypeImage('A')"><input v-model="this.monthlyGoal.goalType" value="A"  class="goalType" :disabled="isDisabled('A')" type="radio" name="goalType" id="goalTypeA"><label for="goalTypeA"></label></li>
+          <li><img style="width: 20px" :src="goalTypeImage('B')"><input v-model="this.monthlyGoal.goalType"  value="B" class="goalType" :disabled="isDisabled('B')" type="radio" name="goalType" id="goalTypeB"><label for="goalTypeB"></label></li>
+          <li><img style="width: 20px" :src="goalTypeImage('C')"><input v-model="this.monthlyGoal.goalType" value="C" class="goalType" :disabled="isDisabled('C')" type="radio" name="goalType" id="goalTypeC"><label for="goalTypeC"></label></li>
+          <li><img style="width: 20px" :src="goalTypeImage('D')"><input v-model="this.monthlyGoal.goalType" value="D" class="goalType" :disabled="isDisabled('D')" type="radio" name="goalType" id="goalTypeD"><label for="goalTypeD"></label></li>
+          <li><img style="width: 20px" :src="goalTypeImage('E')"><input v-model="this.monthlyGoal.goalType" value="E" class="goalType" :disabled="isDisabled('E')" type="radio" name="goalType" id="goalTypeE"><label for="goalTypeE"></label></li>
+          <li><img style="width: 20px" :src="goalTypeImage('F')"><input v-model="this.monthlyGoal.goalType" value="F" class="goalType" :disabled="isDisabled('F')" type="radio" name="goalType" id="goalTypeF"><label for="goalTypeF"></label></li>
+          <li><img style="width: 20px" :src="goalTypeImage('G')"><input v-model="this.monthlyGoal.goalType" value="G" class="goalType" :disabled="isDisabled('G')" type="radio" name="goalType" id="goalTypeG"><label for="goalTypeG"></label></li>
+          <li><img style="width: 20px" :src="goalTypeImage('H')"><input v-model="this.monthlyGoal.goalType" value="H" class="goalType" :disabled="isDisabled('H')" type="radio" name="goalType" id="goalTypeH"><label for="goalTypeH"></label></li>
+          <li><img style="width: 20px" :src="goalTypeImage('I')"><input v-model="this.monthlyGoal.goalType" value="I" class="goalType" :disabled="isDisabled('I')" type="radio" name="goalType" id="goalTypeI"><label for="goalTypeI"></label></li>
+          <li><img style="width: 20px" :src="goalTypeImage('J')"><input v-model="this.monthlyGoal.goalType" value="J" class="goalType" :disabled="isDisabled('J')" type="radio" name="goalType" id="goalTypeJ"><label for="goalTypeJ"></label></li>
         </ul>
       </div>
       <br>
@@ -168,8 +168,8 @@ export default {
             this.createdMonthlyGoals=response.data.data;
           })
     },
-    isDisabled: function(index, goalType) {
-      return this.createdMonthlyGoals[index] === goalType
+    isDisabled: function(goalType) {
+      return this.createdMonthlyGoals.includes(goalType)
     },
     goalTypeImage: function (goalType) {
       return "https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-"+ goalType + ".png"

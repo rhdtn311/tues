@@ -9,16 +9,16 @@
       <input id="monthly-goal-id" hidden>
       <div class="buttons">
         <ul class="goal-types" style = "margin-left: 18px; padding-bottom: 10px">
-          <li><img class="goal-type-img" :src="goalTypeImage('A')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('A', 0)" :checked="isChecked('A')" type="radio" name="goalType" id="goalTypeA" value="A"><label for="goalTypeA"></label></li>
-          <li><img class="goal-type-img" :src="goalTypeImage('B')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('B', 1)" :checked="isChecked('B')" type="radio" name="goalType" id="goalTypeB" value="B"><label for="goalTypeB"></label></li>
-          <li><img class="goal-type-img" :src="goalTypeImage('C')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('C', 2)" :checked="isChecked('C')" type="radio" name="goalType" id="goalTypeC" value="C"><label for="goalTypeC"></label></li>
-          <li><img class="goal-type-img" :src="goalTypeImage('D')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('D', 3)" :checked="isChecked('D')" type="radio" name="goalType" id="goalTypeD" value="D"><label for="goalTypeD"></label></li>
-          <li><img class="goal-type-img" :src="goalTypeImage('E')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('E', 4)" :checked="isChecked('E')" type="radio" name="goalType" id="goalTypeE" value="E"><label for="goalTypeE"></label></li>
-          <li><img class="goal-type-img" :src="goalTypeImage('F')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('F', 5)" :checked="isChecked('F')" type="radio" name="goalType" id="goalTypeF" value="F"><label for="goalTypeF"></label></li>
-          <li><img class="goal-type-img" :src="goalTypeImage('G')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('G', 6)" :checked="isChecked('G')" type="radio" name="goalType" id="goalTypeG" value="G"><label for="goalTypeG"></label></li>
-          <li><img class="goal-type-img" :src="goalTypeImage('H')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('H', 7)" :checked="isChecked('H')" type="radio" name="goalType" id="goalTypeH" value="H"><label for="goalTypeH"></label></li>
-          <li><img class="goal-type-img" :src="goalTypeImage('I')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('I', 8)" :checked="isChecked('I')" type="radio" name="goalType" id="goalTypeI" value="I"><label for="goalTypeI"></label></li>
-          <li><img class="goal-type-img" :src="goalTypeImage('J')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('J', 9)" :checked="isChecked('J')" type="radio" name="goalType" id="goalTypeJ" value="J"><label for="goalTypeJ"></label></li>
+          <li><img class="goal-type-img" :src="goalTypeImage('A')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('A')" :checked="isChecked('A')" type="radio" name="goalType" id="goalTypeA" value="A"><label for="goalTypeA"></label></li>
+          <li><img class="goal-type-img" :src="goalTypeImage('B')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('B')" :checked="isChecked('B')" type="radio" name="goalType" id="goalTypeB" value="B"><label for="goalTypeB"></label></li>
+          <li><img class="goal-type-img" :src="goalTypeImage('C')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('C')" :checked="isChecked('C')" type="radio" name="goalType" id="goalTypeC" value="C"><label for="goalTypeC"></label></li>
+          <li><img class="goal-type-img" :src="goalTypeImage('D')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('D')" :checked="isChecked('D')" type="radio" name="goalType" id="goalTypeD" value="D"><label for="goalTypeD"></label></li>
+          <li><img class="goal-type-img" :src="goalTypeImage('E')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('E')" :checked="isChecked('E')" type="radio" name="goalType" id="goalTypeE" value="E"><label for="goalTypeE"></label></li>
+          <li><img class="goal-type-img" :src="goalTypeImage('F')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('F')" :checked="isChecked('F')" type="radio" name="goalType" id="goalTypeF" value="F"><label for="goalTypeF"></label></li>
+          <li><img class="goal-type-img" :src="goalTypeImage('G')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('G')" :checked="isChecked('G')" type="radio" name="goalType" id="goalTypeG" value="G"><label for="goalTypeG"></label></li>
+          <li><img class="goal-type-img" :src="goalTypeImage('H')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('H')" :checked="isChecked('H')" type="radio" name="goalType" id="goalTypeH" value="H"><label for="goalTypeH"></label></li>
+          <li><img class="goal-type-img" :src="goalTypeImage('I')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('I')" :checked="isChecked('I')" type="radio" name="goalType" id="goalTypeI" value="I"><label for="goalTypeI"></label></li>
+          <li><img class="goal-type-img" :src="goalTypeImage('J')"><input class="goal-type" v-model="monthlyGoal.goalType" :disabled="isDisabled('J')" :checked="isChecked('J')" type="radio" name="goalType" id="goalTypeJ" value="J"><label for="goalTypeJ"></label></li>
         </ul>
       </div>
       <br>
@@ -82,6 +82,7 @@ export default {
   data() {
     return {
       monthlyGoal : {},
+      fistGoalType:"",
       error : "",
       isError:false,
       isVerifyError : {name: false, goalType: false, achieveType:false, NoValue:false, month: false, year: false, goalTimeQuota: false, goalCountQuota: false,},
@@ -128,7 +129,8 @@ export default {
       })
     },
     goalTypeImage(goalType) {return "https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-" + goalType + ".png"},
-    isDisabled(goalType, index) {return this.createdGoalTypes[index] === goalType && this.updateMonthlyGoal.goalType !== goalType},
+    isDisabled(goalType) {
+      return this.createdGoalTypes.includes(goalType) && this.firstGoalType !== goalType},
     isChecked(goalType) {return this.updateMonthlyGoal.goalType === goalType},
     achieveTypeBASIC() {
       this.monthlyGoal.achieveType = "BASIC"
@@ -145,6 +147,7 @@ export default {
     },
     init() {
       this.monthlyGoal = this.updateMonthlyGoal;
+      this.firstGoalType = this.updateMonthlyGoal.goalType;
     },
     update: function() {
       this.$emit("update", this.monthlyGoal)

@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -45,35 +46,18 @@ public class MonthlyGoalCreateService {
         MonthlyGoal monthlyGoal = monthlyGoalRepository.findById(monthlyGoalId).orElseThrow(GoalNotFoundException::new);
 
         List<GoalType> createdGoalTypes
-                = monthlyGoalQueryRepository.findCreatedGoalTypes(monthlyGoal.getMember().getId(), monthlyGoal.getDate().getYear()
-                , monthlyGoal.getDate().getMonthValue());
+                = monthlyGoalQueryRepository.findCreatedGoalTypes(monthlyGoal.getMember().getId(), monthlyGoal.getDate().getYear(), monthlyGoal.getDate().getMonthValue());
 
-        return getGoalTypes(createdGoalTypes);
+        return createdGoalTypes.stream().map(Enum::name).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<String> findCreatedGoalTypes(Long memberId, int year, int month) {
 
-        // thymeleaf에서 단일 문자열은 list.contains가 동작하지 않기 때문에 리스트를 변형
         List<GoalType> createdGoalTypes
                 = monthlyGoalQueryRepository.findCreatedGoalTypes(memberId, year, month);
 
-        return getGoalTypes(createdGoalTypes);
-    }
 
-    // 타임리프에서 list.contains 메서드 사용 시 제대로 동작하지 않아 새로운 list 생성
-    public List<String> getGoalTypes(List<GoalType> goalTypes) {
-        // 65 ~ 74
-        List<String> list = new ArrayList<>();
-        for (int i = 65; i <= 74; i++) {
-            char now = (char)i;
-            if (goalTypes.contains(GoalType.valueOf(String.valueOf(now)))) {
-                list.add(String.valueOf(now));
-            } else {
-                list.add("none");
-            }
-        }
-
-        return list;
+        return createdGoalTypes.stream().map(Enum::name).collect(Collectors.toList());
     }
 }
