@@ -47,6 +47,8 @@
         <span style="font-size: 18px; font-weight: bold;">타입</span>
         <span v-if="isVerifyError.achieveType" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.achieveType}}</span>
         <span v-if="isVerifyError.NoValue" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.NoValue}}</span>
+        <span v-if="isVerifyError.goalCountQuota" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.goalCountQuota}}</span>
+        <span v-if="isVerifyError.goalTimeQuota" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.goalTimeQuota}}</span>
         <div>
           <div class="goal-types">
             <button type="button" @click="achieveTypeBASIC" class="goal-type-select btn-red" >기본</button>
@@ -109,7 +111,7 @@ export default {
       },
       error : "",
       isError:false,
-      isVerifyError : {name: false, goalType: false, achieveType:false, NoValue:false, month: false, year: false},
+      isVerifyError : {name: false, goalType: false, achieveType:false, NoValue:false, month: false, year: false, goalTimeQuota: false, goalCountQuota: false,},
       verifyCode: [],
     }
   },
@@ -129,7 +131,7 @@ export default {
           .catch((error) => {
             this.errorCode = []
             this.isVerifyError = {name: false, goalType: false, achieveType: false, NoValue:false, year: false, yearValue: false,
-              monthValue: false}
+              monthValue: false, goalTimeQuota: false, goalCountQuota: false}
             if (Array.isArray(error.response.data)) {
               this.isError = false;
               for (var field of error.response.data) {
@@ -140,6 +142,8 @@ export default {
                 if (field.code === "NoValue") this.isVerifyError.NoValue = true;
                 if (field.code === "month") this.isVerifyError.month = true;
                 if (field.code === "year") this.isVerifyError.year = true;
+                if (field.code === "goalCountQuota") this.isVerifyError.goalCountQuota = true;
+                if (field.code === "goalTimeQuota") this.isVerifyError.goalTimeQuota = true;
               }
             } else {
               this.isError = true;
@@ -164,25 +168,25 @@ export default {
             this.createdMonthlyGoals=response.data.data;
           })
     },
-    validateDateValue: function() {
-      if (this.monthlyGoal.year === '') {
-        this.isVerifyError.yearValue = true;
-        return;
-      } else this.isVerifyError.yearValue = false;
-      if (this.monthlyGoal.month === '') {
-        this.isVerifyError.monthValue = true
-        return;
-      } else this.isVerifyError.monthValue = false;
-    },
     isDisabled: function(index, goalType) {
       return this.createdMonthlyGoals[index] === goalType
     },
     goalTypeImage: function (goalType) {
       return "https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-"+ goalType + ".png"
     },
-    achieveTypeBASIC() {this.monthlyGoal.achieveType = "BASIC"},
-    achieveTypeCOUNT() {this.monthlyGoal.achieveType = "COUNT"},
-    achieveTypeTIME() {this.monthlyGoal.achieveType = "TIME"},
+    achieveTypeBASIC() {
+      this.monthlyGoal.achieveType = "BASIC"
+      this.monthlyGoal.goalTimeQuota = 0;
+      this.monthlyGoal.goalCountQuota = 0;
+    },
+    achieveTypeCOUNT() {
+      this.monthlyGoal.achieveType = "COUNT"
+      this.monthlyGoal.goalTimeQuota = 0;
+    },
+    achieveTypeTIME() {
+      this.monthlyGoal.achieveType = "TIME"
+      this.monthlyGoal.goalCountQuota = 0;
+    },
     close : function () {
       this.$emit("close")
     },

@@ -31,23 +31,25 @@
         <label for="create-goal-year"></label>
         <input v-model="monthlyGoal.year" type="text" id="create-goal-year" name="year" placeholder="YEAR">
         <label for="create-goal-month"></label>
-        <input v-model="monthlyGoal.month" type="text" min="1" max="12" id="create-goal-month" name="month" th:value="${month}" placeholder="MONTH">
+        <input v-model="monthlyGoal.month" type="text" min="1" max="12" id="create-goal-month" name="month" placeholder="MONTH">
       </div>
       <div id="input-name">
         <span style="font-size: 18px; font-weight: bold;">이름</span>
         <span v-if="isVerifyError.name" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.name}}</span>
         <label for="create-goal-name"></label>
-        <input v-model="monthlyGoal.name" class="form-input" type="text" id="create-goal-name" name="name" th:value="${updateMonthlyGoal.name}">
+        <input v-model="monthlyGoal.name" class="form-input" type="text" id="create-goal-name" name="name">
       </div>
       <div id="input-content">
         <div style="font-size: 18px; font-weight: bold;">내용</div>
         <label for="create-goal-content"></label>
-        <input v-model="monthlyGoal.content" class="form-input" type="text" name="content" id="create-goal-content" th:value="${updateMonthlyGoal.content}">
+        <input v-model="monthlyGoal.content" class="form-input" type="text" name="content" id="create-goal-content">
       </div>
       <div id="input-type">
         <div style="font-size: 18px; font-weight: bold;">타입</div>
         <span v-if="isVerifyError.achieveType" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.achieveType}}</span>
         <span v-if="isVerifyError.NoValue" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.NoValue}}</span>
+        <span v-if="isVerifyError.goalCountQuota" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.goalCountQuota}}</span>
+        <span v-if="isVerifyError.goalTimeQuota" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.goalTimeQuota}}</span>
         <div>
           <div class="goal-types">
             <button type="button" @click="achieveTypeBASIC" class="goal-type-select btn-red" >기본</button>
@@ -82,7 +84,7 @@ export default {
       monthlyGoal : {},
       error : "",
       isError:false,
-      isVerifyError : {name: false, goalType: false, achieveType:false, NoValue:false, month: false, year: false, yearValue:false, monthValue: false,},
+      isVerifyError : {name: false, goalType: false, achieveType:false, NoValue:false, month: false, year: false, goalTimeQuota: false, goalCountQuota: false,},
       verifyCode: [],
     }
   },
@@ -104,7 +106,8 @@ export default {
             this.$router.go();
           }).catch((error) => {
         this.errorCode = []
-        this.isVerifyError = {name: false, goalType: false, achieveType: false, NoValue:false, year: false}
+        this.isVerifyError = {name: false, goalType: false, achieveType: false, NoValue:false, year: false, yearValue: false,
+          monthValue: false, goalTimeQuota: false, goalCountQuota: false}
         if (Array.isArray(error.response.data)) {
           this.isError = false;
           for (var field of error.response.data) {
@@ -115,6 +118,8 @@ export default {
             if (field.code === "NoValue") this.isVerifyError.NoValue = true;
             if (field.code === "month") this.isVerifyError.month = true;
             if (field.code === "year") this.isVerifyError.year = true;
+            if (field.code === "goalCountQuota") this.isVerifyError.goalCountQuota = true;
+            if (field.code === "goalTimeQuota") this.isVerifyError.goalTimeQuota = true;
           }
         } else {
           this.isError = true;
@@ -125,9 +130,19 @@ export default {
     goalTypeImage(goalType) {return "https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-" + goalType + ".png"},
     isDisabled(goalType, index) {return this.createdGoalTypes[index] === goalType && this.updateMonthlyGoal.goalType !== goalType},
     isChecked(goalType) {return this.updateMonthlyGoal.goalType === goalType},
-    achieveTypeBASIC() {this.monthlyGoal.achieveType = "BASIC"},
-    achieveTypeCOUNT() {this.monthlyGoal.achieveType = "COUNT"},
-    achieveTypeTIME() {this.monthlyGoal.achieveType = "TIME"},
+    achieveTypeBASIC() {
+      this.monthlyGoal.achieveType = "BASIC"
+      this.monthlyGoal.goalTimeQuota = 0;
+      this.monthlyGoal.goalCountQuota = 0;
+    },
+    achieveTypeCOUNT() {
+      this.monthlyGoal.achieveType = "COUNT"
+      this.monthlyGoal.goalTimeQuota = 0;
+    },
+    achieveTypeTIME() {
+      this.monthlyGoal.achieveType = "TIME"
+      this.monthlyGoal.goalCountQuota = 0;
+    },
     init() {
       this.monthlyGoal = this.updateMonthlyGoal;
     },

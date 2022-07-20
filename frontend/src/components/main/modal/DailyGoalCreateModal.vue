@@ -64,6 +64,8 @@
         <span style="font-size: 18px; font-weight: bold">타입</span>
         <span v-if="isVerifyError.achieveType" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.achieveType}}</span>
         <span v-if="isVerifyError.NoValue" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.NoValue}}</span>
+        <span v-if="isVerifyError.goalCountQuota" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.goalCountQuota}}</span>
+        <span v-if="isVerifyError.goalTimeQuota" class="field-error hvr-wobble-top field-error-color" style="text-align: center"> &nbsp;&nbsp;{{verifyCode.goalTimeQuota}}</span>
         <div>
           <div class="goal-types">
             <button type="button" @click="achieveTypeBASIC" class="goal-type-select btn-red" >기본</button>
@@ -131,7 +133,7 @@ export default {
       isInputDate : false,
       isCreatedMonthlyGoals: false,
       isVerifyError : {name: false, goalType: false, achieveType:false, NoValue:false, month: false, year: false, day:false,
-      yearValue: false, monthValue: false, dayValue:false},
+      yearValue: false, monthValue: false, dayValue:false, goalCountQuota : false, goalTimeQuota : false},
       verifyCode: [],
     }
   },
@@ -165,6 +167,8 @@ export default {
                 if (field.code === "month") this.isVerifyError.month = true;
                 if (field.code === "year") this.isVerifyError.year = true;
                 if (field.code === "day") this.isVerifyError.day = true;
+                if (field.code === "goalCountQuota") this.isVerifyError.goalCountQuota = true;
+                if (field.code === "goalTimeQuota") this.isVerifyError.goalTimeQuota = true;
               }
             } else {
               this.isError = true;
@@ -175,9 +179,19 @@ export default {
     goalTypeImage(goalType) {
       return "https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-" + goalType + ".png";
     },
-    achieveTypeBASIC() {this.dailyGoal.achieveType = "BASIC"},
-    achieveTypeCOUNT() {this.dailyGoal.achieveType = "COUNT"},
-    achieveTypeTIME() {this.dailyGoal.achieveType = "TIME"},
+    achieveTypeBASIC() {
+      this.dailyGoal.achieveType = "BASIC"
+      this.dailyGoal.goalTimeQuota = 0;
+      this.dailyGoal.goalCountQuota = 0;
+    },
+    achieveTypeCOUNT() {
+      this.dailyGoal.achieveType = "COUNT"
+      this.dailyGoal.goalTimeQuota = 0;
+    },
+    achieveTypeTIME() {
+      this.dailyGoal.achieveType = "TIME"
+      this.dailyGoal.goalCountQuota = 0;
+    },
     openCreatedMonthlyGoals() {
       this.isCreatedMonthlyGoals = !this.isCreatedMonthlyGoals},
     getCreatedMonthlyGoals : function(e) {
