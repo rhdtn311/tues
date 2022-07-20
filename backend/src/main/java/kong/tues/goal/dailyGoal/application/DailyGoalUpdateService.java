@@ -49,6 +49,6 @@ public class DailyGoalUpdateService {
                             monthlyGoal.getDate().getMonthValue() == dailyGoalReqDto.getMonth() &&
                             monthlyGoal.getGoalType() == dailyGoalReqDto.getGoalType();
                 }).findAny()
-                .get();
+                .orElse(null);
     }
 }
