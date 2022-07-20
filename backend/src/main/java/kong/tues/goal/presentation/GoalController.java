@@ -393,7 +393,7 @@ public class GoalController {
 
     // new 일간 목표 수정
     @PostMapping("/daily/update")
-    public ResponseEntity<ResponseDTO> modifyDaily(@RequestBody DailyGoalReqDto dailyGoalReqDto) {
+    public ResponseEntity<ResponseDTO> modifyDaily(@RequestBody @Valid DailyGoalReqDto dailyGoalReqDto) {
 
         return ResponseEntity.ok(ResponseDTO.builder()
                 .data(dailyGoalUpdateService.updateDailyGoal(dailyGoalReqDto)).build());
