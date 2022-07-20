@@ -25,6 +25,7 @@
         <span style="font-size: 18px; font-weight: bold;" >날짜</span>
         <span v-if="isVerifyError.year" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.year}}</span>
         <span v-if="isVerifyError.month" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.month}}</span>
+        <span v-if="isVerifyError.yearValue || isVerifyError.monthValue" class="field-error hvr-wobble-top field-error-color">&nbsp; 값을 입력해주세요.</span>
         <br>
         <label for="create-goal-year"></label>
         <input v-model="this.monthlyGoal.year" type="text" id="create-goal-year" name="year" placeholder="YEAR">
@@ -72,8 +73,10 @@
   <div v-if="isDateModal" id="date-modal">
     <form class="date-form">
       <span>년</span>
+      <span v-if="isVerifyError.yearValue" class="field-error hvr-wobble-top field-error-color">&nbsp; 값을 입력해주세요.</span>
       <input class="date-input" type="number" placeholder="YEAR" v-model="this.monthlyGoal.year">
       <span>월</span>
+      <span v-if="isVerifyError.monthValue" class="field-error hvr-wobble-top field-error-color">&nbsp; 값을 입력해주세요.</span>
       <input class="date-input" type="number" placeholder="MONTH" v-model="this.monthlyGoal.month">
       <div id="date-created-buttons">
         <button @click="getCreatedMonthlyGoals" class="create-button">확인</button>
@@ -113,11 +116,20 @@ export default {
   props: ["createdGoalTypes"],
   methods: {
     createMonthlyGoal: function(monthlyGoal) {
+      if (this.monthlyGoal.year === '') {
+        this.isVerifyError.yearValue = true;
+        return;
+      } else this.isVerifyError.yearValue = false;
+      if (this.monthlyGoal.month === '') {
+        this.isVerifyError.monthValue = true
+        return;
+      } else this.isVerifyError.monthValue = false;
       axios.post(this.server + "/api/main/monthly", monthlyGoal)
           .then((response) => this.$router.go())
           .catch((error) => {
             this.errorCode = []
-            this.isVerifyError = {name: false, goalType: false, achieveType: false, NoValue:false, year: false}
+            this.isVerifyError = {name: false, goalType: false, achieveType: false, NoValue:false, year: false, yearValue: false,
+              monthValue: false}
             if (Array.isArray(error.response.data)) {
               this.isError = false;
               for (var field of error.response.data) {
@@ -137,12 +149,30 @@ export default {
     },
     getCreatedMonthlyGoals : function(e) {
       e.preventDefault();
+      if (this.monthlyGoal.year === '') {
+        this.isVerifyError.yearValue = true;
+        return;
+      } else this.isVerifyError.yearValue = false;
+      if (this.monthlyGoal.month === '') {
+        this.isVerifyError.monthValue = true
+        return;
+      } else this.isVerifyError.monthValue = false;
       axios.get(this.server + "/api/main/monthly/view/" + this.monthlyGoal.year + "/" + this.monthlyGoal.month)
           .then((response) => {
             this.isInputDate = true;
             this.isDateModal = false;
             this.createdMonthlyGoals=response.data.data;
           })
+    },
+    validateDateValue: function() {
+      if (this.monthlyGoal.year === '') {
+        this.isVerifyError.yearValue = true;
+        return;
+      } else this.isVerifyError.yearValue = false;
+      if (this.monthlyGoal.month === '') {
+        this.isVerifyError.monthValue = true
+        return;
+      } else this.isVerifyError.monthValue = false;
     },
     isDisabled: function(index, goalType) {
       return this.createdMonthlyGoals[index] === goalType

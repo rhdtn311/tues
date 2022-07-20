@@ -38,6 +38,7 @@
         <span v-if="isVerifyError.year" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.year}}</span>
         <span v-if="isVerifyError.month" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.month}}</span>
         <span v-if="isVerifyError.day" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.day}}</span>
+        <span v-if="isVerifyError.yearValue || isVerifyError.monthValue || isVerifyError.dayValue" class="field-error hvr-wobble-top field-error-color">&nbsp; 값을 입력해주세요.</span>
         <br>
         <label for="create-goal-year"></label>
         <input v-model="dailyGoal.year" type="number" id="create-goal-year" name="year" placeholder="YEAR">
@@ -109,7 +110,8 @@ export default {
       },
       monthlyGoals : {},
       isCreatedMonthlyGoals : false,
-      isVerifyError : {name: false, goalType: false, achieveType:false, NoValue:false, month: false, year: false, day:false},
+      isVerifyError : {name: false, goalType: false, achieveType:false, NoValue:false, month: false, year: false, day:false,
+        yearValue: false, monthValue: false, dayValue:false},
       verifyCode: [],
     }
   },
@@ -119,6 +121,18 @@ export default {
   props: ["updateDailyGoal", "createdMonthlyGoals"],
   methods:{
     modifyDailyGoal: function () {
+      if (this.dailyGoal.year === '') {
+        this.isVerifyError.yearValue = true;
+        return;
+      } else this.isVerifyError.yearValue = false;
+      if (this.dailyGoal.month === '') {
+        this.isVerifyError.monthValue = true
+        return;
+      } else this.isVerifyError.monthValue = false;
+      if (this.dailyGoal.day === '') {
+        this.isVerifyError.dayValue = true
+        return
+      } else this.isVerifyError.dayValue = false;
       axios.post(this.server + "/api/main/daily/update", this.dailyGoal)
           .then((response) => {
             this.$router.go();

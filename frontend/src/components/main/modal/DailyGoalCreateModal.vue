@@ -18,7 +18,6 @@
     </div>
     <form id="create-daily-goal-form">
       <div class="buttons">
-        <div th:errors="*{goalType}"></div>
         <ul>
           <li><img style="width: 20px" :src="goalTypeImage('A')"><input v-model="dailyGoal.goalType" class="goals" type="radio" name="goalType" id="goalTypeA" value="A"><label for="goalTypeA"></label></li>
           <li><img style="width: 20px" :src="goalTypeImage('B')"><input v-model="dailyGoal.goalType" class="goals" type="radio" name="goalType" id="goalTypeB" value="B"><label for="goalTypeB"></label></li>
@@ -41,6 +40,7 @@
         <span v-if="isVerifyError.year" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.year}}</span>
         <span v-if="isVerifyError.month" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.month}}</span>
         <span v-if="isVerifyError.day" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.day}}</span>
+        <span v-if="isVerifyError.yearValue || isVerifyError.monthValue || isVerifyError.dayValue" class="field-error hvr-wobble-top field-error-color">&nbsp; 값을 입력해주세요.</span>
         <br>
         <label for="create-goal-year"></label>
         <input v-model="dailyGoal.year" type="text" id="create-goal-year" name="year" placeholder="YEAR">
@@ -90,10 +90,13 @@
   <div v-if="isDateModal" id="date-modal">
     <form class="date-form">
       <span>년</span>
+      <span v-if="isVerifyError.yearValue" class="field-error hvr-wobble-top field-error-color">&nbsp; 값을 입력해주세요.</span>
       <input class="date-input" type="number" placeholder="YEAR" v-model="this.dailyGoal.year">
       <span>월</span>
+      <span v-if="isVerifyError.monthValue" class="field-error hvr-wobble-top field-error-color">&nbsp; 값을 입력해주세요.</span>
       <input class="date-input" type="number" placeholder="MONTH" v-model="this.dailyGoal.month">
       <span>일</span>
+      <span v-if="isVerifyError.dayValue" class="field-error hvr-wobble-top field-error-color">&nbsp; 값을 입력해주세요.</span>
       <input class="date-input" type="number" placeholder="DAY" v-model="this.dailyGoal.day">
       <div id="date-created-buttons">
         <button @click="getCreatedMonthlyGoals" class="create-button">확인</button>
@@ -127,12 +130,25 @@ export default {
       isDateModal : true,
       isInputDate : false,
       isCreatedMonthlyGoals: false,
-      isVerifyError : {name: false, goalType: false, achieveType:false, NoValue:false, month: false, year: false, day:false},
+      isVerifyError : {name: false, goalType: false, achieveType:false, NoValue:false, month: false, year: false, day:false,
+      yearValue: false, monthValue: false, dayValue:false},
       verifyCode: [],
     }
   },
   methods : {
     createDailyGoal: function(dailyGoal) {
+      if (this.dailyGoal.year === '') {
+        this.isVerifyError.yearValue = true;
+        return;
+      } else this.isVerifyError.yearValue = false;
+      if (this.dailyGoal.month === '') {
+        this.isVerifyError.monthValue = true
+        return;
+      } else this.isVerifyError.monthValue = false;
+      if (this.dailyGoal.day === '') {
+        this.isVerifyError.dayValue = true
+        return
+      } else this.isVerifyError.dayValue = false;
       axios.post(this.server + "/api/main/daily", this.dailyGoal)
           .then((response) => {this.$router.go()})
           .catch((error) => {
@@ -154,7 +170,7 @@ export default {
               this.isError = true;
               this.errorMessage = error.response.data.message;
             }
-          })
+          });
     },
     goalTypeImage(goalType) {
       return "https://tues-images.s3.ap-northeast-2.amazonaws.com/images/tues-goal-type-" + goalType + ".png";
@@ -166,15 +182,24 @@ export default {
       this.isCreatedMonthlyGoals = !this.isCreatedMonthlyGoals},
     getCreatedMonthlyGoals : function(e) {
       e.preventDefault();
+      if (this.dailyGoal.year === '') {
+        this.isVerifyError.yearValue = true;
+        return;
+      } else this.isVerifyError.yearValue = false;
+      if (this.dailyGoal.month === '') {
+        this.isVerifyError.monthValue = true
+        return;
+      } else this.isVerifyError.monthValue = false;
+      if (this.dailyGoal.day === '') {
+        this.isVerifyError.dayValue = true
+        return
+      } else this.isVerifyError.dayValue = false;
       axios.get(this.server + "/api/main/daily/view/" + this.dailyGoal.year + "/" + this.dailyGoal.month)
           .then((response) => {
             this.createdMonthlyGoals = response.data.data;
             this.isDateModal = false;
             this.isInputDate = true;
           })
-    },
-    create: function() {
-      this.$emit("create", this.dailyGoal);
     },
     close : function() {
       this.$emit("close")

@@ -24,6 +24,7 @@
       <br>
       <div id="date">
         <span style="font-size: 18px; font-weight: bold;" >날짜</span>
+        <span v-if="isVerifyError.yearValue || isVerifyError.monthValue" class="field-error hvr-wobble-top field-error-color">&nbsp; 값을 입력해주세요.</span>
         <span v-if="isVerifyError.year" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.year}}</span>
         <span v-if="isVerifyError.month" class="field-error hvr-wobble-top field-error-color"> &nbsp;&nbsp;{{verifyCode.month}}</span>
         <br>
@@ -81,7 +82,7 @@ export default {
       monthlyGoal : {},
       error : "",
       isError:false,
-      isVerifyError : {name: false, goalType: false, achieveType:false, NoValue:false, month: false, year: false},
+      isVerifyError : {name: false, goalType: false, achieveType:false, NoValue:false, month: false, year: false, yearValue:false, monthValue: false,},
       verifyCode: [],
     }
   },
@@ -90,6 +91,14 @@ export default {
   },
   methods : {
     modifyMonthlyGoal : function () {
+        if (this.monthlyGoal.year === '') {
+          this.isVerifyError.yearValue = true;
+          return;
+        } else this.isVerifyError.yearValue = false;
+        if (this.monthlyGoal.month === '') {
+          this.isVerifyError.monthValue = true
+          return;
+        } else this.isVerifyError.monthValue = false;
       axios.post(this.server + "/api/main/monthly/update", this.monthlyGoal)
           .then((response) => {
             this.$router.go();
