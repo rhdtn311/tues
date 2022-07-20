@@ -169,6 +169,7 @@ public class DailyGoal {
         this.setGoalCountQuota(dailyGoalReqDto.getGoalCountQuota());
         this.setGoalTimeQuota(dailyGoalReqDto.getGoalTimeQuota());
         this.setMonthlyGoal(dailyGoalReqDto.getMonthlyGoal());
+        this.setDate(LocalDate.of(dailyGoalReqDto.getYear(), dailyGoalReqDto.getMonth(), dailyGoalReqDto.getDay()));
 
         if (dailyGoalReqDto.getAchieveType() == AchieveType.BASIC) {
             this.success = false;
