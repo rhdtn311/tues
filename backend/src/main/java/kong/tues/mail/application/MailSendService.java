@@ -19,7 +19,6 @@ public class MailSendService {
     private String FROM_ADDRESS;
 
     public void mailSend(MailDto mailDto) {
-        log.info("mailDTO : {}" ,mailDto);
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(mailDto.getAddress());
         message.setFrom(FROM_ADDRESS);

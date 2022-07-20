@@ -142,10 +142,6 @@ public class DailyGoal {
         return this.achieveType == AchieveType.BASIC;
     }
 
-    public DayOfWeek getDayOfWeek() {
-        return this.getDate().getDayOfWeek();
-    }
-
     public DailyGoalMainResDto toDailyGoalMainResDTO() {
         return DailyGoalMainResDto.builder()
                 .id(this.id)

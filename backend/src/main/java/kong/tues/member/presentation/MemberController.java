@@ -45,24 +45,6 @@ public class MemberController {
         dataBinder.addValidators(memberJoinReqDtoValidator);
     }
 
-    @GetMapping()
-    public String home(HttpServletRequest request, Model model) {
-
-        log.info("GET : /member/home");
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            return "/member/login";
-        }
-
-        Member loginMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        if (loginMember == null) {
-            return "/member/login";
-        }
-
-        model.addAttribute("member", loginMember);
-        return "redirect:/goal/main";
-    }
-
     @PostMapping("/join")
     public ResponseEntity<ResponseDTO> join(@RequestBody @Valid MemberJoinReqDto memberJoinReqDto) {
 
@@ -93,7 +75,6 @@ public class MemberController {
             session.invalidate();
         }
 
-        System.out.println("zzzz");
         return ResponseEntity.ok(ResponseDTO.builder().build());
     }
 

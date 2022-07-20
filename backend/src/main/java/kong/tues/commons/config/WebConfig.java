@@ -1,7 +1,6 @@
 package kong.tues.commons.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import kong.tues.commons.argumentresolver.LoginMemberArgumentResolver;
 import kong.tues.commons.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -25,11 +23,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(1)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/member/**", "/find/**", "/error", "/api/home/**");
-    }
-
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new LoginMemberArgumentResolver());
     }
 
     @Override

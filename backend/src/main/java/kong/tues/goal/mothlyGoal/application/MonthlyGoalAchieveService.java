@@ -1,7 +1,6 @@
 package kong.tues.goal.mothlyGoal.application;
 
 import kong.tues.goal.exception.GoalNotFoundException;
-import kong.tues.goal.mothlyGoal.application.monthlyGoalManager.MonthlyGoalManager;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
 import kong.tues.goal.mothlyGoal.domain.repository.MonthlyGoalRepository;
 import kong.tues.goal.mothlyGoal.dto.MonthlyGoalAchieveResDto;
@@ -17,22 +16,8 @@ import java.util.List;
 @Service
 public class MonthlyGoalAchieveService {
 
-    private final MonthlyGoalManager monthlyGoalManager;
-
     private final MonthlyGoalRepository monthlyGoalRepository;
     private final MonthlyGoalFindService monthlyGoalFindService;
-
-    @Transactional
-    public MonthlyGoalAchieveResDto achieveMonthlyGoal(Long memberId, Long monthlyGoalId) {
-
-        return monthlyGoalManager.successGoal(memberId, monthlyGoalId);
-    }
-
-    @Transactional
-    public MonthlyGoalAchieveResDto failMonthlyGoal(Long memberId, Long monthlyGoalId) {
-
-        return monthlyGoalManager.failGoal(memberId, monthlyGoalId);
-    }
 
     @Transactional
     public List<MonthlyGoalMainResDto> minusMonthlyGoal(Long monthlyGoalId) {

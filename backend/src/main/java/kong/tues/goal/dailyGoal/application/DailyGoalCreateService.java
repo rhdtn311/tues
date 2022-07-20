@@ -2,6 +2,7 @@ package kong.tues.goal.dailyGoal.application;
 
 import kong.tues.goal.dailyGoal.application.dto.CreatedMonthlyGoalResDto;
 import kong.tues.goal.dailyGoal.domain.DailyGoal;
+import kong.tues.goal.dailyGoal.domain.repository.DailyGoalQueryRepository;
 import kong.tues.goal.dailyGoal.domain.repository.DailyGoalRepository;
 import kong.tues.goal.dailyGoal.presentation.dto.DailyGoalReqDto;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

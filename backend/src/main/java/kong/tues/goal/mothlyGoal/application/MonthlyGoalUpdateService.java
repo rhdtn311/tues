@@ -17,6 +17,7 @@ public class MonthlyGoalUpdateService {
     private final MonthlyGoalRepository monthlyGoalRepository;
 
     // 화면
+    @Transactional(readOnly = true)
     public MonthlyGoalUpdateResDto getMonthlyGoalUpdate(Long monthlyGoalId) {
 
         MonthlyGoal monthlyGoal

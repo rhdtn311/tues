@@ -70,24 +70,6 @@ public class MonthlyGoalQueryRepository {
                 .fetchOne();
     }
 
-    public MonthlyGoal findMonthlyGoalByGoalTypeAndAchieveType(Long memberId, int year, int month, GoalType goalType, AchieveType achieveType) {
-        return queryFactory.selectFrom(monthlyGoal)
-                .leftJoin(member).on(member.id.eq(memberId))
-                .where(eqYear(year).and(eqMonth(month)).and(eqGoalType(goalType)).and(eqMemberId(memberId)).and(eqAchieveType(achieveType)))
-                .fetchOne();
-    }
-
-    public List<MonthlyGoalListDto> findAllMonthlyGoalsByDate(Long memberId, int year, int month) {
-        return queryFactory.select(Projections.constructor(MonthlyGoalListDto.class,
-                monthlyGoal.name, monthlyGoal.goalCountQuota, monthlyGoal.goalCount,
-                monthlyGoal.goalTimeQuota, monthlyGoal.goalTime, monthlyGoal.success,monthlyGoal.achieveType
-                ))
-                .from(monthlyGoal)
-                .leftJoin(member).on(member.id.eq(memberId))
-                .where(eqYear(year).and(eqMonth(month)).and(eqMemberId(memberId)))
-                .fetch();
-    }
-
     public BooleanExpression eqYear(int year) {
         return monthlyGoal.date.year().eq(year);
     }

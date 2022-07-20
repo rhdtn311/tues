@@ -1,7 +1,6 @@
 package kong.tues.goal.dailyGoal.application;
 
 import kong.tues.goal.GoalType;
-import kong.tues.goal.dailyGoal.application.dailyGoalManager.DailyGoalManager;
 import kong.tues.goal.dailyGoal.application.dto.DailyGoalMainResDto;
 import kong.tues.goal.dailyGoal.domain.DailyGoal;
 import kong.tues.goal.dailyGoal.domain.repository.DailyGoalRepository;
@@ -19,22 +18,9 @@ import java.util.Map;
 @Service
 public class DailyGoalAchieveService {
 
-    private final DailyGoalManager dailyGoalManager;
     private final MonthlyGoalQueryRepository monthlyGoalQueryRepository;
 
     private final DailyGoalRepository dailyGoalRepository;
-
-    @Transactional
-    public Map<String, Object> achieveDailyGoal(Long memberId, Long dailyGoalId) {
-
-        return dailyGoalManager.successGoal(memberId, dailyGoalId);
-    }
-
-    @Transactional
-    public Map<String, Object> failDailyGoal(Long memberId, Long dailyGoalId) {
-
-        return dailyGoalManager.failGoal(memberId, dailyGoalId);
-    }
 
     @Transactional
     public DailyGoal minusDailyGoal(Long dailyGoalId) {
