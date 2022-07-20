@@ -42,7 +42,7 @@ public class DailyGoalReqDto {
     private AchieveType achieveType;
 
     @Nullable
-    @Min(0) @Max(value = 100000000)
+    @Min(value = 0, message="0개 이상이어야 합니다.") @Max(value = 100000000, message = "100000000개 이하여야 합니다.")
     private Integer goalCountQuota;
 
     @Nullable
@@ -50,11 +50,11 @@ public class DailyGoalReqDto {
     private Integer goalCount;
 
     @Nullable
-    @Min(0) @Max(24)
+    @Min(value = 0, message = "0시간 이상이어야 합니다.") @Max(value = 24, message = "24시간 이하여야 합니다.")
     private Integer goalTimeQuota;
 
     @Nullable
-    @Min(0) @Max(24)
+    @Min(value = 0, message = "0시간 이상이어야 합니다.") @Max(value = 24, message = "24시간 이하여야 합니다.")
     private Integer goalTime;
 
     @Range(min = 0, max=3000, message="0년에서 3000년 사이여야 합니다.")

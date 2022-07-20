@@ -36,19 +36,19 @@ public class MonthlyGoalReqDto {
     private AchieveType achieveType;
 
     @Nullable
-    @Min(value = 0, message = "0이상") @Max(value = 100000000, message = "1000000미만")
+    @Min(value = 0, message = "0개 이상이어야 합니다.") @Max(value = 100000000, message = "1000000개 이하여야 합니다.")
     private Integer goalCountQuota;
 
     @Nullable
-    @Min(value = 0, message = "0이상") @Max(value = 100000000, message = "100000미만")
+    @Min(value = 0, message = "0개 이상이어야 합니다.") @Max(value = 100000000, message = "100000개 이하여야 합니다.")
     private Integer goalCount;
 
     @Nullable
-    @Min(value = 0, message = "0이상") @Max(value = 1000, message = "1000미만")
+    @Min(value = 0, message = "0시간 이상이어야 합니다.") @Max(value = 1000, message = "1000시간 이하여야 합니다.")
     private Integer goalTimeQuota;
 
     @Nullable
-    @Min(value = 0, message = "0이상") @Max(value = 1000,message = "1000미만")
+    @Min(value = 0, message = "0시간 이상이어야 합니다.") @Max(value = 1000,message = "1000시간 이하여야 합니다.")
     private Integer goalTime;
 
     @Range(min = 0, max=3000, message="0년에서 3000년 사이여야 합니다.")
