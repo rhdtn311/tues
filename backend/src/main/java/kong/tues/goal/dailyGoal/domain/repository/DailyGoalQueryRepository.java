@@ -3,7 +3,9 @@ package kong.tues.goal.dailyGoal.domain.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kong.tues.goal.GoalType;
 import kong.tues.goal.dailyGoal.application.dto.DailyGoalMainResDto;
+import kong.tues.goal.dailyGoal.domain.DailyGoal;
 import kong.tues.goal.goalList.application.dto.DailyGoalListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -41,6 +43,14 @@ public class DailyGoalQueryRepository {
                 .fetch();
     }
 
+    public List<DailyGoal> findDailyGoalsByYearAndMonth(long memberId, int year, int month, GoalType goalType) {
+
+        return queryFactory.select(dailyGoal)
+                .from(dailyGoal)
+                .where(eqYear(year).and(eqMonth(month)).and(eqMemberId(memberId)).and(eqGoalType(goalType)))
+                .fetch();
+    }
+
     private BooleanExpression eqYear(int year) {
         return dailyGoal.date.year().eq(year);
     }
@@ -56,4 +66,6 @@ public class DailyGoalQueryRepository {
     private BooleanExpression eqMemberId(long memberId) {
         return dailyGoal.member.id.eq(memberId);
     }
+
+    private BooleanExpression eqGoalType(GoalType goalType) {return dailyGoal.goalType.eq(goalType);}
 }

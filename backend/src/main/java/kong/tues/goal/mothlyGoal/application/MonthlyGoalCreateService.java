@@ -1,6 +1,7 @@
 package kong.tues.goal.mothlyGoal.application;
 
 import kong.tues.goal.GoalType;
+import kong.tues.goal.dailyGoal.domain.repository.DailyGoalQueryRepository;
 import kong.tues.goal.exception.GoalNotFoundException;
 import kong.tues.goal.exception.GoalTypeDupException;
 import kong.tues.goal.mothlyGoal.domain.MonthlyGoal;
@@ -27,6 +28,7 @@ public class MonthlyGoalCreateService {
     private final MemberRepository memberRepository;
     private final MonthlyGoalRepository monthlyGoalRepository;
     private final MonthlyGoalQueryRepository monthlyGoalQueryRepository;
+    private final DailyGoalQueryRepository dailyGoalQueryRepository;
 
     @Transactional
     public Long save(MonthlyGoalReqDto monthlyGoalReqDto, Long memberId) {
@@ -36,6 +38,9 @@ public class MonthlyGoalCreateService {
         if (monthlyGoalQueryRepository.existsMonthlyGoalByTypeAtMonth(monthlyGoal) && !(monthlyGoalReqDto.getGoalType() == GoalType.OTHER)){
             throw new GoalTypeDupException();
         }
+
+        dailyGoalQueryRepository.findDailyGoalsByYearAndMonth(member.getId(), monthlyGoalReqDto.getYear(), monthlyGoalReqDto.getMonth(), monthlyGoalReqDto.getGoalType())
+                .forEach(goal -> goal.setMonthlyGoal(monthlyGoal));
 
         return monthlyGoalRepository.save(monthlyGoal).getId();
     }
