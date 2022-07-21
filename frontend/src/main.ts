@@ -19,4 +19,4 @@ app.mount("#app");
 
 
 // global
-app.config.globalProperties.server = "http://localhost:8080"
+app.config.globalProperties.server = "http://tues.today:8080"
