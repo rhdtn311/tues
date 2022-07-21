@@ -45,6 +45,7 @@ public class DailyGoal {
 
     @NotNull
     @Column(name = "goalType")
+    @Enumerated(EnumType.STRING)
     private GoalType goalType;
 
     @NotNull
