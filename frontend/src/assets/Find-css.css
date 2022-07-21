@@ -4,10 +4,8 @@
 }
 
 body {
-    width: 100%;
+    background-color: #FFF8F3;
     height: 100%;
-    background: #FFF8F3;
-    margin-top: 157px;
 }
 
 #back-button {
@@ -23,12 +21,11 @@ body {
 }
 
 .container {
+    height: 80%;
+    position: absolute;
+    left: 45%;
+    top: 15%;
     text-align: center;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
 }
 
 .field-error {
