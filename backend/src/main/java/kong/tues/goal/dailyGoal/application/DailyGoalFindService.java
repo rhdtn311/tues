@@ -4,6 +4,7 @@ import kong.tues.goal.dailyGoal.application.dto.DailyGoalMainResDto;
 import kong.tues.goal.dailyGoal.domain.DailyGoal;
 import kong.tues.goal.dailyGoal.domain.repository.DailyGoalQueryRepository;
 import kong.tues.goal.dailyGoal.domain.repository.DailyGoalRepository;
+import kong.tues.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -57,8 +58,8 @@ public class DailyGoalFindService {
         return weeklyGoalsMap;
     }
 
-    public List<DailyGoalMainResDto> findDailyGoalsByDate(LocalDate date) {
-        return dailyGoalRepository.findDailyGoalByDate(date)
+    public List<DailyGoalMainResDto> findDailyGoalsByDate(LocalDate date, Member member) {
+        return dailyGoalRepository.findDailyGoalByDateAndMember(date, member)
                 .stream()
                 .map(DailyGoal::toDailyGoalMainResDTO)
                 .collect(Collectors.toList());

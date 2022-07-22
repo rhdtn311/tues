@@ -104,7 +104,7 @@ public class GoalController {
             goalAchieveResDto.setMonthlyGoals(monthlyGoalFindService.findMonthlyGoals(dailyGoal.getMember().getId(), LocalDate.now().getYear(), LocalDate.now().getMonthValue()));
         }
 
-        goalAchieveResDto.setDailyGoals(dailyGoalFindService.findDailyGoalsByDate(dailyGoal.getDate()));
+        goalAchieveResDto.setDailyGoals(dailyGoalFindService.findDailyGoalsByDate(dailyGoal.getDate(), dailyGoal.getMember()));
 
         return ResponseEntity.ok(ResponseDTO.builder()
                 .data(goalAchieveResDto).build());
@@ -122,7 +122,7 @@ public class GoalController {
             goalAchieveResDto.setMonthlyGoals(monthlyGoalFindService.findMonthlyGoals(dailyGoal.getMember().getId(), LocalDate.now().getYear(), LocalDate.now().getMonthValue()));
         }
 
-        goalAchieveResDto.setDailyGoals(dailyGoalFindService.findDailyGoalsByDate(dailyGoal.getDate()));
+        goalAchieveResDto.setDailyGoals(dailyGoalFindService.findDailyGoalsByDate(dailyGoal.getDate(), dailyGoal.getMember()));
 
         return ResponseEntity.ok(ResponseDTO.builder()
                 .data(goalAchieveResDto).build());
